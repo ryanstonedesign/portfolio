@@ -1,0 +1,50 @@
+.custom-cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  transform: translate(-50%, -50%);
+  letter-spacing: 0.05em;
+  will-change: left, top;
+}
+
+.cursor-trail {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  letter-spacing: 0.05em;
+  will-change: left, top, opacity, transform;
+}
+
+/* Hide default cursor globally */
+* {
+  cursor: none !important;
+}
+
+@media (max-width: 768px) {
+  .custom-cursor,
+  .cursor-trail {
+    display: none;
+  }
+  
+  * {
+    cursor: auto !important;
+  }
+}
+
+@media (hover: none) {
+  .custom-cursor,
+  .cursor-trail {
+    display: none;
+  }
+  
+  * {
+    cursor: auto !important;
+  }
+}
+

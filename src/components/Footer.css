@@ -1,0 +1,57 @@
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-sm);
+  font-size: 0.9375rem;
+}
+
+.footer__left {
+  flex: 1;
+}
+
+.footer__left a {
+  color: var(--color-text);
+  transition: color var(--duration-fast) ease;
+}
+
+.footer__left a:hover {
+  color: var(--color-text-muted);
+}
+
+.footer__separator {
+  color: var(--color-text);
+}
+
+.footer__center {
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.footer__counter {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.footer__counter-current {
+  color: var(--color-text);
+}
+
+.footer__counter-separator,
+.footer__counter-total {
+  color: var(--color-text-muted);
+}
+
+.footer__right {
+  flex: 1;
+  text-align: right;
+}
+
+.footer__right a {
+  color: var(--color-text);
+  transition: color var(--duration-fast) ease;
+}
+
+.footer__right a:hover {
+  color: var(--color-text-muted);
+}
