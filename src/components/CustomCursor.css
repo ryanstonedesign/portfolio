@@ -8,6 +8,11 @@
   transform: translate(-50%, -50%);
   letter-spacing: 0.05em;
   will-change: left, top;
+  transition: color 0.15s ease;
+}
+
+.custom-cursor--inverted {
+  color: #fff;
 }
 
 .cursor-trail {
@@ -19,6 +24,11 @@
   color: var(--color-text);
   letter-spacing: 0.05em;
   will-change: left, top, opacity, transform;
+  transition: color 0.15s ease;
+}
+
+.cursor-trail--inverted {
+  color: #fff;
 }
 
 /* Hide default cursor globally */

@@ -27,3 +27,8 @@ Thumbs.db
 *.log
 npm-debug.log*
 
+# Large media files
+*.mov
+*.mp4
+src/content/
+

@@ -34,19 +34,19 @@ export const projects = [
   {
     id: 6,
     title: 'Golden Hour',
-    category: 'photography',
+    category: 'photo',
     image: '/images/photo-01.jpg',
   },
   {
     id: 7,
     title: 'Street Portraits',
-    category: 'photography',
+    category: 'photo',
     image: '/images/photo-02.jpg',
   },
   {
     id: 8,
     title: 'Urban Landscapes',
-    category: 'photography',
+    category: 'photo',
     image: '/images/photo-03.jpg',
   },
   {
@@ -63,7 +63,7 @@ export const projects = [
   },
 ]
 
-export const categories = ['all', 'ux', 'photography', 'art', 'print']
+export const categories = ['all', 'ux', 'dev', 'photo', 'art', 'print']
 
 // Fisher-Yates shuffle for randomizing project order
 const shuffleArray = (array) => {

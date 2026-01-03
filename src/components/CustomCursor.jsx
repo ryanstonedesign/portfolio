@@ -10,6 +10,7 @@ function CustomCursor() {
   const [trails, setTrails] = useState(
     Array(TRAIL_COUNT).fill({ x: -100, y: -100, visible: false })
   )
+  const [isOverImage, setIsOverImage] = useState(false)
   const positionRef = useRef({ x: -100, y: -100 })
   const trailPositions = useRef(Array(TRAIL_COUNT).fill({ x: -100, y: -100 }))
 
@@ -17,6 +18,11 @@ function CustomCursor() {
     const handleMouseMove = (e) => {
       positionRef.current = { x: e.clientX, y: e.clientY }
       setPosition({ x: e.clientX, y: e.clientY })
+      
+      // Check if cursor is over an image element
+      const element = document.elementFromPoint(e.clientX, e.clientY)
+      const isOver = element?.closest('.work__image-container') !== null
+      setIsOverImage(isOver)
     }
 
     window.addEventListener('mousemove', handleMouseMove)
@@ -63,7 +69,7 @@ function CustomCursor() {
       {trails.map((trail, index) => (
         <div
           key={index}
-          className="cursor-trail"
+          className={`cursor-trail ${isOverImage ? 'cursor-trail--inverted' : ''}`}
           style={{
             left: trail.x,
             top: trail.y,
@@ -76,7 +82,7 @@ function CustomCursor() {
       
       {/* Main cursor */}
       <div
-        className="custom-cursor"
+        className={`custom-cursor ${isOverImage ? 'custom-cursor--inverted' : ''}`}
         style={{
           left: position.x,
           top: position.y,
