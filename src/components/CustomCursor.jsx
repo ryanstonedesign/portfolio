@@ -16,16 +16,16 @@ function CustomCursor() {
   const trailPositions = useRef(Array(TRAIL_COUNT).fill({ x: -100, y: -100 }))
 
   useEffect(() => {
-    const updateCursorState = (x, y) => {
+    const updateCursorState = (x, y, ignoreButton = false, forceLight = false) => {
       const element = document.elementFromPoint(x, y)
       const container = element?.closest('.work__image-container')
-      const enlargeButton = element?.closest('.work__enlarge-button')
+      const enlargeButton = ignoreButton ? null : element?.closest('.work__enlarge-button')
       const isOver = container !== null
-      setIsOverImage(isOver)
+      setIsOverImage(forceLight ? false : isOver)
 
       // Check if hovering over enlarge button
       if (enlargeButton && container) {
-        const isFullscreen = container.classList.contains('work__image-container--fullscreen')
+        const isFullscreen = container.dataset.isFullscreen === 'true'
         setCursorText(isFullscreen ? 'Shrink' : 'Enlarge')
       }
       // Check if hovering over a video and get play state
@@ -35,7 +35,7 @@ function CustomCursor() {
         if (isVideo) {
           setCursorText(isPlaying ? 'Pause' : 'Play')
         } else {
-          setCursorText('RS')
+          setCursorText('Scroll')
         }
       } else {
         setCursorText('RS')
@@ -49,17 +49,28 @@ function CustomCursor() {
     }
 
     const handleClick = () => {
-      // Re-check state immediately after click
+      // Re-check state after React has re-rendered
+      // Double rAF ensures the DOM has updated with new classes
       requestAnimationFrame(() => {
-        updateCursorState(positionRef.current.x, positionRef.current.y)
+        requestAnimationFrame(() => {
+          updateCursorState(positionRef.current.x, positionRef.current.y)
+        })
       })
+    }
+
+    const handleCursorUpdate = (e) => {
+      const ignoreButton = e.detail?.ignoreButton || false
+      const forceLight = e.detail?.forceLight || false
+      updateCursorState(positionRef.current.x, positionRef.current.y, ignoreButton, forceLight)
     }
 
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('click', handleClick)
+    window.addEventListener('cursorupdate', handleCursorUpdate)
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('click', handleClick)
+      window.removeEventListener('cursorupdate', handleCursorUpdate)
     }
   }, [])
 

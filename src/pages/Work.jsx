@@ -17,6 +17,8 @@ function Work() {
   const intervalRef = useRef(null)
   const videoRef = useRef(null)
   const containerRef = useRef(null)
+  const scrollAccumulator = useRef(0)
+  const scrollCooldown = useRef(false)
   const { setCenterContent } = useFooter()
 
   const filteredProjects = getProjectsByCategory(activeCategory)
@@ -72,28 +74,70 @@ function Work() {
     }
   }, [isVideoPlaying])
 
-  // Reset video playing state and pause video when switching projects
+  // Handle video state when switching projects or hover changes
   useEffect(() => {
-    setIsVideoPlaying(false)
-    // Explicitly pause the video after ref updates
+    // Reset video element when switching projects
     requestAnimationFrame(() => {
       if (videoRef.current) {
-        videoRef.current.pause()
         videoRef.current.currentTime = 0
       }
     })
-  }, [currentIndex])
+    
+    // Auto-play if hovering over a video, otherwise stop
+    if (currentProject?.isVideo && isHovering) {
+      setIsVideoPlaying(true)
+    } else {
+      setIsVideoPlaying(false)
+    }
+  }, [currentIndex, isHovering, currentProject?.isVideo])
 
-  // Auto-play video on hover
+  // Update cursor when current project or video state changes
   useEffect(() => {
-    if (currentProject?.isVideo) {
-      if (isHovering) {
-        setIsVideoPlaying(true)
-      } else {
-        setIsVideoPlaying(false)
+    window.dispatchEvent(new CustomEvent('cursorupdate'))
+  }, [currentIndex, isVideoPlaying])
+
+  // Handle wheel scroll for carousel navigation
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    const handleWheel = (e) => {
+      if (filteredProjects.length <= 1) return
+      
+      e.preventDefault()
+      
+      // Skip if on cooldown
+      if (scrollCooldown.current) return
+      
+      // Accumulate scroll delta
+      scrollAccumulator.current += e.deltaY
+      
+      const threshold = 50
+      
+      if (Math.abs(scrollAccumulator.current) >= threshold) {
+        const direction = scrollAccumulator.current > 0 ? 1 : -1
+        
+        setCurrentIndex((prev) => {
+          let newIndex = prev + direction
+          if (newIndex < 0) newIndex = filteredProjects.length - 1
+          if (newIndex >= filteredProjects.length) newIndex = 0
+          return newIndex
+        })
+        
+        scrollAccumulator.current = 0
+        
+        // Set cooldown to prevent multiple triggers
+        scrollCooldown.current = true
+        setTimeout(() => {
+          scrollCooldown.current = false
+        }, 25)
       }
     }
-  }, [isHovering, currentProject?.isVideo])
+
+    container.addEventListener('wheel', handleWheel, { passive: false })
+    return () => container.removeEventListener('wheel', handleWheel)
+  }, [filteredProjects.length])
+
 
   const handleContainerClick = (e) => {
     // Don't toggle video if clicking the enlarge button
@@ -117,6 +161,7 @@ function Work() {
       
       setIsExpanding(true)
       setIsFullscreen(true)
+      window.dispatchEvent(new CustomEvent('cursorupdate', { detail: { ignoreButton: true } }))
       
       setTimeout(() => {
         setIsExpanding(false)
@@ -125,6 +170,7 @@ function Work() {
       // Collapsing from fullscreen
       setIsCollapsing(true)
       setIsFullscreen(false)
+      window.dispatchEvent(new CustomEvent('cursorupdate', { detail: { ignoreButton: true, forceLight: true } }))
       
       setTimeout(() => {
         setIsCollapsing(false)
@@ -149,6 +195,7 @@ function Work() {
         onClick={handleContainerClick}
         data-is-video={currentProject?.isVideo || false}
         data-video-playing={isVideoPlaying}
+        data-is-fullscreen={isFullscreen}
       >
         {filteredProjects.length > 0 ? (
           <div className={`work__image-wrapper ${imageTransition === 'dissolve' ? 'work__image-wrapper--dissolve' : ''}`}>

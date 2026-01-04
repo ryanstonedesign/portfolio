@@ -63,25 +63,34 @@
 /* Stacked media (both dissolve and instant modes) */
 .work__media--stacked {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
   opacity: 0;
-  transition: opacity 500ms ease;
+  transition: opacity 500ms ease, filter var(--duration-normal) ease;
 }
 
 .work__media--stacked.work__media--active {
   opacity: 1;
+  transition: opacity 500ms ease, 
+              filter var(--duration-normal) ease,
+              transform var(--duration-normal) cubic-bezier(0.54, 0.00, 0.24, 1.00);
 }
 
-/* Instant mode - no opacity transition, keep scale/filter transitions */
+/* Instant mode - no opacity transition */
 .work__media--stacked.work__media--instant {
-  transition: transform var(--duration-normal) cubic-bezier(0.54, 0.00, 0.24, 1.00),
-              filter var(--duration-normal) ease;
+  transition: filter var(--duration-normal) ease;
+}
+
+.work__media--stacked.work__media--instant.work__media--active {
+  transition: filter var(--duration-normal) ease,
+              transform var(--duration-normal) cubic-bezier(0.54, 0.00, 0.24, 1.00);
 }
 
 .work__image-container:hover .work__media--stacked.work__media--active {
-  transform: translate(-50%, -50%) scale(1.1);
+  transform: scale(1.1);
 }
 
 /* Badges */
@@ -183,13 +192,13 @@
     width: 90%;
     max-height: 90%;
     filter: grayscale(0%);
-    transform: translate(-50%, -50%) scale(1);
+    transform: scale(1);
   }
   100% {
     width: 520px;
     max-height: 80%;
     filter: grayscale(75%);
-    transform: translate(-50%, -50%) scale(1);
+    transform: scale(1);
   }
 }
 
@@ -246,11 +255,12 @@
 }
 
 .work__image-container--fullscreen .work__media--stacked.work__media--active {
-  transform: translate(-50%, -50%);
+  transform: scale(1);
+  transition: none;
 }
 
 .work__image-container--fullscreen:hover .work__media--stacked.work__media--active {
-  transform: translate(-50%, -50%);
+  transform: scale(1);
 }
 
 /* Hide badges in fullscreen */
