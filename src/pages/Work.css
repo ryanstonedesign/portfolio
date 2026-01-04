@@ -306,4 +306,29 @@
   .work__image-container {
     max-width: 100%;
   }
+
+  /* Keep badges and enlarge button hover-only on smaller screens */
+  .work__badge {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .work__enlarge-button {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .work__image-container:hover .work__badges--visible .work__badge {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+
+  .work__image-container:hover .work__enlarge-button--visible {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
 }
