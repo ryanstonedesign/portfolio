@@ -11,22 +11,56 @@ function CustomCursor() {
     Array(TRAIL_COUNT).fill({ x: -100, y: -100, visible: false })
   )
   const [isOverImage, setIsOverImage] = useState(false)
+  const [cursorText, setCursorText] = useState('RS')
   const positionRef = useRef({ x: -100, y: -100 })
   const trailPositions = useRef(Array(TRAIL_COUNT).fill({ x: -100, y: -100 }))
 
   useEffect(() => {
+    const updateCursorState = (x, y) => {
+      const element = document.elementFromPoint(x, y)
+      const container = element?.closest('.work__image-container')
+      const enlargeButton = element?.closest('.work__enlarge-button')
+      const isOver = container !== null
+      setIsOverImage(isOver)
+
+      // Check if hovering over enlarge button
+      if (enlargeButton && container) {
+        const isFullscreen = container.classList.contains('work__image-container--fullscreen')
+        setCursorText(isFullscreen ? 'Shrink' : 'Enlarge')
+      }
+      // Check if hovering over a video and get play state
+      else if (isOver && container) {
+        const isVideo = container.dataset.isVideo === 'true'
+        const isPlaying = container.dataset.videoPlaying === 'true'
+        if (isVideo) {
+          setCursorText(isPlaying ? 'Pause' : 'Play')
+        } else {
+          setCursorText('RS')
+        }
+      } else {
+        setCursorText('RS')
+      }
+    }
+
     const handleMouseMove = (e) => {
       positionRef.current = { x: e.clientX, y: e.clientY }
       setPosition({ x: e.clientX, y: e.clientY })
-      
-      // Check if cursor is over an image element
-      const element = document.elementFromPoint(e.clientX, e.clientY)
-      const isOver = element?.closest('.work__image-container') !== null
-      setIsOverImage(isOver)
+      updateCursorState(e.clientX, e.clientY)
+    }
+
+    const handleClick = () => {
+      // Re-check state immediately after click
+      requestAnimationFrame(() => {
+        updateCursorState(positionRef.current.x, positionRef.current.y)
+      })
     }
 
     window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+    window.addEventListener('click', handleClick)
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('click', handleClick)
+    }
   }, [])
 
   // Animate trails to follow cursor with delay
@@ -76,7 +110,7 @@ function CustomCursor() {
             opacity: trail.visible ? 1 - (index + 1) / (TRAIL_COUNT + 1) : 0,
           }}
         >
-          RS
+          {cursorText}
         </div>
       )).reverse()}
       
@@ -88,7 +122,7 @@ function CustomCursor() {
           top: position.y,
         }}
       >
-        RS
+        {cursorText}
       </div>
     </>
   )

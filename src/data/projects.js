@@ -1,67 +1,57 @@
-// Project images with category tags
-// Add your images here with their categories
-export const projects = [
-  {
-    id: 1,
-    title: 'Mobile Banking Redesign',
-    category: 'ux',
-    image: '/images/ux-01.jpg',
-  },
-  {
-    id: 2,
-    title: 'E-Commerce Checkout',
-    category: 'ux',
-    image: '/images/ux-02.jpg',
-  },
-  {
-    id: 3,
-    title: 'Dashboard Design',
-    category: 'ux',
-    image: '/images/ux-03.jpg',
-  },
-  {
-    id: 4,
-    title: 'Abstract Series I',
-    category: 'art',
-    image: '/images/art-01.jpg',
-  },
-  {
-    id: 5,
-    title: 'Abstract Series II',
-    category: 'art',
-    image: '/images/art-02.jpg',
-  },
-  {
-    id: 6,
-    title: 'Golden Hour',
-    category: 'photo',
-    image: '/images/photo-01.jpg',
-  },
-  {
-    id: 7,
-    title: 'Street Portraits',
-    category: 'photo',
-    image: '/images/photo-02.jpg',
-  },
-  {
-    id: 8,
-    title: 'Urban Landscapes',
-    category: 'photo',
-    image: '/images/photo-03.jpg',
-  },
-  {
-    id: 9,
-    title: 'Cultivate Magazine',
-    category: 'print',
-    image: '/images/print-01.jpg',
-  },
-  {
-    id: 10,
-    title: 'Brand Identity',
-    category: 'print',
-    image: '/images/print-02.jpg',
-  },
+// Project data parsed from Featured folder
+// Filename structure: [type1]_[type2]..._[name]_[year].[ext]
+// Types match tab names: ux, dev, photo, art, print
+
+const featuredFiles = [
+  'art_ship_2014.jpg',
+  'print_weddingInvites_2017.jpg',
+  'ux_dev_stufflog_2025.mp4',
+  'ux_dutiesResponder_2025.jpg',
 ]
+
+const validTypes = ['ux', 'dev', 'photo', 'art', 'print']
+
+// Parse filename to extract categories, title, and year
+const parseFilename = (filename) => {
+  // Remove extension
+  const nameWithoutExt = filename.replace(/\.[^/.]+$/, '')
+  const parts = nameWithoutExt.split('_')
+  
+  // Last part is year
+  const year = parts[parts.length - 1]
+  
+  // Second to last part is the title
+  const titlePart = parts[parts.length - 2]
+  
+  // Everything before that are types
+  const typeParts = parts.slice(0, -2)
+  
+  // Filter to only valid types
+  const categories = typeParts.filter(type => validTypes.includes(type.toLowerCase()))
+  
+  // Convert camelCase title to readable format
+  const title = titlePart
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, str => str.toUpperCase())
+    .trim()
+  
+  return { categories, title, year }
+}
+
+// Generate projects from featured files
+export const projects = featuredFiles.map((filename, index) => {
+  const { categories, title, year } = parseFilename(filename)
+  const isVideo = filename.endsWith('.mp4') || filename.endsWith('.mov')
+  
+  return {
+    id: index + 1,
+    title,
+    year,
+    categories,
+    image: `/images/${filename}`,
+    isVideo,
+  }
+})
 
 export const categories = ['all', 'ux', 'dev', 'photo', 'art', 'print']
 
@@ -80,5 +70,6 @@ const shuffledProjects = shuffleArray(projects)
 
 export const getProjectsByCategory = (category) => {
   if (category === 'all') return shuffledProjects
-  return projects.filter(p => p.category === category)
+  // Filter projects that include this category
+  return projects.filter(p => p.categories.includes(category))
 }

@@ -44,7 +44,10 @@
 
 .footer__right {
   flex: 1;
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
 }
 
 .footer__right a {
