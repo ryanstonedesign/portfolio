@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: space-between;
   padding-top: var(--space-sm);
-  font-size: 0.9375rem;
+  font-size: var(--font-size-ui);
 }
 
 .footer__left {

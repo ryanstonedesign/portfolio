@@ -3,10 +3,25 @@
 // Types match tab names: ux, dev, photo, art, print
 
 const featuredFiles = [
+  'art_candy_2012.jpg',
+  'art_disney_2015.jpg',
+  'art_dog_2012.jpg',
+  'art_fatherAndSon_2011.jpg',
+  'art_fruit_2015.jpg',
+  'art_hidden_2012.jpg',
+  'art_mountains_2015.jpg',
+  'art_selfPortrait_2009.jpg',
   'art_ship_2014.jpg',
+  'art_sisters_2011.jpg',
+  'art_stJohn_2014.jpg',
+  'art_sunset_2015.jpg',
   'print_weddingInvites_2017.jpg',
+  'ux_DesignStandup_2018.jpg',
   'ux_dev_stufflog_2025.mp4',
   'ux_dutiesResponder_2025.jpg',
+  'ux_marketsConditions_2024.jpg',
+  'ux_marketsRefactor_2023.jpg',
+  'ux_MM_2024.jpg',
 ]
 
 const validTypes = ['ux', 'dev', 'photo', 'art', 'print']

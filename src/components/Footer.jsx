@@ -8,11 +8,7 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="footer__left">
-        <a href="https://dribbble.com/" target="_blank" rel="noopener noreferrer">Dribbble</a>
-        <span className="footer__separator">,</span>
-        <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">Twitter</a>
-        <span className="footer__separator">,</span>
-        <a href="https://linkedin.com/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <span>Designed and built by Ryan</span>
       </div>
 
       <div className="footer__center">
@@ -21,7 +17,7 @@ function Footer() {
 
       <div className="footer__right">
         <SettingsPopover />
-        <a href="mailto:hello@ryanstone.design">Send An Email</a>
+        <a href="mailto:ryanstonedesign@gmail.com">ryanstonedesign@gmail.com</a>
       </div>
     </footer>
   )

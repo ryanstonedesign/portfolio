@@ -10,7 +10,7 @@
 }
 
 .header__name {
-  font-size: 0.9375rem;
+  font-size: var(--font-size-ui);
   font-weight: 400;
   color: var(--color-text);
   text-decoration: none;
@@ -23,7 +23,7 @@
 }
 
 .header__title {
-  font-size: 0.9375rem;
+  font-size: var(--font-size-ui);
   color: var(--color-text-muted);
 }
 
@@ -36,7 +36,7 @@
 }
 
 .header__tab {
-  font-size: 0.9375rem;
+  font-size: var(--font-size-ui);
   color: var(--color-text-muted);
   padding: 0;
   background: none;
@@ -64,13 +64,13 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.9375rem;
-  color: var(--color-text-muted);
+  font-size: var(--font-size-ui);
+  color: var(--color-text);
   transition: color var(--duration-fast) ease;
 }
 
 .header__link:hover {
-  color: var(--color-text);
+  color: var(--color-text-muted);
 }
 
 .header__link-dot {
