@@ -15,6 +15,12 @@ main {
 @media (max-width: 768px) {
   .app {
     padding: var(--space-sm);
+    justify-content: center;
+  }
+
+  main {
+    flex: none;
+    display: block;
   }
 }
 

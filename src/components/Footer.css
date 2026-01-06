@@ -58,3 +58,18 @@
 .footer__right a:hover {
   color: var(--color-text-muted);
 }
+
+@media (max-width: 768px) {
+  .footer {
+    flex-wrap: wrap;
+    padding-top: 20px;
+  }
+
+  .footer__center {
+    order: -1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+}

@@ -17,7 +17,7 @@ function Footer() {
 
       <div className="footer__right">
         <SettingsPopover />
-        <a href="mailto:ryanstonedesign@gmail.com">ryanstonedesign@gmail.com</a>
+        <a href="mailto:ryanstonedesign@gmail.com">Send an email</a>
       </div>
     </footer>
   )

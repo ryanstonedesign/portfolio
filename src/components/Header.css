@@ -14,6 +14,11 @@
   font-weight: 400;
   color: var(--color-text);
   text-decoration: none;
+  transition: color var(--duration-fast) ease;
+}
+
+.header__name:hover {
+  color: var(--color-text-muted);
 }
 
 .header__center {
@@ -90,7 +95,7 @@
   border-color: var(--color-text);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
   .header__center {
     display: none;
   }
@@ -101,12 +106,13 @@
     order: 3;
     width: 100%;
     justify-content: center;
-    margin-top: var(--space-sm);
+    margin-top: 40px;
     gap: var(--space-sm);
   }
 
   .header {
     flex-wrap: wrap;
+    padding-bottom: 20px;
   }
 }
 

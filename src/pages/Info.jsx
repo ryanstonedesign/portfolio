@@ -8,6 +8,12 @@ function Info() {
     { company: 'QVC', url: 'https://www.qvc.com', role: 'Product Designer', period: 'Aug 2014 – Jun 2017' },
   ]
 
+  const sideHustles = [
+    { name: 'StuffLog iOS app', url: 'https://apps.apple.com/us/app/stufflog-track-your-things/id6751174453', role: 'Founder', period: 'Sep 2025 – Present' },
+    { name: 'Stone Patch Company', url: 'https://stone-patch-company.myshopify.com/', role: 'Founder', period: 'Dec 2019 – Dec 2021' },
+    { name: 'Design Standup podcast', url: 'https://www.youtube.com/@designstandup3670/videos', role: 'Founder', period: 'Jan 2019 – Apr 2019' },
+  ]
+
   const education = [
     { school: 'Iowa State University', url: 'https://www.iastate.edu/', detail: 'M.S. Human Computer Interaction (6 credits)', year: '2016' },
     { school: 'West Chester University', url: 'https://www.wcupa.edu/', detail: 'B.S. Marketing, Graphic Design', year: '2011 – 2015' },
@@ -21,9 +27,7 @@ function Info() {
         <section className="info__row">
           <span className="info__label">Bio</span>
           <p className="info__text">
-            Product designer with a background in visual design, photography, and print. 
-            I've spent the last decade helping companies craft thoughtful digital experiences 
-            that balance business goals with user needs. Currently based in Philadelphia.
+            Software designer and builder with a background in graphic design, fine art, photography, print, and branding. I'm a lifelong learner with a passion for telling stories through design, using whatever tools necessary to craft highly engaging experiences that solve user and business needs. Based in the Greater Philadelphia area. <span className="info__easter-egg">Go Birds!</span>
           </p>
         </section>
 
@@ -34,6 +38,20 @@ function Info() {
             {experience.map((item) => (
               <div key={item.company} className="info__list-row">
                 <a href={item.url} target="_blank" rel="noopener noreferrer" className="info__list-item info__link">{item.company}</a>
+                <span className="info__list-detail">{item.role}</span>
+                <span className="info__list-meta">{item.period}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Side Hustles */}
+        <section className="info__row">
+          <span className="info__label">Side hustles</span>
+          <div className="info__list">
+            {sideHustles.map((item) => (
+              <div key={item.name} className="info__list-row">
+                <a href={item.url} target="_blank" rel="noopener noreferrer" className="info__list-item info__link">{item.name}</a>
                 <span className="info__list-detail">{item.role}</span>
                 <span className="info__list-meta">{item.period}</span>
               </div>

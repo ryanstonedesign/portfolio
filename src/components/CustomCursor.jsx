@@ -11,6 +11,7 @@ function CustomCursor() {
     Array(TRAIL_COUNT).fill({ x: -100, y: -100, visible: false })
   )
   const [isOverImage, setIsOverImage] = useState(false)
+  const [isOverLink, setIsOverLink] = useState(false)
   const [cursorText, setCursorText] = useState('RS')
   const positionRef = useRef({ x: -100, y: -100 })
   const trailPositions = useRef(Array(TRAIL_COUNT).fill({ x: -100, y: -100 }))
@@ -20,11 +21,22 @@ function CustomCursor() {
       const element = document.elementFromPoint(x, y)
       const container = element?.closest('.work__image-container')
       const enlargeButton = ignoreButton ? null : element?.closest('.work__enlarge-button')
+      const infoLink = element?.closest('.info__link')
+      const easterEgg = element?.closest('.info__easter-egg')
       const isOver = container !== null
       setIsOverImage(forceLight ? false : isOver)
 
+      // Check if hovering over Go Birds easter egg
+      setIsOverLink(infoLink !== null && !easterEgg)
+      if (easterEgg) {
+        setCursorText('🦅')
+      }
+      // Check if hovering over info page links
+      else if (infoLink) {
+        setCursorText('View')
+      }
       // Check if hovering over enlarge button
-      if (enlargeButton && container) {
+      else if (enlargeButton && container) {
         const isFullscreen = container.dataset.isFullscreen === 'true'
         setCursorText(isFullscreen ? 'Shrink' : 'Enlarge')
       }
@@ -114,7 +126,7 @@ function CustomCursor() {
       {trails.map((trail, index) => (
         <div
           key={index}
-          className={`cursor-trail ${isOverImage ? 'cursor-trail--inverted' : ''}`}
+          className={`cursor-trail ${isOverImage ? 'cursor-trail--inverted' : ''} ${isOverLink ? 'cursor-trail--bold' : ''}`}
           style={{
             left: trail.x,
             top: trail.y,
@@ -127,7 +139,7 @@ function CustomCursor() {
       
       {/* Main cursor */}
       <div
-        className={`custom-cursor ${isOverImage ? 'custom-cursor--inverted' : ''}`}
+        className={`custom-cursor ${isOverImage ? 'custom-cursor--inverted' : ''} ${isOverLink ? 'custom-cursor--bold' : ''}`}
         style={{
           left: position.x,
           top: position.y,
