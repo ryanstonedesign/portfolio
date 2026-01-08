@@ -4,27 +4,24 @@
 
 const featuredFiles = [
   'art_candy_2012.jpg',
-  'art_disney_2015.jpg',
-  'art_dog_2012.jpg',
-  'art_fatherAndSon_2011.jpg',
   'art_fruit_2015.jpg',
   'art_hidden_2012.jpg',
   'art_mountains_2015.jpg',
   'art_selfPortrait_2009.jpg',
   'art_ship_2014.jpg',
   'art_sisters_2011.jpg',
-  'art_stJohn_2014.jpg',
   'art_sunset_2015.jpg',
   'print_weddingInvites_2017.jpg',
   'ux_DesignStandup_2018.jpg',
   'ux_dev_stufflog_2025.mp4',
-  'ux_dutiesResponder_2025.jpg',
-  'ux_marketsConditions_2024.jpg',
+  'ux_dutiesResponder_2025.mp4',
+  'ux_marketsConditions_2024.mp4',
   'ux_marketsRefactor_2023.jpg',
-  'ux_MM_2024.jpg',
+  'ux_seatmap_2019.mov',
+  'ux_WILDR_2018.mov',
 ]
 
-const validTypes = ['ux', 'dev', 'photo', 'art', 'print']
+const validTypes = ['ux', 'dev', 'photo', 'art', 'print', 'brand']
 
 // Parse filename to extract categories, title, and year
 const parseFilename = (filename) => {
@@ -85,6 +82,10 @@ const shuffledProjects = shuffleArray(projects)
 
 export const getProjectsByCategory = (category) => {
   if (category === 'all') return shuffledProjects
+  // For print category, include both print and brand
+  if (category === 'print') {
+    return projects.filter(p => p.categories.includes('print') || p.categories.includes('brand'))
+  }
   // Filter projects that include this category
   return projects.filter(p => p.categories.includes(category))
 }

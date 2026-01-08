@@ -8,6 +8,7 @@
 
 .footer__left {
   flex: 1;
+  white-space: nowrap;
 }
 
 .footer__left a {

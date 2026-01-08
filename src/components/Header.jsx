@@ -22,7 +22,7 @@ function Header() {
               className={`header__tab ${activeCategory === category ? 'header__tab--active' : ''}`}
               onClick={() => setActiveCategory(category)}
             >
-              {category === 'ux' ? 'UX' : category.charAt(0).toUpperCase() + category.slice(1)}
+              {category === 'ux' ? 'UX' : category === 'print' ? 'Brand' : category.charAt(0).toUpperCase() + category.slice(1)}
             </button>
           ))}
         </nav>
