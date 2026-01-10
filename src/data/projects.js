@@ -4,7 +4,7 @@
 
 // Master order for carousel - edit CAROUSEL_ORDER.md to change this
 const orderedFiles = [
-  'ux_dev_noodles_2025.mp4',
+  'ux_dev_stufflog_2025.mp4',
   'art_selfPortrait_2009.jpg',
   'brand_bcc_2024.jpg',
   'photo_rubybeach_2020.jpg',
@@ -12,7 +12,7 @@ const orderedFiles = [
   'art_mountains_2015.jpg',
   'brand_lmt_2024.jpg',
   'photo_sanfran_2018.jpg',
-  'ux_dev_stufflog_2025.mp4',
+  'ux_dev_noodles_2025.mp4',
   'art_fruit_2015.jpg',
   'brand_greateast_2020.jpg',
   'photo_olympic_2018.jpg',

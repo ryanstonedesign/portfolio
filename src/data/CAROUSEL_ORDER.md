@@ -5,7 +5,7 @@ Edit this list to change the display order. Category tabs (UX/Dev/Photo/Art/Bran
 
 ## Media Files (in carousel order)
 
-1. ux_dev_noodles_2025.mp4
+1. ux_dev_stufflog_2025.mp4
 2. art_selfPortrait_2009.jpg
 3. brand_bcc_2024.jpg
 4. photo_rubybeach_2020.jpg
@@ -13,7 +13,7 @@ Edit this list to change the display order. Category tabs (UX/Dev/Photo/Art/Bran
 6. art_mountains_2015.jpg
 7. brand_lmt_2024.jpg
 8. photo_sanfran_2018.jpg
-9. ux_dev_stufflog_2025.mp4
+9. ux_dev_noodles_2025.mp4
 10. art_fruit_2015.jpg
 11. brand_greateast_2020.jpg
 12. photo_olympic_2018.jpg
