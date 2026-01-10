@@ -14,7 +14,7 @@ Edit this list to change the display order. Category tabs (UX/Dev/Photo/Art/Bran
 7. brand_spcpatches_2021.JPG
 8. photo_sanfran_2018.jpg
 9. ux_dev_noodles_2025.mp4
-10. art_mountains_2015.jpg
+10. art_hidden_2012.jpg
 11. brand_greateast_2020.jpg
 12. photo_olympic_2018.jpg
 13. ux_marketsConditions_2024.mp4
@@ -30,7 +30,7 @@ Edit this list to change the display order. Category tabs (UX/Dev/Photo/Art/Bran
 23. brand_lmt_2024.jpg
 24. photo_longexposure1_2018.jpg
 25. ux_WILDR_2018.mov
-26. art_hidden_2012.jpg
+26. art_mountains_2015.jpg
 27. art_selfPortrait_2009.jpg
 28. photo_longexposure2_2021.jpg
 29. art_sisters_2011.jpg
