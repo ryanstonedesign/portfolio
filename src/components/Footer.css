@@ -13,11 +13,11 @@
 
 .footer__left a {
   color: var(--color-text);
-  transition: color var(--duration-fast) ease;
+  transition: opacity var(--duration-normal) var(--ease-out);
 }
 
 .footer__left a:hover {
-  color: var(--color-text-muted);
+  opacity: 0.5;
 }
 
 .footer__separator {
@@ -53,11 +53,11 @@
 
 .footer__right a {
   color: var(--color-text);
-  transition: color var(--duration-fast) ease;
+  transition: opacity var(--duration-normal) var(--ease-out);
 }
 
 .footer__right a:hover {
-  color: var(--color-text-muted);
+  opacity: 0.5;
 }
 
 @media (max-width: 768px) {

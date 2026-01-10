@@ -12,6 +12,7 @@ function CustomCursor() {
   )
   const [isOverImage, setIsOverImage] = useState(false)
   const [isOverLink, setIsOverLink] = useState(false)
+  const [isOverEasterEgg, setIsOverEasterEgg] = useState(false)
   const [cursorText, setCursorText] = useState('RS')
   const positionRef = useRef({ x: -100, y: -100 })
   const trailPositions = useRef(Array(TRAIL_COUNT).fill({ x: -100, y: -100 }))
@@ -23,17 +24,41 @@ function CustomCursor() {
       const enlargeButton = ignoreButton ? null : element?.closest('.work__enlarge-button')
       const infoLink = element?.closest('.info__link')
       const easterEgg = element?.closest('.info__easter-egg')
+      const emailLink = element?.closest('.footer__email-link')
+      const headerName = element?.closest('.header__name')
+      const headerLink = element?.closest('.header__link')
+      const headerTab = element?.closest('.header__tab')
       const isOver = container !== null
       setIsOverImage(forceLight ? false : isOver)
 
-      // Check if hovering over Go Birds easter egg
-      setIsOverLink(infoLink !== null && !easterEgg)
+      // Category emoji mapping
+      const categoryEmojis = {
+        all: '🗂️',
+        ux: '📱',
+        dev: '⌨️',
+        photo: '📸',
+        art: '🎨',
+        brand: '🏷️'
+      }
+
+      // Check for emoji cursor states
+      setIsOverLink(false)
+      const showLargeEmoji = easterEgg || emailLink || headerName || headerLink || headerTab || (infoLink && !easterEgg)
+      setIsOverEasterEgg(showLargeEmoji)
+      
       if (easterEgg) {
         setCursorText('🦅')
-      }
-      // Check if hovering over info page links
-      else if (infoLink) {
-        setCursorText('View')
+      } else if (emailLink) {
+        setCursorText('📧')
+      } else if (headerName) {
+        setCursorText('🏠')
+      } else if (headerLink) {
+        setCursorText('📜')
+      } else if (headerTab) {
+        const category = headerTab.dataset.category
+        setCursorText(categoryEmojis[category] || '🗂️')
+      } else if (infoLink) {
+        setCursorText('↗️')
       }
       // Check if hovering over enlarge button
       else if (enlargeButton && container) {
@@ -126,7 +151,7 @@ function CustomCursor() {
       {trails.map((trail, index) => (
         <div
           key={index}
-          className={`cursor-trail ${isOverImage ? 'cursor-trail--inverted' : ''} ${isOverLink ? 'cursor-trail--bold' : ''}`}
+          className={`cursor-trail ${isOverImage ? 'cursor-trail--inverted' : ''} ${isOverLink ? 'cursor-trail--bold' : ''} ${isOverEasterEgg ? 'cursor-trail--large' : ''}`}
           style={{
             left: trail.x,
             top: trail.y,
@@ -139,7 +164,7 @@ function CustomCursor() {
       
       {/* Main cursor */}
       <div
-        className={`custom-cursor ${isOverImage ? 'custom-cursor--inverted' : ''} ${isOverLink ? 'custom-cursor--bold' : ''}`}
+        className={`custom-cursor ${isOverImage ? 'custom-cursor--inverted' : ''} ${isOverLink ? 'custom-cursor--bold' : ''} ${isOverEasterEgg ? 'custom-cursor--large' : ''}`}
         style={{
           left: position.x,
           top: position.y,

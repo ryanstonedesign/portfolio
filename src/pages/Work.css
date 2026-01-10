@@ -228,8 +228,9 @@
   }
 }
 
-.work__image-container--collapsing .work__badges {
-  display: none;
+.work__image-container--collapsing .work__badge {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
 }
 
 .work__image-container--collapsing .work__enlarge-button {
@@ -289,9 +290,14 @@
   transform: scale(1);
 }
 
-/* Hide badges in fullscreen */
+/* Always show badges in fullscreen */
 .work__image-container--fullscreen .work__badges {
-  display: none;
+  opacity: 1;
+}
+
+.work__image-container--fullscreen .work__badge {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
 }
 
 /* Always show enlarge button in fullscreen */

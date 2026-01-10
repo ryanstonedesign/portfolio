@@ -63,12 +63,12 @@
 }
 
 .info__link {
-  text-decoration: none;
-  transition: color var(--duration-fast) ease;
+  text-decoration: underline;
+  transition: opacity var(--duration-normal) var(--ease-out);
 }
 
 .info__link:hover {
-  color: var(--color-text-muted);
+  opacity: 0.5;
 }
 
 @media (max-width: 768px) {

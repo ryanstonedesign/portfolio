@@ -20,6 +20,7 @@ function Header() {
             <button
               key={category}
               className={`header__tab ${activeCategory === category ? 'header__tab--active' : ''}`}
+              data-category={category}
               onClick={() => setActiveCategory(category)}
             >
               {category === 'ux' ? 'UX' : category === 'brand' ? 'Brand' : category.charAt(0).toUpperCase() + category.slice(1)}

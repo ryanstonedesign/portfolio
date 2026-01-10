@@ -14,11 +14,11 @@
   font-weight: 400;
   color: var(--color-text);
   text-decoration: none;
-  transition: color var(--duration-fast) ease;
+  transition: opacity var(--duration-normal) var(--ease-out);
 }
 
 .header__name:hover {
-  color: var(--color-text-muted);
+  opacity: 0.5;
 }
 
 .header__center {
@@ -71,11 +71,11 @@
   gap: 0.5rem;
   font-size: var(--font-size-ui);
   color: var(--color-text);
-  transition: color var(--duration-fast) ease;
+  transition: opacity var(--duration-normal) var(--ease-out);
 }
 
 .header__link:hover {
-  color: var(--color-text-muted);
+  opacity: 0.5;
 }
 
 .header__link-dot {
