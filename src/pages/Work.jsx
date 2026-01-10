@@ -63,33 +63,54 @@ function Work() {
     return () => setCenterContent(null)
   }, [currentIndex, filteredProjects.length, setCenterContent])
 
-  // Control video playback based on click state
+  // Control video playback based on state
   useEffect(() => {
-    if (videoRef.current) {
-      if (isVideoPlaying) {
-        videoRef.current.play()
-      } else {
-        videoRef.current.pause()
+    if (!videoRef.current) return
+    
+    if (isVideoPlaying) {
+      // Use play() with promise to handle autoplay restrictions
+      const playPromise = videoRef.current.play()
+      if (playPromise !== undefined) {
+        playPromise.catch(() => {
+          // Autoplay was prevented, that's okay
+        })
       }
+    } else {
+      videoRef.current.pause()
     }
   }, [isVideoPlaying])
 
-  // Handle video state when switching projects or hover changes
+  // Reset video when switching projects or categories
   useEffect(() => {
-    // Reset video element when switching projects
-    requestAnimationFrame(() => {
+    const timeoutId = setTimeout(() => {
       if (videoRef.current) {
         videoRef.current.currentTime = 0
       }
-    })
+    }, 50)
     
-    // Auto-play if hovering over a video or in fullscreen, otherwise stop
-    if (currentProject?.isVideo && (isHovering || isFullscreen)) {
-      setIsVideoPlaying(true)
-    } else {
-      setIsVideoPlaying(false)
-    }
-  }, [currentIndex, isHovering, isFullscreen, currentProject?.isVideo])
+    return () => clearTimeout(timeoutId)
+  }, [currentIndex, activeCategory])
+
+  // Handle video playback state when hover/fullscreen changes
+  useEffect(() => {
+    const shouldPlay = currentProject?.isVideo && (isHovering || isFullscreen)
+    
+    const timeoutId = setTimeout(() => {
+      if (videoRef.current) {
+        if (shouldPlay) {
+          const playPromise = videoRef.current.play()
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {})
+          }
+        } else {
+          videoRef.current.pause()
+        }
+      }
+      setIsVideoPlaying(shouldPlay)
+    }, 50)
+    
+    return () => clearTimeout(timeoutId)
+  }, [currentIndex, activeCategory, isHovering, isFullscreen, currentProject?.isVideo])
 
   // Update cursor when current project or video state changes
   useEffect(() => {
