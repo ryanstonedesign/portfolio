@@ -83,13 +83,13 @@ function Work() {
       }
     })
     
-    // Auto-play if hovering over a video, otherwise stop
-    if (currentProject?.isVideo && isHovering) {
+    // Auto-play if hovering over a video or in fullscreen, otherwise stop
+    if (currentProject?.isVideo && (isHovering || isFullscreen)) {
       setIsVideoPlaying(true)
     } else {
       setIsVideoPlaying(false)
     }
-  }, [currentIndex, isHovering, currentProject?.isVideo])
+  }, [currentIndex, isHovering, isFullscreen, currentProject?.isVideo])
 
   // Update cursor when current project or video state changes
   useEffect(() => {
@@ -138,6 +138,33 @@ function Work() {
     return () => container.removeEventListener('wheel', handleWheel)
   }, [filteredProjects.length])
 
+  // Handle keyboard navigation (left/right arrows)
+  useEffect(() => {
+    if (!isHovering && !isFullscreen) return
+    if (filteredProjects.length <= 1) return
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        setCurrentIndex((prev) => {
+          let newIndex = prev - 1
+          if (newIndex < 0) newIndex = filteredProjects.length - 1
+          return newIndex
+        })
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        setCurrentIndex((prev) => {
+          let newIndex = prev + 1
+          if (newIndex >= filteredProjects.length) newIndex = 0
+          return newIndex
+        })
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isHovering, isFullscreen, filteredProjects.length])
+
 
   const handleContainerClick = (e) => {
     // Don't toggle video if clicking the enlarge button
@@ -146,6 +173,22 @@ function Work() {
     if (currentProject?.isVideo) {
       setIsVideoPlaying(prev => !prev)
     }
+  }
+
+  const collapseFullscreen = () => {
+    setIsCollapsing(true)
+    setIsFullscreen(false)
+    window.dispatchEvent(new CustomEvent('cursorupdate', { detail: { ignoreButton: true, forceLight: true } }))
+    
+    setTimeout(() => {
+      setIsCollapsing(false)
+      if (containerRef.current) {
+        containerRef.current.style.removeProperty('--start-top')
+        containerRef.current.style.removeProperty('--start-left')
+        containerRef.current.style.removeProperty('--start-width')
+        containerRef.current.style.removeProperty('--start-height')
+      }
+    }, 400)
   }
 
   const handleEnlargeClick = (e) => {
@@ -167,22 +210,24 @@ function Work() {
         setIsExpanding(false)
       }, 400)
     } else {
-      // Collapsing from fullscreen
-      setIsCollapsing(true)
-      setIsFullscreen(false)
-      window.dispatchEvent(new CustomEvent('cursorupdate', { detail: { ignoreButton: true, forceLight: true } }))
-      
-      setTimeout(() => {
-        setIsCollapsing(false)
-        if (containerRef.current) {
-          containerRef.current.style.removeProperty('--start-top')
-          containerRef.current.style.removeProperty('--start-left')
-          containerRef.current.style.removeProperty('--start-width')
-          containerRef.current.style.removeProperty('--start-height')
-        }
-      }, 400)
+      collapseFullscreen()
     }
   }
+
+  // Handle Escape key to close fullscreen
+  useEffect(() => {
+    if (!isFullscreen) return
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        collapseFullscreen()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isFullscreen])
 
   return (
     <div className="work">

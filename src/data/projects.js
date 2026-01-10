@@ -1,42 +1,43 @@
-// Project data parsed from Featured folder
+// Project data - order defined in CAROUSEL_ORDER.md
 // Filename structure: [type1]_[type2]..._[name]_[year].[ext]
 // Types match tab names: ux, dev, photo, art, brand
 
-const featuredFiles = [
-  'art_candy_2012.jpg',
-  'art_fruit_2015.jpg',
-  'art_hidden_2012.jpg',
-  'art_mountains_2015.jpg',
+// Master order for carousel - edit CAROUSEL_ORDER.md to change this
+const orderedFiles = [
+  'ux_dev_noodles_2025.mp4',
   'art_selfPortrait_2009.jpg',
-  'art_ship_2014.jpg',
-  'art_sisters_2011.jpg',
-  'art_sunset_2015.jpg',
   'brand_bcc_2024.jpg',
-  'brand_blashsheep_2021.jpg',
-  'brand_carwash_2021.jpg',
-  'brand_greateast_2020.jpg',
+  'photo_rubybeach_2020.jpg',
+  'ux_dutiesResponder_2025.mp4',
+  'art_mountains_2015.jpg',
   'brand_lmt_2024.jpg',
+  'photo_sanfran_2018.jpg',
+  'ux_dev_stufflog_2025.mp4',
+  'art_fruit_2015.jpg',
+  'brand_greateast_2020.jpg',
+  'photo_olympic_2018.jpg',
+  'ux_marketsConditions_2024.mp4',
+  'art_sunset_2015.jpg',
+  'brand_blashsheep_2021.jpg',
+  'photo_teahouse_2018.jpg',
+  'ux_marketsRefactor_2023.jpg',
+  'art_ship_2014.jpg',
+  'brand_carwash_2021.jpg',
+  'photo_odin_2019.jpg',
+  'ux_seatmap_2019.mov',
+  'art_candy_2012.jpg',
   'brand_spclogo_2021.png',
+  'photo_longexposure1_2018.jpg',
+  'ux_WILDR_2018.mov',
+  'art_hidden_2012.jpg',
   'brand_spcpatches_2021.JPG',
+  'photo_longexposure2_2021.jpg',
+  'art_sisters_2011.jpg',
   'brand_weddingInvites_2017.jpg',
   'photo_capemay_2017.jpg',
+  'brand_DesignStandup_2018.jpg',
   'photo_critter_2017.jpg',
-  'photo_longexposure1_2018.jpg',
-  'photo_longexposure2_2021.jpg',
   'photo_museum_2017.jpg',
-  'photo_odin_2019.jpg',
-  'photo_olympic_2018.jpg',
-  'photo_rubybeach_2020.jpg',
-  'photo_sanfran_2018.jpg',
-  'photo_teahouse_2018.jpg',
-  'ux_DesignStandup_2018.jpg',
-  'ux_dev_noodles_2025.mp4',
-  'ux_dev_stufflog_2025.mp4',
-  'ux_dutiesResponder_2025.mp4',
-  'ux_marketsConditions_2024.mp4',
-  'ux_marketsRefactor_2023.jpg',
-  'ux_seatmap_2019.mov',
-  'ux_WILDR_2018.mov',
 ]
 
 const validTypes = ['ux', 'dev', 'photo', 'art', 'brand']
@@ -68,8 +69,8 @@ const parseFilename = (filename) => {
   return { categories, title, year }
 }
 
-// Generate projects from featured files
-export const projects = featuredFiles.map((filename, index) => {
+// Generate projects from ordered files (fixed order, no shuffle)
+export const projects = orderedFiles.map((filename, index) => {
   const { categories, title, year } = parseFilename(filename)
   const isVideo = filename.endsWith('.mp4') || filename.endsWith('.mov')
   
@@ -85,21 +86,9 @@ export const projects = featuredFiles.map((filename, index) => {
 
 export const categories = ['all', 'ux', 'dev', 'photo', 'art', 'brand']
 
-// Fisher-Yates shuffle for randomizing project order
-const shuffleArray = (array) => {
-  const shuffled = [...array]
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
-  }
-  return shuffled
-}
-
-// Pre-shuffle all projects once on load for the "all" tab
-const shuffledProjects = shuffleArray(projects)
-
+// Get projects by category - maintains master order, just filters
 export const getProjectsByCategory = (category) => {
-  if (category === 'all') return shuffledProjects
-  // Filter projects that include this category
+  if (category === 'all') return projects
+  // Filter projects that include this category, preserving master order
   return projects.filter(p => p.categories.includes(category))
 }
