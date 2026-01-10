@@ -7,7 +7,7 @@ import './Work.css'
 
 function Work() {
   const { activeCategory } = useCategory()
-  const { carouselSpeed, imageTransition } = useSettings()
+  const { carouselSpeed, imageTransition, imageOpacity } = useSettings()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isHovering, setIsHovering] = useState(false)
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)
@@ -198,7 +198,7 @@ function Work() {
         data-is-fullscreen={isFullscreen}
       >
         {filteredProjects.length > 0 ? (
-          <div className={`work__image-wrapper ${imageTransition === 'dissolve' ? 'work__image-wrapper--dissolve' : ''}`}>
+          <div className={`work__image-wrapper ${imageTransition === 'dissolve' ? 'work__image-wrapper--dissolve' : ''}`} data-opacity={imageOpacity}>
             {/* Render all media stacked for preloading, toggle visibility */}
             {filteredProjects.map((project, index) => (
               project.isVideo ? (

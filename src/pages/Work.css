@@ -31,7 +31,6 @@
   max-height: 80%;
   object-fit: contain;
   object-position: center;
-  filter: grayscale(75%);
   transition: transform var(--duration-normal) cubic-bezier(0.54, 0.00, 0.24, 1.00),
               filter var(--duration-normal) ease,
               width 400ms cubic-bezier(0.4, 0, 0.2, 1),
@@ -40,7 +39,6 @@
 
 .work__image-container:hover .work__image {
   transform: scale(1.1);
-  filter: grayscale(0%);
 }
 
 .work__video {
@@ -48,7 +46,6 @@
   max-height: 80%;
   object-fit: contain;
   object-position: center;
-  filter: grayscale(75%);
   transition: transform var(--duration-normal) cubic-bezier(0.54, 0.00, 0.24, 1.00),
               filter var(--duration-normal) ease,
               width 400ms cubic-bezier(0.4, 0, 0.2, 1),
@@ -57,6 +54,16 @@
 
 .work__image-container:hover .work__video {
   transform: scale(1.1);
+}
+
+/* Saturated mode - grayscale by default, full color on hover */
+.work__image-wrapper[data-opacity="saturated"] .work__image,
+.work__image-wrapper[data-opacity="saturated"] .work__video {
+  filter: grayscale(75%);
+}
+
+.work__image-container:hover .work__image-wrapper[data-opacity="saturated"] .work__image,
+.work__image-container:hover .work__image-wrapper[data-opacity="saturated"] .work__video {
   filter: grayscale(0%);
 }
 
@@ -184,10 +191,29 @@
 
 .work__image-container--collapsing .work__image,
 .work__image-container--collapsing .work__video {
-  animation: collapse-image 400ms cubic-bezier(0.54, 0.00, 0.24, 1.00) forwards;
+  animation: collapse-image-full 400ms cubic-bezier(0.54, 0.00, 0.24, 1.00) forwards;
 }
 
-@keyframes collapse-image {
+/* Saturated mode collapse animation */
+.work__image-container--collapsing .work__image-wrapper[data-opacity="saturated"] .work__image,
+.work__image-container--collapsing .work__image-wrapper[data-opacity="saturated"] .work__video {
+  animation: collapse-image-saturated 400ms cubic-bezier(0.54, 0.00, 0.24, 1.00) forwards;
+}
+
+@keyframes collapse-image-full {
+  0% {
+    width: 90%;
+    max-height: 90%;
+    transform: scale(1);
+  }
+  100% {
+    width: 520px;
+    max-height: 80%;
+    transform: scale(1);
+  }
+}
+
+@keyframes collapse-image-saturated {
   0% {
     width: 90%;
     max-height: 90%;

@@ -14,10 +14,15 @@ const IMAGE_TRANSITION_OPTIONS = [
   { label: 'Dissolve', value: 'dissolve' },
 ]
 
+const IMAGE_OPACITY_OPTIONS = [
+  { label: 'Full (default)', value: 'full' },
+  { label: 'Saturated', value: 'saturated' },
+]
+
 function SettingsPopover() {
   const [isOpen, setIsOpen] = useState(false)
   const popoverRef = useRef(null)
-  const { carouselSpeed, setCarouselSpeed, imageTransition, setImageTransition } = useSettings()
+  const { carouselSpeed, setCarouselSpeed, imageTransition, setImageTransition, imageOpacity, setImageOpacity } = useSettings()
 
   // Close popover when clicking outside
   useEffect(() => {
@@ -95,6 +100,24 @@ function SettingsPopover() {
               onChange={(e) => setImageTransition(e.target.value)}
             >
               {IMAGE_TRANSITION_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="settings-popover__section">
+            <label className="settings-popover__label" htmlFor="image-opacity">
+              Image Opacity
+            </label>
+            <select
+              id="image-opacity"
+              className="settings-popover__select"
+              value={imageOpacity}
+              onChange={(e) => setImageOpacity(e.target.value)}
+            >
+              {IMAGE_OPACITY_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>

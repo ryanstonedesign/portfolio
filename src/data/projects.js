@@ -1,6 +1,6 @@
 // Project data parsed from Featured folder
 // Filename structure: [type1]_[type2]..._[name]_[year].[ext]
-// Types match tab names: ux, dev, photo, art, print
+// Types match tab names: ux, dev, photo, art, brand
 
 const featuredFiles = [
   'art_candy_2012.jpg',
@@ -11,8 +11,26 @@ const featuredFiles = [
   'art_ship_2014.jpg',
   'art_sisters_2011.jpg',
   'art_sunset_2015.jpg',
-  'print_weddingInvites_2017.jpg',
+  'brand_bcc_2024.jpg',
+  'brand_blashsheep_2021.jpg',
+  'brand_carwash_2021.jpg',
+  'brand_greateast_2020.jpg',
+  'brand_lmt_2024.jpg',
+  'brand_spclogo_2021.png',
+  'brand_spcpatches_2021.JPG',
+  'brand_weddingInvites_2017.jpg',
+  'photo_capemay_2017.jpg',
+  'photo_critter_2017.jpg',
+  'photo_longexposure1_2018.jpg',
+  'photo_longexposure2_2021.jpg',
+  'photo_museum_2017.jpg',
+  'photo_odin_2019.jpg',
+  'photo_olympic_2018.jpg',
+  'photo_rubybeach_2020.jpg',
+  'photo_sanfran_2018.jpg',
+  'photo_teahouse_2018.jpg',
   'ux_DesignStandup_2018.jpg',
+  'ux_dev_noodles_2025.mp4',
   'ux_dev_stufflog_2025.mp4',
   'ux_dutiesResponder_2025.mp4',
   'ux_marketsConditions_2024.mp4',
@@ -21,7 +39,7 @@ const featuredFiles = [
   'ux_WILDR_2018.mov',
 ]
 
-const validTypes = ['ux', 'dev', 'photo', 'art', 'print', 'brand']
+const validTypes = ['ux', 'dev', 'photo', 'art', 'brand']
 
 // Parse filename to extract categories, title, and year
 const parseFilename = (filename) => {
@@ -65,7 +83,7 @@ export const projects = featuredFiles.map((filename, index) => {
   }
 })
 
-export const categories = ['all', 'ux', 'dev', 'photo', 'art', 'print']
+export const categories = ['all', 'ux', 'dev', 'photo', 'art', 'brand']
 
 // Fisher-Yates shuffle for randomizing project order
 const shuffleArray = (array) => {
@@ -82,10 +100,6 @@ const shuffledProjects = shuffleArray(projects)
 
 export const getProjectsByCategory = (category) => {
   if (category === 'all') return shuffledProjects
-  // For print category, include both print and brand
-  if (category === 'print') {
-    return projects.filter(p => p.categories.includes('print') || p.categories.includes('brand'))
-  }
   // Filter projects that include this category
   return projects.filter(p => p.categories.includes(category))
 }

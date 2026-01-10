@@ -5,13 +5,16 @@ const SettingsContext = createContext()
 export function SettingsProvider({ children }) {
   const [carouselSpeed, setCarouselSpeed] = useState(2000)
   const [imageTransition, setImageTransition] = useState('instant')
+  const [imageOpacity, setImageOpacity] = useState('full')
 
   return (
     <SettingsContext.Provider value={{ 
       carouselSpeed, 
       setCarouselSpeed,
       imageTransition,
-      setImageTransition
+      setImageTransition,
+      imageOpacity,
+      setImageOpacity
     }}>
       {children}
     </SettingsContext.Provider>
