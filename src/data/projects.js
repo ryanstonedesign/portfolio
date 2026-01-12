@@ -79,7 +79,7 @@ export const projects = orderedFiles.map((filename, index) => {
     title,
     year,
     categories,
-    image: `/images/${filename}`,
+    image: `${import.meta.env.BASE_URL}images/${filename}`,
     isVideo,
   }
 })
