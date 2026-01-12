@@ -20,6 +20,10 @@
   font-size: 24px;
 }
 
+.custom-cursor--hidden {
+  opacity: 0;
+  pointer-events: none;
+}
 
 .cursor-trail {
   position: fixed;
@@ -42,6 +46,10 @@
   font-size: 24px;
 }
 
+.cursor-trail--hidden {
+  opacity: 0 !important;
+  pointer-events: none;
+}
 
 /* Hide default cursor globally */
 * {
@@ -58,5 +66,15 @@
   * {
     cursor: auto !important;
   }
+}
+
+/* Show pointer cursor for links when hover state is 'pointer' */
+body[data-hover-state="pointer"] .info__link,
+body[data-hover-state="pointer"] .info__easter-egg,
+body[data-hover-state="pointer"] .footer__email-link,
+body[data-hover-state="pointer"] .header__name,
+body[data-hover-state="pointer"] .header__link,
+body[data-hover-state="pointer"] .header__tab {
+  cursor: pointer !important;
 }
 

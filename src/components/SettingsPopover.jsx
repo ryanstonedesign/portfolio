@@ -19,10 +19,15 @@ const IMAGE_OPACITY_OPTIONS = [
   { label: 'Saturated', value: 'saturated' },
 ]
 
+const HOVER_STATE_OPTIONS = [
+  { label: 'Pointer (default)', value: 'pointer' },
+  { label: 'Emojis', value: 'emojis' },
+]
+
 function SettingsPopover() {
   const [isOpen, setIsOpen] = useState(false)
   const popoverRef = useRef(null)
-  const { carouselSpeed, setCarouselSpeed, imageTransition, setImageTransition, imageOpacity, setImageOpacity } = useSettings()
+  const { carouselSpeed, setCarouselSpeed, imageTransition, setImageTransition, imageOpacity, setImageOpacity, hoverState, setHoverState } = useSettings()
 
   // Close popover when clicking outside
   useEffect(() => {
@@ -118,6 +123,24 @@ function SettingsPopover() {
               onChange={(e) => setImageOpacity(e.target.value)}
             >
               {IMAGE_OPACITY_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="settings-popover__section">
+            <label className="settings-popover__label" htmlFor="hover-state">
+              Hover States
+            </label>
+            <select
+              id="hover-state"
+              className="settings-popover__select"
+              value={hoverState}
+              onChange={(e) => setHoverState(e.target.value)}
+            >
+              {HOVER_STATE_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>

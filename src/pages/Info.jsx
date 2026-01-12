@@ -10,6 +10,7 @@ function Info() {
 
   const sideHustles = [
     { name: 'StuffLog iOS app', url: 'https://apps.apple.com/us/app/stufflog-track-your-things/id6751174453', role: 'Founder', period: 'Sep 2025 – Present' },
+    { name: 'Noodles Figma plugin', url: 'https://www.figma.com/community/plugin/1509719253635653417/noodles', role: 'Founder', period: 'May 2025 – Present' },
     { name: 'Stone Patch Company', url: 'https://stone-patch-company.myshopify.com/', role: 'Founder', period: 'Dec 2019 – Dec 2021' },
     { name: 'Design Standup podcast', url: 'https://www.youtube.com/@designstandup3670/videos', role: 'Founder', period: 'Jan 2019 – Apr 2019' },
   ]
