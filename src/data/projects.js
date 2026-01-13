@@ -69,17 +69,27 @@ const parseFilename = (filename) => {
   return { categories, title, year }
 }
 
+// Cloudinary config for video hosting
+const CLOUDINARY_CLOUD = 'davgqgelf'
+const getCloudinaryUrl = (filename) => 
+  `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/video/upload/${filename}`
+
 // Generate projects from ordered files (fixed order, no shuffle)
 export const projects = orderedFiles.map((filename, index) => {
   const { categories, title, year } = parseFilename(filename)
   const isVideo = filename.endsWith('.mp4') || filename.endsWith('.mov')
+  
+  // Use Cloudinary for videos, local path for images
+  const src = isVideo 
+    ? getCloudinaryUrl(filename)
+    : `${import.meta.env.BASE_URL}images/${filename}`
   
   return {
     id: index + 1,
     title,
     year,
     categories,
-    image: `${import.meta.env.BASE_URL}images/${filename}`,
+    image: src,
     isVideo,
   }
 })
