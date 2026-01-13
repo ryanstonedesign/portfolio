@@ -165,6 +165,7 @@
   max-width: none;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   z-index: 100;
 }
 
@@ -179,6 +180,7 @@
   max-width: none;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   z-index: 100;
   animation: collapse-from-fullscreen 400ms cubic-bezier(0.54, 0.00, 0.24, 1.00) forwards;
 }
@@ -395,5 +397,16 @@
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Fullscreen overrides for mobile */
+  .work__image-container--fullscreen .work__image-wrapper {
+    max-height: none;
+    aspect-ratio: unset;
+    height: 100%;
+  }
+
+  .work__image-container--collapsing .work__image-wrapper {
+    max-height: none;
   }
 }
