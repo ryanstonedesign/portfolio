@@ -5,6 +5,8 @@
   justify-content: center;
   flex: 1;
   min-height: 0;
+  max-height: calc(100vh - 120px);
+  max-height: calc(100dvh - 120px);
   overflow: hidden;
 }
 
