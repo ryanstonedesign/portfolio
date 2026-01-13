@@ -1,5 +1,5 @@
 import { useFooter } from '../context/FooterContext'
-import SettingsPopover from './SettingsPopover'
+// import SettingsPopover from './SettingsPopover'
 import './Footer.css'
 
 function Footer() {
@@ -16,7 +16,7 @@ function Footer() {
       </div>
 
       <div className="footer__right">
-        <SettingsPopover />
+        {/* <SettingsPopover /> */}
         <a href="mailto:ryanstonedesign@gmail.com" className="footer__email-link">Send an email</a>
       </div>
     </footer>
