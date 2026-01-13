@@ -444,4 +444,9 @@
   .work__slideshow-button {
     display: flex;
   }
+
+  /* Hide slideshow button in fullscreen */
+  .work__image-container--fullscreen .work__slideshow-button {
+    display: none;
+  }
 }

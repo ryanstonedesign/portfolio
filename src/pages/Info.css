@@ -3,7 +3,6 @@
   justify-content: center;
   flex: 1;
   padding: var(--space-lg) 0;
-  overflow-y: auto;
 }
 
 .info__content {
