@@ -356,9 +356,8 @@
   }
 
   .work__image-wrapper {
-    aspect-ratio: unset;
-    height: auto;
-    max-height: 60vh;
+    aspect-ratio: 4 / 3;
+    max-height: 50vh;
   }
 
   /* Make images/videos responsive on mobile + default to hover state */
