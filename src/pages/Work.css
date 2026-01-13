@@ -353,10 +353,11 @@
     max-width: 100%;
   }
 
-  /* Default to hover state on smaller screens */
-  /* Images at full scale and full color - apply to ALL stacked media to prevent rescaling on switch */
+  /* Make images/videos responsive on mobile + default to hover state */
   .work__image,
   .work__video {
+    width: 100%;
+    max-width: 100%;
     filter: grayscale(0%);
   }
 
