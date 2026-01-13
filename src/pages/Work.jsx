@@ -19,10 +19,27 @@ function Work() {
   const containerRef = useRef(null)
   const scrollAccumulator = useRef(0)
   const scrollCooldown = useRef(false)
-  const { setCenterContent } = useFooter()
+  const { setCenterContent, setNavigation, clearNavigation } = useFooter()
 
   const filteredProjects = getProjectsByCategory(activeCategory)
   const currentProject = filteredProjects[currentIndex]
+
+  // Navigation handlers for mobile chevrons
+  const goToPrev = () => {
+    setCurrentIndex((prev) => {
+      let newIndex = prev - 1
+      if (newIndex < 0) newIndex = filteredProjects.length - 1
+      return newIndex
+    })
+  }
+
+  const goToNext = () => {
+    setCurrentIndex((prev) => {
+      let newIndex = prev + 1
+      if (newIndex >= filteredProjects.length) newIndex = 0
+      return newIndex
+    })
+  }
 
   // Reset index when category changes
   useEffect(() => {
@@ -62,6 +79,14 @@ function Work() {
 
     return () => setCenterContent(null)
   }, [currentIndex, filteredProjects.length, setCenterContent])
+
+  // Set up navigation for mobile chevrons
+  useEffect(() => {
+    if (filteredProjects.length > 1) {
+      setNavigation(goToPrev, goToNext)
+    }
+    return () => clearNavigation()
+  }, [filteredProjects.length])
 
   // Control video playback based on state
   useEffect(() => {
