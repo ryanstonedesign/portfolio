@@ -4,6 +4,8 @@
   align-items: center;
   justify-content: center;
   flex: 1;
+  min-height: 0;
+  overflow: hidden;
 }
 
 /* Image Container */
@@ -423,11 +425,6 @@
     -webkit-backdrop-filter: blur(12px);
   }
 
-  /* Slideshow button visible on mobile */
-  .work__slideshow-button {
-    display: flex;
-  }
-
   /* Fullscreen overrides for mobile */
   .work__image-container--fullscreen .work__image-wrapper {
     max-height: none;
@@ -437,5 +434,12 @@
 
   .work__image-container--collapsing .work__image-wrapper {
     max-height: none;
+  }
+}
+
+/* Touch devices only - show slideshow button */
+@media (hover: none) and (pointer: coarse) {
+  .work__slideshow-button {
+    display: flex;
   }
 }
