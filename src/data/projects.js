@@ -72,7 +72,7 @@ const parseFilename = (filename) => {
 // Cloudinary config for video hosting
 const CLOUDINARY_CLOUD = 'davgqgelf'
 const getCloudinaryUrl = (filename) => 
-  `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/video/upload/portfolio/${filename}`
+  `https://res.cloudinary.com/${CLOUDINARY_CLOUD}/video/upload/${filename}`
 
 // Generate projects from ordered files (fixed order, no shuffle)
 export const projects = orderedFiles.map((filename, index) => {
