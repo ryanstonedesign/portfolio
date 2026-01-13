@@ -346,11 +346,19 @@
 
 @media (max-width: 768px) {
   .work {
-    flex: none;
+    flex: 1;
+    min-height: 0;
+    justify-content: center;
   }
 
   .work__image-container {
     max-width: 100%;
+  }
+
+  .work__image-wrapper {
+    aspect-ratio: unset;
+    height: auto;
+    max-height: 60vh;
   }
 
   /* Make images/videos responsive on mobile + default to hover state */
