@@ -28,7 +28,7 @@ function Info() {
         <section className="info__row">
           <span className="info__label">Bio</span>
           <p className="info__text">
-            Software designer and builder with a background in graphic design, fine art, photography, print, and branding. I'm a lifelong learner with a passion for telling stories through design, using whatever tools necessary to craft highly engaging experiences that solve user and business needs. Based in the Greater Philadelphia area. <span className="info__easter-egg">Go Birds!</span>
+            Software designer and builder with a background in graphic design, fine art, photography, print, and branding. I'm a lifelong learner with a passion for telling stories through design, using whatever tools necessary to craft highly engaging experiences that solve user and business needs. Based in the Greater Philadelphia area.
           </p>
         </section>
 

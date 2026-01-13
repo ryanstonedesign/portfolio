@@ -14,27 +14,39 @@ function Work() {
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [isExpanding, setIsExpanding] = useState(false)
   const [isCollapsing, setIsCollapsing] = useState(false)
-  const [isSlideshowPaused, setIsSlideshowPaused] = useState(false)
+  const [isTouchDevice, setIsTouchDevice] = useState(false)
   const intervalRef = useRef(null)
   const videoRef = useRef(null)
   const containerRef = useRef(null)
   const scrollAccumulator = useRef(0)
   const scrollCooldown = useRef(false)
-  const touchStartY = useRef(null)
-  const touchAccumulator = useRef(0)
   const { setCenterContent } = useFooter()
 
   const filteredProjects = getProjectsByCategory(activeCategory)
   const currentProject = filteredProjects[currentIndex]
+
+  // Detect touch device
+  useEffect(() => {
+    const checkTouchDevice = () => {
+      setIsTouchDevice(
+        window.matchMedia('(hover: none) and (pointer: coarse)').matches
+      )
+    }
+    checkTouchDevice()
+    window.matchMedia('(hover: none) and (pointer: coarse)').addEventListener('change', checkTouchDevice)
+    return () => {
+      window.matchMedia('(hover: none) and (pointer: coarse)').removeEventListener('change', checkTouchDevice)
+    }
+  }, [])
 
   // Reset index when category changes
   useEffect(() => {
     setCurrentIndex(0)
   }, [activeCategory])
 
-  // Auto-rotate images based on carousel speed setting
+  // Auto-rotate images based on carousel speed setting (disabled on touch devices)
   useEffect(() => {
-    if (isHovering || isFullscreen || isSlideshowPaused || filteredProjects.length <= 1) {
+    if (isTouchDevice || isHovering || isFullscreen || filteredProjects.length <= 1) {
       return
     }
 
@@ -47,16 +59,47 @@ function Work() {
         clearInterval(intervalRef.current)
       }
     }
-  }, [isHovering, isFullscreen, isSlideshowPaused, filteredProjects.length, activeCategory, carouselSpeed])
+  }, [isTouchDevice, isHovering, isFullscreen, filteredProjects.length, activeCategory, carouselSpeed])
 
-  // Update footer with counter
+  // Navigation handlers for chevrons
+  const goToPrevious = () => {
+    setCurrentIndex((prev) => {
+      let newIndex = prev - 1
+      if (newIndex < 0) newIndex = filteredProjects.length - 1
+      return newIndex
+    })
+  }
+
+  const goToNext = () => {
+    setCurrentIndex((prev) => {
+      let newIndex = prev + 1
+      if (newIndex >= filteredProjects.length) newIndex = 0
+      return newIndex
+    })
+  }
+
+  // Update footer with counter (and chevrons on touch devices)
   useEffect(() => {
     if (filteredProjects.length > 0) {
       setCenterContent(
         <span className="footer__counter">
+          {isTouchDevice && filteredProjects.length > 1 && (
+            <button className="footer__chevron footer__chevron--left" onClick={goToPrevious} aria-label="Previous">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="15 18 9 12 15 6"></polyline>
+              </svg>
+            </button>
+          )}
           <span className="footer__counter-current">{String(currentIndex + 1).padStart(2, '0')}</span>
           <span className="footer__counter-separator">/</span>
           <span className="footer__counter-total">{String(filteredProjects.length).padStart(2, '0')}</span>
+          {isTouchDevice && filteredProjects.length > 1 && (
+            <button className="footer__chevron footer__chevron--right" onClick={goToNext} aria-label="Next">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 18 15 12 9 6"></polyline>
+              </svg>
+            </button>
+          )}
         </span>
       )
     } else {
@@ -64,7 +107,7 @@ function Work() {
     }
 
     return () => setCenterContent(null)
-  }, [currentIndex, filteredProjects.length, setCenterContent])
+  }, [currentIndex, filteredProjects.length, setCenterContent, isTouchDevice])
 
   // Control video playback based on state
   useEffect(() => {
@@ -162,58 +205,6 @@ function Work() {
     return () => container.removeEventListener('wheel', handleWheel)
   }, [filteredProjects.length])
 
-  // Handle touch swipe for carousel navigation (mobile)
-  useEffect(() => {
-    const container = containerRef.current
-    if (!container) return
-
-    const handleTouchStart = (e) => {
-      touchStartY.current = e.touches[0].clientY
-      touchAccumulator.current = 0
-    }
-
-    const handleTouchMove = (e) => {
-      if (touchStartY.current === null) return
-      if (filteredProjects.length <= 1) return
-
-      const currentY = e.touches[0].clientY
-      const deltaY = touchStartY.current - currentY
-      
-      touchAccumulator.current += deltaY
-      touchStartY.current = currentY
-
-      const threshold = 50
-
-      if (Math.abs(touchAccumulator.current) >= threshold) {
-        const direction = touchAccumulator.current > 0 ? 1 : -1
-
-        setCurrentIndex((prev) => {
-          let newIndex = prev + direction
-          if (newIndex < 0) newIndex = filteredProjects.length - 1
-          if (newIndex >= filteredProjects.length) newIndex = 0
-          return newIndex
-        })
-
-        touchAccumulator.current = 0
-      }
-    }
-
-    const handleTouchEnd = () => {
-      touchStartY.current = null
-      touchAccumulator.current = 0
-    }
-
-    container.addEventListener('touchstart', handleTouchStart, { passive: true })
-    container.addEventListener('touchmove', handleTouchMove, { passive: true })
-    container.addEventListener('touchend', handleTouchEnd, { passive: true })
-
-    return () => {
-      container.removeEventListener('touchstart', handleTouchStart)
-      container.removeEventListener('touchmove', handleTouchMove)
-      container.removeEventListener('touchend', handleTouchEnd)
-    }
-  }, [filteredProjects.length])
-
   // Handle keyboard navigation (left/right arrows)
   useEffect(() => {
     if (!isHovering && !isFullscreen) return
@@ -245,16 +236,10 @@ function Work() {
   const handleContainerClick = (e) => {
     // Don't toggle video if clicking buttons
     if (e.target.closest('.work__enlarge-button')) return
-    if (e.target.closest('.work__slideshow-button')) return
     
     if (currentProject?.isVideo) {
       setIsVideoPlaying(prev => !prev)
     }
-  }
-
-  const handleSlideshowToggle = (e) => {
-    e.stopPropagation()
-    setIsSlideshowPaused(prev => !prev)
   }
 
   const collapseFullscreen = () => {
@@ -358,24 +343,6 @@ function Work() {
               ))}
               <span className="work__badge">{currentProject?.year}</span>
             </div>
-
-            {/* Slideshow play/pause button (mobile only) */}
-            <button 
-              className="work__slideshow-button"
-              onClick={handleSlideshowToggle}
-              aria-label={isSlideshowPaused ? 'Play slideshow' : 'Pause slideshow'}
-            >
-              {isSlideshowPaused ? (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              ) : (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                  <rect x="6" y="4" width="4" height="16" />
-                  <rect x="14" y="4" width="4" height="16" />
-                </svg>
-              )}
-            </button>
 
             {/* Enlarge button */}
             <button 

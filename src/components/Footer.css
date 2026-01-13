@@ -31,7 +31,32 @@
 
 .footer__counter {
   display: flex;
+  align-items: center;
   gap: 0.25rem;
+}
+
+.footer__chevron {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  color: var(--color-text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.footer__chevron:hover {
+  opacity: 0.5;
+}
+
+.footer__chevron--left {
+  margin-right: 4px;
+}
+
+.footer__chevron--right {
+  margin-left: 4px;
 }
 
 .footer__counter-current {
