@@ -13,7 +13,7 @@
 /* Image Container */
 .work__image-container {
   width: 100%;
-  max-width: 700px;
+  max-width: 900px;
   cursor: pointer;
   transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -21,7 +21,7 @@
 .work__image-wrapper {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 36 / 29;
   overflow: hidden;
   background: #000;
   display: flex;
@@ -31,7 +31,7 @@
 }
 
 .work__image {
-  width: 520px;
+  width: 668px;
   max-height: 80%;
   object-fit: contain;
   object-position: center;
@@ -46,7 +46,7 @@
 }
 
 .work__video {
-  width: 520px;
+  width: 668px;
   max-height: 80%;
   object-fit: contain;
   object-position: center;
@@ -213,7 +213,7 @@
     transform: scale(1);
   }
   100% {
-    width: 520px;
+    width: 668px;
     max-height: 80%;
     transform: scale(1);
   }
@@ -227,7 +227,7 @@
     transform: scale(1);
   }
   100% {
-    width: 520px;
+    width: 668px;
     max-height: 80%;
     filter: grayscale(75%);
     transform: scale(1);
