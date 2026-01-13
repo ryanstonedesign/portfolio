@@ -34,31 +34,6 @@
   gap: 0.25rem;
 }
 
-/* Navigation chevrons - hidden on desktop */
-.footer__nav {
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 4px;
-  color: var(--color-text-muted);
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: color var(--duration-fast) ease;
-}
-
-.footer__nav:hover {
-  color: var(--color-text);
-}
-
-.footer__nav--prev {
-  margin-right: 4px;
-}
-
-.footer__nav--next {
-  margin-left: 4px;
-}
-
 .footer__counter-current {
   color: var(--color-text);
 }
@@ -95,13 +70,7 @@
     order: -1;
     width: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
     margin-bottom: 40px;
-  }
-
-  /* Show navigation chevrons on mobile */
-  .footer__nav {
-    display: flex;
   }
 }

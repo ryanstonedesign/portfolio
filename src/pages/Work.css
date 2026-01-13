@@ -157,6 +157,30 @@
   background: rgba(255, 255, 255, 0.25);
 }
 
+/* Slideshow play/pause button (mobile only) */
+.work__slideshow-button {
+  display: none;
+  position: absolute;
+  top: 16px;
+  right: 56px;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 10;
+  transition: background 300ms ease;
+}
+
+.work__slideshow-button:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
 /* Fullscreen mode */
 .work__image-container--fullscreen {
   position: fixed;
@@ -397,6 +421,11 @@
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
+  }
+
+  /* Slideshow button visible on mobile */
+  .work__slideshow-button {
+    display: flex;
   }
 
   /* Fullscreen overrides for mobile */
