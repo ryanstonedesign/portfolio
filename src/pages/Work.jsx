@@ -333,8 +333,8 @@ function Work() {
                 />
               )
             ))}
-            
-            {/* Badges */}
+
+            {/* Badges - back inside wrapper */}
             <div className={`work__badges ${isHovering ? 'work__badges--visible' : ''}`}>
               {currentProject?.categories.map((cat) => (
                 <span key={cat} className="work__badge">
@@ -344,7 +344,7 @@ function Work() {
               <span className="work__badge">{currentProject?.year}</span>
             </div>
 
-            {/* Enlarge button */}
+            {/* Enlarge button - back inside wrapper */}
             <button 
               className={`work__enlarge-button ${isHovering ? 'work__enlarge-button--visible' : ''}`}
               onClick={handleEnlargeClick}
