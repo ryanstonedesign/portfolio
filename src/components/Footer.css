@@ -11,6 +11,7 @@
   flex: 1;
   white-space: nowrap;
   overflow: hidden;
+  height: 1.5em;
 }
 
 .footer__left > span {
@@ -35,6 +36,7 @@
   color: var(--color-text-muted);
   font-variant-numeric: tabular-nums;
   overflow: hidden;
+  height: 1.5em;
 }
 
 .footer__center > * {
@@ -112,11 +114,18 @@
     padding-top: 20px;
   }
 
+  .footer__left {
+    overflow: visible;
+    height: auto;
+  }
+
   .footer__center {
     order: -1;
     width: 100%;
     display: flex;
     justify-content: center;
     margin-bottom: 40px;
+    overflow: visible;
+    height: auto;
   }
 }
