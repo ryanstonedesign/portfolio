@@ -14,6 +14,7 @@ function Work() {
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [isExpanding, setIsExpanding] = useState(false)
   const [isCollapsing, setIsCollapsing] = useState(false)
+  const [hasBeenFullscreen, setHasBeenFullscreen] = useState(false)
   const [isTouchDevice, setIsTouchDevice] = useState(false)
   const intervalRef = useRef(null)
   const videoRef = useRef(null)
@@ -271,6 +272,7 @@ function Work() {
       
       setIsExpanding(true)
       setIsFullscreen(true)
+      setHasBeenFullscreen(true)
       window.dispatchEvent(new CustomEvent('cursorupdate', { detail: { ignoreButton: true } }))
       
       setTimeout(() => {
@@ -301,7 +303,7 @@ function Work() {
       {/* Image/Video Container */}
       <div 
         ref={containerRef}
-        className={`work__image-container ${isFullscreen ? 'work__image-container--fullscreen' : ''} ${isExpanding ? 'work__image-container--animating' : ''} ${isCollapsing ? 'work__image-container--collapsing' : ''}`}
+        className={`work__image-container ${isFullscreen ? 'work__image-container--fullscreen' : ''} ${isExpanding ? 'work__image-container--animating' : ''} ${isCollapsing ? 'work__image-container--collapsing' : ''} ${hasBeenFullscreen ? 'work__image-container--no-entrance' : ''}`}
         onClick={handleContainerClick}
         data-is-video={currentProject?.isVideo || false}
         data-video-playing={isVideoPlaying}

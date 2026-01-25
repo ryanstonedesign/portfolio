@@ -37,6 +37,10 @@
   }
 }
 
+.work__image-container--no-entrance {
+  animation: none;
+}
+
 .work__image-wrapper {
   position: relative;
   /* Use min() to pick smaller of: full width OR width that fits available height */
@@ -192,6 +196,7 @@
   height: 100vh;
   height: 100dvh;
   z-index: 100;
+  animation: none;
 }
 
 .work__image-container--fullscreen.work__image-container--animating {
@@ -207,7 +212,7 @@
   height: 100vh;
   height: 100dvh;
   z-index: 100;
-  animation: collapse-from-fullscreen 400ms cubic-bezier(0.54, 0.00, 0.24, 1.00) forwards;
+  animation: collapse-from-fullscreen 400ms cubic-bezier(0.54, 0.00, 0.24, 1.00) forwards !important;
 }
 
 .work__image-container--collapsing .work__image-wrapper {
