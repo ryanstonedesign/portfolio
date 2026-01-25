@@ -1,0 +1,51 @@
+.page-transition {
+  display: contents;
+}
+
+/* Text elements slide down 100% */
+.page-transition--exiting .header__name > span,
+.page-transition--exiting .header__tab > span,
+.page-transition--exiting .header__link > span,
+.page-transition--exiting .footer__left > span,
+.page-transition--exiting .footer__center > *,
+.page-transition--exiting .footer__email-link > span,
+.page-transition--exiting .info__label > span,
+.page-transition--exiting .info__text > span,
+.page-transition--exiting .info__list-item > span,
+.page-transition--exiting .info__list-detail > span,
+.page-transition--exiting .info__list-meta > span {
+  animation: slide-down 1s var(--ease-out) forwards;
+}
+
+/* Work container slides down 200px to match entrance */
+.page-transition--exiting .work__image-container {
+  animation: slide-down-container 1s var(--ease-out) forwards;
+}
+
+/* Info content slides down */
+.page-transition--exiting .info__row {
+  animation: slide-down 0.5s var(--ease-out) forwards !important;
+  animation-delay: 0s !important;
+}
+
+@keyframes slide-down {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes slide-down-container {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(200px);
+    opacity: 0;
+  }
+}

@@ -1,5 +1,6 @@
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 import { useCategory } from '../context/CategoryContext'
+import { useTransition } from '../context/TransitionContext'
 import { categories } from '../data/projects'
 import './Header.css'
 
@@ -7,13 +8,21 @@ function Header() {
   const location = useLocation()
   const isHome = location.pathname === '/'
   const { activeCategory, setActiveCategory } = useCategory()
+  const { transitionTo } = useTransition()
+
+  const handleNavClick = (e, path) => {
+    e.preventDefault()
+    if (location.pathname !== path) {
+      transitionTo(path)
+    }
+  }
 
   return (
     <header className="header">
       <div className="header__left">
-        <Link to="/" className="header__name">
+        <a href="/" className="header__name" onClick={(e) => handleNavClick(e, '/')}>
           <span>Ryan Stone</span>
-        </Link>
+        </a>
       </div>
 
       {isHome && (
@@ -34,9 +43,9 @@ function Header() {
       )}
 
       <nav className="header__right">
-        <Link to="/info" className="header__link">
+        <a href="/info" className="header__link" onClick={(e) => handleNavClick(e, '/info')}>
           <span>Info</span>
-        </Link>
+        </a>
       </nav>
     </header>
   )
