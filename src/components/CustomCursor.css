@@ -7,6 +7,7 @@
   color: var(--color-text);
   transform: translate(-50%, -50%);
   letter-spacing: 0.05em;
+  text-transform: uppercase;
   will-change: left, top;
   transition: color 0.15s ease, font-size 0.15s ease;
 }
@@ -33,6 +34,7 @@
   font-weight: 300;
   color: var(--color-text);
   letter-spacing: 0.05em;
+  text-transform: uppercase;
   will-change: left, top, opacity, transform;
   transition: color 0.15s ease, font-size 0.15s ease;
 }

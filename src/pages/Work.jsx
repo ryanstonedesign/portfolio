@@ -302,15 +302,18 @@ function Work() {
       <div 
         ref={containerRef}
         className={`work__image-container ${isFullscreen ? 'work__image-container--fullscreen' : ''} ${isExpanding ? 'work__image-container--animating' : ''} ${isCollapsing ? 'work__image-container--collapsing' : ''}`}
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
         onClick={handleContainerClick}
         data-is-video={currentProject?.isVideo || false}
         data-video-playing={isVideoPlaying}
         data-is-fullscreen={isFullscreen}
       >
         {filteredProjects.length > 0 ? (
-          <div className={`work__image-wrapper ${imageTransition === 'dissolve' ? 'work__image-wrapper--dissolve' : ''}`} data-opacity={imageOpacity}>
+          <div 
+            className={`work__image-wrapper ${imageTransition === 'dissolve' ? 'work__image-wrapper--dissolve' : ''}`} 
+            data-opacity={imageOpacity}
+            onMouseEnter={() => setIsHovering(true)}
+            onMouseLeave={() => setIsHovering(false)}
+          >
             {/* Render all media stacked for preloading, toggle visibility */}
             {filteredProjects.map((project, index) => (
               project.isVideo ? (

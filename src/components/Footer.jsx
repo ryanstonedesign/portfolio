@@ -8,7 +8,7 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="footer__left">
-        <span>Designed and built by Ryan</span>
+        <span>© 2026 Ryan Stone</span>
       </div>
 
       <div className="footer__center">
@@ -17,7 +17,7 @@ function Footer() {
 
       <div className="footer__right">
         {/* <SettingsPopover /> */}
-        <a href="mailto:ryanstonedesign@gmail.com" className="footer__email-link">Send an email</a>
+        <a href="mailto:ryanstonedesign@gmail.com" className="footer__email-link">Send email</a>
       </div>
     </footer>
   )

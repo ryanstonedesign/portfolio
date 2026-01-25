@@ -4,6 +4,7 @@
   justify-content: space-between;
   padding-top: var(--space-sm);
   font-size: var(--font-size-ui);
+  text-transform: uppercase;
 }
 
 .footer__left {

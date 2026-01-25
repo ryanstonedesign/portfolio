@@ -25,6 +25,7 @@
 .info__label {
   font-size: var(--font-size-ui);
   color: var(--color-text);
+  text-transform: uppercase;
 }
 
 .info__text {
