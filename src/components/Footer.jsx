@@ -1,12 +1,15 @@
+import { useLocation } from 'react-router-dom'
 import { useFooter } from '../context/FooterContext'
 // import SettingsPopover from './SettingsPopover'
 import './Footer.css'
 
 function Footer() {
   const { centerContent } = useFooter()
+  const location = useLocation()
+  const isInfoPage = location.pathname === '/info'
 
   return (
-    <footer className="footer">
+    <footer className={`footer ${isInfoPage ? 'footer--with-gradient' : ''}`}>
       <div className="footer__left">
         <span>© 2026 Ryan Stone</span>
       </div>

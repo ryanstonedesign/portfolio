@@ -17,8 +17,10 @@ function Header() {
     }
   }
 
+  const isInfoPage = location.pathname === '/info'
+
   return (
-    <header className="header">
+    <header className={`header ${isInfoPage ? 'header--with-gradient' : ''}`}>
       <div className="header__left">
         <a href="/" className="header__name" onClick={(e) => handleNavClick(e, '/')}>
           <span>Ryan Stone</span>
