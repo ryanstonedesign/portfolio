@@ -99,3 +99,40 @@ main {
   outline: 1px solid var(--color-text-muted);
   outline-offset: 2px;
 }
+
+/* Entrance Animations */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Text reveal utility - apply to parent, child animates */
+.reveal-text {
+  overflow: hidden;
+}
+
+.reveal-text > * {
+  animation: slide-up 1.2s var(--ease-out) both;
+}
+
+/* Stagger delays */
+.reveal-delay-1 { animation-delay: 0.05s; }
+.reveal-delay-2 { animation-delay: 0.1s; }
+.reveal-delay-3 { animation-delay: 0.15s; }
+.reveal-delay-4 { animation-delay: 0.2s; }
+.reveal-delay-5 { animation-delay: 0.25s; }

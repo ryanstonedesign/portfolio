@@ -23,15 +23,31 @@
 }
 
 .info__label {
+  display: block;
   font-size: var(--font-size-ui);
   color: var(--color-text);
   text-transform: uppercase;
+  overflow: hidden;
+  height: 1.5em;
+}
+
+.info__label > span {
+  display: block;
+  animation: slide-up 1.2s var(--ease-out) both;
+  animation-delay: calc(0.05s + var(--row-index, 0) * 0.08s);
 }
 
 .info__text {
   font-size: var(--font-size-ui);
   color: var(--color-text);
   line-height: 1.6;
+  overflow: hidden;
+}
+
+.info__text > span {
+  display: block;
+  animation: slide-up 1.2s var(--ease-out) both;
+  animation-delay: calc(0.05s + var(--row-index, 0) * 0.08s);
 }
 
 .info__list {
@@ -43,6 +59,13 @@
 .info__list-item {
   font-size: var(--font-size-ui);
   color: var(--color-text);
+  overflow: hidden;
+}
+
+.info__list-item > span {
+  display: block;
+  animation: slide-up 1.2s var(--ease-out) both;
+  animation-delay: calc(0.05s + var(--row-index, 0) * 0.08s + var(--item-index, 0) * 0.03s);
 }
 
 .info__list-row {
@@ -55,12 +78,26 @@
 .info__list-detail {
   font-size: var(--font-size-ui);
   color: var(--color-text-muted);
+  overflow: hidden;
+}
+
+.info__list-detail > span {
+  display: block;
+  animation: slide-up 1.2s var(--ease-out) both;
+  animation-delay: calc(0.05s + var(--row-index, 0) * 0.08s + var(--item-index, 0) * 0.03s);
 }
 
 .info__list-meta {
   font-size: var(--font-size-ui);
   color: var(--color-text-muted);
   text-align: right;
+  overflow: hidden;
+}
+
+.info__list-meta > span {
+  display: block;
+  animation: slide-up 1.2s var(--ease-out) both;
+  animation-delay: calc(0.05s + var(--row-index, 0) * 0.08s + var(--item-index, 0) * 0.03s);
 }
 
 .info__link {

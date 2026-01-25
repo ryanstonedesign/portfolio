@@ -72,11 +72,17 @@
 
 /* Show pointer cursor for links when hover state is 'pointer' */
 body[data-hover-state="pointer"] .info__link,
+body[data-hover-state="pointer"] .info__link *,
 body[data-hover-state="pointer"] .info__easter-egg,
+body[data-hover-state="pointer"] .info__easter-egg *,
 body[data-hover-state="pointer"] .footer__email-link,
+body[data-hover-state="pointer"] .footer__email-link *,
 body[data-hover-state="pointer"] .header__name,
+body[data-hover-state="pointer"] .header__name *,
 body[data-hover-state="pointer"] .header__link,
-body[data-hover-state="pointer"] .header__tab {
+body[data-hover-state="pointer"] .header__link *,
+body[data-hover-state="pointer"] .header__tab,
+body[data-hover-state="pointer"] .header__tab * {
   cursor: pointer !important;
 }
 

@@ -25,67 +25,67 @@ function Info() {
       <div className="info__content">
         
         {/* Bio */}
-        <section className="info__row">
-          <span className="info__label">Bio</span>
+        <section className="info__row" style={{ '--row-index': 0 }}>
+          <span className="info__label"><span>Bio</span></span>
           <p className="info__text">
-            Software designer and builder with a background in graphic design, fine art, photography, print, and branding. I'm a lifelong learner with a passion for telling stories through design, using whatever tools necessary to craft highly engaging experiences that solve user and business needs. Based in the Greater Philadelphia area.
+            <span>Software designer and builder with a background in graphic design, fine art, photography, print, and branding. I'm a lifelong learner with a passion for telling stories through design, using whatever tools necessary to craft highly engaging experiences that solve user and business needs. Based in the Greater Philadelphia area.</span>
           </p>
         </section>
 
         {/* Experience */}
-        <section className="info__row">
-          <span className="info__label">Experience</span>
+        <section className="info__row" style={{ '--row-index': 1 }}>
+          <span className="info__label"><span>Experience</span></span>
           <div className="info__list">
-            {experience.map((item) => (
-              <div key={item.company} className="info__list-row">
-                <a href={item.url} target="_blank" rel="noopener noreferrer" className="info__list-item info__link">{item.company}</a>
-                <span className="info__list-detail">{item.role}</span>
-                <span className="info__list-meta">{item.period}</span>
+            {experience.map((item, index) => (
+              <div key={item.company} className="info__list-row" style={{ '--item-index': index }}>
+                <a href={item.url} target="_blank" rel="noopener noreferrer" className="info__list-item info__link"><span>{item.company}</span></a>
+                <span className="info__list-detail"><span>{item.role}</span></span>
+                <span className="info__list-meta"><span>{item.period}</span></span>
               </div>
             ))}
           </div>
         </section>
 
         {/* Side Hustles */}
-        <section className="info__row">
-          <span className="info__label">Side hustles</span>
+        <section className="info__row" style={{ '--row-index': 2 }}>
+          <span className="info__label"><span>Side hustles</span></span>
           <div className="info__list">
-            {sideHustles.map((item) => (
-              <div key={item.name} className="info__list-row">
-                <a href={item.url} target="_blank" rel="noopener noreferrer" className="info__list-item info__link">{item.name}</a>
-                <span className="info__list-detail">{item.role}</span>
-                <span className="info__list-meta">{item.period}</span>
+            {sideHustles.map((item, index) => (
+              <div key={item.name} className="info__list-row" style={{ '--item-index': index }}>
+                <a href={item.url} target="_blank" rel="noopener noreferrer" className="info__list-item info__link"><span>{item.name}</span></a>
+                <span className="info__list-detail"><span>{item.role}</span></span>
+                <span className="info__list-meta"><span>{item.period}</span></span>
               </div>
             ))}
           </div>
         </section>
 
         {/* Education */}
-        <section className="info__row">
-          <span className="info__label">Education</span>
+        <section className="info__row" style={{ '--row-index': 3 }}>
+          <span className="info__label"><span>Education</span></span>
           <div className="info__list">
-            {education.map((item) => (
-              <div key={item.school} className="info__list-row">
-                <a href={item.url} target="_blank" rel="noopener noreferrer" className="info__list-item info__link">{item.school}</a>
-                <span className="info__list-detail">{item.detail}</span>
-                <span className="info__list-meta">{item.year}</span>
+            {education.map((item, index) => (
+              <div key={item.school} className="info__list-row" style={{ '--item-index': index }}>
+                <a href={item.url} target="_blank" rel="noopener noreferrer" className="info__list-item info__link"><span>{item.school}</span></a>
+                <span className="info__list-detail"><span>{item.detail}</span></span>
+                <span className="info__list-meta"><span>{item.year}</span></span>
               </div>
             ))}
           </div>
         </section>
 
         {/* Socials */}
-        <section className="info__row">
-          <span className="info__label">Socials</span>
+        <section className="info__row" style={{ '--row-index': 4 }}>
+          <span className="info__label"><span>Socials</span></span>
           <div className="info__list">
-            <div className="info__list-row">
-              <a href="https://www.linkedin.com/in/ryanstonedesign/" target="_blank" rel="noopener noreferrer" className="info__list-item info__link">LinkedIn</a>
+            <div className="info__list-row" style={{ '--item-index': 0 }}>
+              <a href="https://www.linkedin.com/in/ryanstonedesign/" target="_blank" rel="noopener noreferrer" className="info__list-item info__link"><span>LinkedIn</span></a>
             </div>
-            <div className="info__list-row">
-              <a href="https://x.com/RyanStoneDesign" target="_blank" rel="noopener noreferrer" className="info__list-item info__link">X</a>
+            <div className="info__list-row" style={{ '--item-index': 1 }}>
+              <a href="https://x.com/RyanStoneDesign" target="_blank" rel="noopener noreferrer" className="info__list-item info__link"><span>X</span></a>
             </div>
-            <div className="info__list-row">
-              <a href="https://unsplash.com/@rstone_design" target="_blank" rel="noopener noreferrer" className="info__list-item info__link">Unsplash</a>
+            <div className="info__list-row" style={{ '--item-index': 2 }}>
+              <a href="https://unsplash.com/@rstone_design" target="_blank" rel="noopener noreferrer" className="info__list-item info__link"><span>Unsplash</span></a>
             </div>
           </div>
         </section>

@@ -22,7 +22,19 @@
   height: 100%;
   min-height: 0;
   cursor: pointer;
+  animation: slide-up-container 1.2s var(--ease-out) 0.1s both;
   transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slide-up-container {
+  from {
+    transform: translateY(200px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
 
 .work__image-wrapper {

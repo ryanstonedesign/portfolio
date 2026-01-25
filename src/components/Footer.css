@@ -10,6 +10,12 @@
 .footer__left {
   flex: 1;
   white-space: nowrap;
+  overflow: hidden;
+}
+
+.footer__left > span {
+  display: block;
+  animation: slide-up 1.2s var(--ease-out) 0.2s both;
 }
 
 .footer__left a {
@@ -28,6 +34,11 @@
 .footer__center {
   color: var(--color-text-muted);
   font-variant-numeric: tabular-nums;
+  overflow: hidden;
+}
+
+.footer__center > * {
+  animation: slide-up 1.2s var(--ease-out) 0.25s both;
 }
 
 .footer__counter {
@@ -75,6 +86,15 @@
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
+}
+
+.footer__email-link {
+  overflow: hidden;
+}
+
+.footer__email-link > span {
+  display: block;
+  animation: slide-up 1.2s var(--ease-out) 0.2s both;
 }
 
 .footer__right a {

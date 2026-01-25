@@ -11,12 +11,20 @@
 }
 
 .header__name {
+  display: block;
   font-size: var(--font-size-ui);
   font-weight: 400;
   color: var(--color-text);
   text-decoration: none;
   text-transform: uppercase;
+  overflow: hidden;
+  height: 1.5em;
   transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.header__name > span {
+  display: block;
+  animation: slide-up 1.2s var(--ease-out) both;
 }
 
 .header__name:hover {
@@ -50,7 +58,13 @@
   border: none;
   cursor: pointer;
   text-transform: uppercase;
+  overflow: hidden;
   transition: color var(--duration-fast) ease;
+}
+
+.header__tab > span {
+  display: block;
+  animation: slide-up 1.2s var(--ease-out) both;
 }
 
 .header__tab:hover {
@@ -75,7 +89,13 @@
   font-size: var(--font-size-ui);
   color: var(--color-text);
   text-transform: uppercase;
+  overflow: hidden;
   transition: opacity var(--duration-normal) var(--ease-out);
+}
+
+.header__link > span {
+  display: block;
+  animation: slide-up 1.2s var(--ease-out) 0.05s both;
 }
 
 .header__link:hover {

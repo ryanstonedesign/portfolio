@@ -11,19 +11,23 @@ function Header() {
   return (
     <header className="header">
       <div className="header__left">
-        <Link to="/" className="header__name">Ryan Stone</Link>
+        <Link to="/" className="header__name">
+          <span>Ryan Stone</span>
+        </Link>
       </div>
 
       {isHome && (
         <nav className="header__tabs">
-          {categories.map((category) => (
+          {categories.map((category, index) => (
             <button
               key={category}
               className={`header__tab ${activeCategory === category ? 'header__tab--active' : ''}`}
               data-category={category}
               onClick={() => setActiveCategory(category)}
             >
-              {category === 'ux' ? 'UX' : category === 'brand' ? 'Brand' : category.charAt(0).toUpperCase() + category.slice(1)}
+              <span style={{ animationDelay: `${0.05 + index * 0.03}s` }}>
+                {category === 'ux' ? 'UX' : category === 'brand' ? 'Brand' : category.charAt(0).toUpperCase() + category.slice(1)}
+              </span>
             </button>
           ))}
         </nav>
@@ -31,7 +35,7 @@ function Header() {
 
       <nav className="header__right">
         <Link to="/info" className="header__link">
-          Info
+          <span>Info</span>
         </Link>
       </nav>
     </header>
