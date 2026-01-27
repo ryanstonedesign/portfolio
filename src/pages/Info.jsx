@@ -28,7 +28,7 @@ function Info() {
         <section className="info__row" style={{ '--row-index': 0 }}>
           <span className="info__label"><span>Bio</span></span>
           <p className="info__text">
-            <span>Software designer and builder with a background in graphic design, fine art, photography, print, and branding. I'm a lifelong learner with a passion for telling stories through design, using whatever tools necessary to craft highly engaging experiences that solve user and business needs. Based in the Greater Philadelphia area.</span>
+            <span>Software designer and vibe-coder specializing in highly-interactive prototypes across a variety of platforms. I work in code, Figma, Origami – whatever gets the job done. I love learning new tools to speed up my workflow, and using design to rally stakeholders around a vision that solves real user and business needs. Working remotely from the Greater Philadelphia area.</span>
           </p>
         </section>
 

@@ -14,7 +14,7 @@ main {
 
 @media (max-width: 768px) {
   .app {
-    padding: var(--space-sm);
+    padding: var(--space-sm) var(--space-md);
   }
 
   main {
