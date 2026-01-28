@@ -9,12 +9,14 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   will-change: left, top;
-  transition: color 0.15s ease, font-size 0.15s ease;
+  transition: color 0.15s ease, font-size 0.15s ease, background 0.15s ease, padding 0.15s ease;
 }
 
 .custom-cursor--inverted {
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  color: #000;
+  background: #fff;
+  padding: 2px 4px;
+  text-shadow: none;
 }
 
 .custom-cursor--large {
@@ -36,12 +38,14 @@
   letter-spacing: 0.05em;
   text-transform: uppercase;
   will-change: left, top, opacity, transform;
-  transition: color 0.15s ease, font-size 0.15s ease;
+  transition: color 0.15s ease, font-size 0.15s ease, background 0.15s ease, padding 0.15s ease;
 }
 
 .cursor-trail--inverted {
-  color: #fff;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  color: #000;
+  background: #fff;
+  padding: 2px 4px;
+  text-shadow: none;
 }
 
 .cursor-trail--large {
