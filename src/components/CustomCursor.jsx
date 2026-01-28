@@ -28,8 +28,8 @@ function CustomCursor() {
   useEffect(() => {
     const updateCursorState = (x, y, ignoreButton = false, forceLight = false) => {
       const element = document.elementFromPoint(x, y)
-      const mediaFrame = element?.closest('.work__media-frame')
-      const container = mediaFrame?.closest('.work__image-container')
+      const mediaFrame = element?.closest('.work__media-frame') || element?.closest('.work__stack-container')
+      const container = mediaFrame?.closest('.work__image-container') || mediaFrame?.closest('.work__stack-container')
       const enlargeButton = ignoreButton ? null : element?.closest('.work__enlarge-button')
       const infoLink = element?.closest('.info__link')
       const easterEgg = element?.closest('.info__easter-egg')
