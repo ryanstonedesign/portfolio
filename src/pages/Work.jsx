@@ -9,14 +9,12 @@ function Work() {
   const { activeCategory } = useCategory()
   const { imageOpacity } = useSettings()
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isHovering, setIsHovering] = useState(false)
   const [isTouchDevice, setIsTouchDevice] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
   const [playingVideos, setPlayingVideos] = useState({})
   const [, forceUpdate] = useState(0)
   const containerRef = useRef(null)
   const trackRef = useRef(null)
-  const intervalRef = useRef(null)
   const videoRefs = useRef({})
   const { setCenterContent } = useFooter()
 
@@ -57,22 +55,6 @@ function Work() {
     }
   }, [activeCategory])
 
-  // Auto-advance every 15 seconds (pauses on hover)
-  useEffect(() => {
-    if (isTouchDevice || isHovering || filteredProjects.length <= 1) {
-      return
-    }
-
-    intervalRef.current = setInterval(() => {
-      goToNext()
-    }, 3000)
-
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current)
-      }
-    }
-  }, [isTouchDevice, isHovering, filteredProjects.length, activeCategory])
 
   const goToNext = useCallback(() => {
     if (isTransitioning) return
@@ -231,8 +213,6 @@ function Work() {
       <div 
         ref={containerRef}
         className="work__stack-container"
-        onMouseEnter={() => setIsHovering(true)}
-        onMouseLeave={() => setIsHovering(false)}
       >
         {filteredProjects.length > 0 ? (
           <div 

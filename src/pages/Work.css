@@ -58,7 +58,6 @@
   display: block;
   max-width: 100%;
   max-height: calc((100dvh - 120px) * 0.7);
-  object-fit: contain;
   transition: transform var(--duration-normal) cubic-bezier(0.54, 0.00, 0.24, 1.00),
               filter var(--duration-normal) ease;
 }
@@ -107,12 +106,20 @@
   filter: grayscale(75%);
 }
 
-.work__stack-container:hover .work__stack-track[data-opacity="saturated"] .work__stack-media {
+.work__stack-track[data-opacity="saturated"] .work__stack-media:hover {
   filter: grayscale(0%);
 }
 
-/* Hover effect */
-.work__stack-container:hover .work__stack-media {
+.work__stack-track[data-opacity="saturated"] .work__stack-video-wrapper:hover .work__stack-media {
+  filter: grayscale(0%);
+}
+
+/* Hover effect - only scale the hovered image */
+.work__stack-media:hover {
+  transform: scale(1.02);
+}
+
+.work__stack-video-wrapper:hover .work__stack-media {
   transform: scale(1.02);
 }
 
