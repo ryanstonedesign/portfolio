@@ -48,40 +48,29 @@
   width: min(100%, calc((100dvh - 120px) * 36 / 29));
   aspect-ratio: 36 / 29;
   overflow: hidden;
-  background: #000;
+  background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.work__image {
-  width: 668px;
-  max-height: 80%;
-  object-fit: contain;
-  object-position: center;
-  transition: transform var(--duration-normal) cubic-bezier(0.54, 0.00, 0.24, 1.00),
-              filter var(--duration-normal) ease,
-              width 400ms cubic-bezier(0.4, 0, 0.2, 1),
-              max-height 400ms cubic-bezier(0.4, 0, 0.2, 1);
+/* Media frame - sizes to the active image, provides positioning context for badges/button */
+.work__media-frame {
+  position: relative;
 }
 
-.work__image-wrapper:hover .work__image {
-  transform: scale(1.1);
-}
-
+.work__image,
 .work__video {
-  width: 668px;
-  max-height: 80%;
-  object-fit: contain;
-  object-position: center;
+  display: block;
+  max-width: 668px;
+  max-height: calc((100dvh - 120px) * 0.8);
   transition: transform var(--duration-normal) cubic-bezier(0.54, 0.00, 0.24, 1.00),
-              filter var(--duration-normal) ease,
-              width 400ms cubic-bezier(0.4, 0, 0.2, 1),
-              max-height 400ms cubic-bezier(0.4, 0, 0.2, 1);
+              filter var(--duration-normal) ease;
 }
 
-.work__image-wrapper:hover .work__video {
+.work__media-frame:hover .work__image,
+.work__media-frame:hover .work__video {
   transform: scale(1.1);
 }
 
@@ -91,25 +80,31 @@
   filter: grayscale(75%);
 }
 
-.work__image-wrapper[data-opacity="saturated"]:hover .work__image,
-.work__image-wrapper[data-opacity="saturated"]:hover .work__video {
+.work__image-wrapper[data-opacity="saturated"] .work__media-frame:hover .work__image,
+.work__image-wrapper[data-opacity="saturated"] .work__media-frame:hover .work__video {
   filter: grayscale(0%);
 }
 
-/* Stacked media (both dissolve and instant modes) */
+/* Stacked media - inactive images overlay the active one */
 .work__media--stacked {
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   opacity: 0;
+  pointer-events: none;
   transition: opacity 500ms ease, filter var(--duration-normal) ease;
 }
 
+/* Active image is relative to establish frame size */
 .work__media--stacked.work__media--active {
+  position: relative;
+  width: auto;
+  height: auto;
   opacity: 1;
+  pointer-events: auto;
   transition: opacity 500ms ease, 
               filter var(--duration-normal) ease,
               transform var(--duration-normal) cubic-bezier(0.54, 0.00, 0.24, 1.00);
@@ -125,16 +120,16 @@
               transform var(--duration-normal) cubic-bezier(0.54, 0.00, 0.24, 1.00);
 }
 
-.work__image-wrapper:hover .work__media--stacked.work__media--active {
+.work__media-frame:hover .work__media--stacked.work__media--active {
   transform: scale(1.1);
 }
 
 /* Badges */
 .work__badges {
+  display: none;
   position: absolute;
   top: 16px;
   left: 16px;
-  display: flex;
   gap: 6px;
   z-index: 10;
 }
@@ -145,41 +140,41 @@
   font-weight: 500;
   letter-spacing: 0.02em;
   color: rgba(255, 255, 255, 0);
-  background: rgba(255, 255, 255, 0);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: transparent;
   border-radius: 8px;
-  transition: color 300ms ease, background 300ms ease;
+  transition: color 300ms ease, background 300ms ease, backdrop-filter 300ms ease;
 }
 
 .work__badges--visible .work__badge {
   color: #fff;
   background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 /* Enlarge button */
 .work__enlarge-button {
+  display: none;
   position: absolute;
   top: 16px;
   right: 16px;
-  display: flex;
   align-items: center;
   justify-content: center;
   padding: 8px;
   color: rgba(255, 255, 255, 0);
-  background: rgba(255, 255, 255, 0);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: transparent;
   border: none;
   border-radius: 8px;
   cursor: pointer;
   z-index: 10;
-  transition: color 300ms ease, background 300ms ease;
+  transition: color 300ms ease, background 300ms ease, backdrop-filter 300ms ease;
 }
 
 .work__enlarge-button--visible {
   color: #fff;
   background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .work__enlarge-button:hover {
@@ -223,7 +218,8 @@
 
 .work__image-container--collapsing .work__image,
 .work__image-container--collapsing .work__video {
-  animation: collapse-image-full 400ms cubic-bezier(0.54, 0.00, 0.24, 1.00) forwards;
+  max-width: 668px;
+  max-height: calc((100dvh - 120px) * 0.8);
 }
 
 /* Saturated mode collapse animation */
@@ -232,31 +228,12 @@
   animation: collapse-image-saturated 400ms cubic-bezier(0.54, 0.00, 0.24, 1.00) forwards;
 }
 
-@keyframes collapse-image-full {
-  0% {
-    width: 90%;
-    max-height: 90%;
-    transform: scale(1);
-  }
-  100% {
-    width: 668px;
-    max-height: 80%;
-    transform: scale(1);
-  }
-}
-
 @keyframes collapse-image-saturated {
   0% {
-    width: 90%;
-    max-height: 90%;
     filter: grayscale(0%);
-    transform: scale(1);
   }
   100% {
-    width: 668px;
-    max-height: 80%;
     filter: grayscale(75%);
-    transform: scale(1);
   }
 }
 
@@ -304,12 +281,13 @@
   width: 100%;
   height: 100%;
   aspect-ratio: unset;
+  background: #000;
 }
 
 .work__image-container--fullscreen .work__image,
 .work__image-container--fullscreen .work__video {
-  width: 90%;
-  max-height: 90%;
+  max-width: 90vw;
+  max-height: 90dvh;
   filter: grayscale(0%);
 }
 
@@ -323,10 +301,6 @@
 }
 
 /* Always show badges in fullscreen */
-.work__image-container--fullscreen .work__badges {
-  opacity: 1;
-}
-
 .work__image-container--fullscreen .work__badge {
   color: #fff;
   background: rgba(255, 255, 255, 0.15);
@@ -399,8 +373,8 @@
   /* Make images/videos responsive on mobile + default to hover state */
   .work__image,
   .work__video {
-    width: 100%;
     max-width: 100%;
+    max-height: calc(100dvh - 120px);
     filter: grayscale(0%);
   }
 
@@ -417,7 +391,12 @@
     transition: filter var(--duration-normal) ease;
   }
 
-  /* Badges always visible */
+  /* Badges always visible on mobile with responsive positioning */
+  .work__badges {
+    top: clamp(8px, 3%, 16px);
+    left: clamp(8px, 3%, 16px);
+  }
+
   .work__badge {
     color: #fff;
     background: rgba(255, 255, 255, 0.15);
@@ -425,8 +404,10 @@
     -webkit-backdrop-filter: blur(12px);
   }
 
-  /* Enlarge button always visible */
+  /* Enlarge button always visible on mobile with responsive positioning */
   .work__enlarge-button {
+    top: clamp(8px, 3%, 16px);
+    right: clamp(8px, 3%, 16px);
     color: #fff;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(12px);

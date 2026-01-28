@@ -313,73 +313,78 @@ function Work() {
           <div 
             className={`work__image-wrapper ${imageTransition === 'dissolve' ? 'work__image-wrapper--dissolve' : ''}`} 
             data-opacity={imageOpacity}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
           >
-            {/* Render all media stacked for preloading, toggle visibility */}
-            {filteredProjects.map((project, index) => (
-              project.isVideo ? (
-                <video
-                  key={project.id || index}
-                  ref={index === currentIndex ? videoRef : null}
-                  className={`work__video work__media--stacked ${index === currentIndex ? 'work__media--active' : ''} ${imageTransition === 'instant' ? 'work__media--instant' : ''}`}
-                  src={`${project.image}#t=0.001`}
-                  preload="metadata"
-                  loop
-                  muted
-                  playsInline
-                />
-              ) : (
-                <img
-                  key={project.id || index}
-                  className={`work__image work__media--stacked ${index === currentIndex ? 'work__media--active' : ''} ${imageTransition === 'instant' ? 'work__media--instant' : ''}`}
-                  src={project.image}
-                  alt={project.title}
-                />
-              )
-            ))}
-
-            {/* Badges - back inside wrapper */}
-            <div className={`work__badges ${isHovering ? 'work__badges--visible' : ''}`}>
-              {currentProject?.categories.map((cat) => (
-                <span key={cat} className="work__badge">
-                  {cat.toUpperCase()}
-                </span>
-              ))}
-              <span className="work__badge">{currentProject?.year}</span>
-            </div>
-
-            {/* Enlarge button - back inside wrapper */}
-            <button 
-              className={`work__enlarge-button ${isHovering ? 'work__enlarge-button--visible' : ''}`}
-              onClick={handleEnlargeClick}
-              aria-label={isFullscreen ? 'Minimize' : 'Maximize'}
+            {/* Media frame - sizes to fit the image, positions badges/button */}
+            <div 
+              className="work__media-frame"
+              onMouseEnter={() => setIsHovering(true)}
+              onMouseLeave={() => setIsHovering(false)}
             >
-              {isFullscreen ? (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="4 14 10 14 10 20"></polyline>
-                  <polyline points="20 10 14 10 14 4"></polyline>
-                  <line x1="14" y1="10" x2="21" y2="3"></line>
-                  <line x1="3" y1="21" x2="10" y2="14"></line>
-                </svg>
-              ) : (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <polyline points="15 3 21 3 21 9"></polyline>
-                  <polyline points="9 21 3 21 3 15"></polyline>
-                  <line x1="21" y1="3" x2="14" y2="10"></line>
-                  <line x1="3" y1="21" x2="10" y2="14"></line>
-                </svg>
-              )}
-            </button>
+              {/* Render all media stacked for preloading, toggle visibility */}
+              {filteredProjects.map((project, index) => (
+                project.isVideo ? (
+                  <video
+                    key={project.id || index}
+                    ref={index === currentIndex ? videoRef : null}
+                    className={`work__video work__media--stacked ${index === currentIndex ? 'work__media--active' : ''} ${imageTransition === 'instant' ? 'work__media--instant' : ''}`}
+                    src={`${project.image}#t=0.001`}
+                    preload="metadata"
+                    loop
+                    muted
+                    playsInline
+                  />
+                ) : (
+                  <img
+                    key={project.id || index}
+                    className={`work__image work__media--stacked ${index === currentIndex ? 'work__media--active' : ''} ${imageTransition === 'instant' ? 'work__media--instant' : ''}`}
+                    src={project.image}
+                    alt={project.title}
+                  />
+                )
+              ))}
 
-            {/* Play button for videos */}
-            {currentProject?.isVideo && (
-              <div className={`work__play-button ${isHovering || isVideoPlaying ? 'work__play-button--hidden' : ''}`}>
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
+              {/* Badges */}
+              <div className={`work__badges ${isHovering ? 'work__badges--visible' : ''}`}>
+                {currentProject?.categories.map((cat) => (
+                  <span key={cat} className="work__badge">
+                    {cat.toUpperCase()}
+                  </span>
+                ))}
+                <span className="work__badge">{currentProject?.year}</span>
               </div>
-            )}
+
+              {/* Enlarge button */}
+              <button 
+                className={`work__enlarge-button ${isHovering ? 'work__enlarge-button--visible' : ''}`}
+                onClick={handleEnlargeClick}
+                aria-label={isFullscreen ? 'Minimize' : 'Maximize'}
+              >
+                {isFullscreen ? (
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="4 14 10 14 10 20"></polyline>
+                    <polyline points="20 10 14 10 14 4"></polyline>
+                    <line x1="14" y1="10" x2="21" y2="3"></line>
+                    <line x1="3" y1="21" x2="10" y2="14"></line>
+                  </svg>
+                ) : (
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="15 3 21 3 21 9"></polyline>
+                    <polyline points="9 21 3 21 3 15"></polyline>
+                    <line x1="21" y1="3" x2="14" y2="10"></line>
+                    <line x1="3" y1="21" x2="10" y2="14"></line>
+                  </svg>
+                )}
+              </button>
+
+              {/* Play button for videos */}
+              {currentProject?.isVideo && (
+                <div className={`work__play-button ${isHovering || isVideoPlaying ? 'work__play-button--hidden' : ''}`}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              )}
+            </div>
           </div>
         ) : (
           <div className="work__empty">No projects in this category</div>

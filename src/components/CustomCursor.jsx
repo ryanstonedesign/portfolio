@@ -28,8 +28,8 @@ function CustomCursor() {
   useEffect(() => {
     const updateCursorState = (x, y, ignoreButton = false, forceLight = false) => {
       const element = document.elementFromPoint(x, y)
-      const wrapper = element?.closest('.work__image-wrapper')
-      const container = wrapper?.closest('.work__image-container')
+      const mediaFrame = element?.closest('.work__media-frame')
+      const container = mediaFrame?.closest('.work__image-container')
       const enlargeButton = ignoreButton ? null : element?.closest('.work__enlarge-button')
       const infoLink = element?.closest('.info__link')
       const easterEgg = element?.closest('.info__easter-egg')
@@ -37,7 +37,7 @@ function CustomCursor() {
       const headerName = element?.closest('.header__name')
       const headerLink = element?.closest('.header__link')
       const headerTab = element?.closest('.header__tab')
-      const isOver = wrapper !== null
+      const isOver = mediaFrame !== null
       setIsOverImage(forceLight ? false : isOver)
 
       // Category emoji mapping
