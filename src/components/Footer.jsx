@@ -7,9 +7,11 @@ function Footer() {
   const { centerContent } = useFooter()
   const location = useLocation()
   const isInfoPage = location.pathname === '/info'
+  const isHome = location.pathname === '/'
+  const useGradient = isInfoPage || isHome
 
   return (
-    <footer className={`footer ${isInfoPage ? 'footer--with-gradient' : ''}`}>
+    <footer className={`footer ${useGradient ? 'footer--with-gradient' : ''}`}>
       <div className="footer__left">
         <span>© 2026 Ryan Stone</span>
       </div>
