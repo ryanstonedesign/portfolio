@@ -322,36 +322,35 @@ function Work() {
             >
               {/* Render all media stacked for preloading, toggle visibility */}
               {filteredProjects.map((project, index) => (
-                project.isVideo ? (
-                  <video
-                    key={project.id || index}
-                    ref={index === currentIndex ? videoRef : null}
-                    className={`work__video work__media--stacked ${index === currentIndex ? 'work__media--active' : ''} ${imageTransition === 'instant' ? 'work__media--instant' : ''}`}
-                    src={`${project.image}#t=0.001`}
-                    preload="auto"
-                    loop
-                    muted
-                    playsInline
-                  />
-                ) : (
-                  <img
-                    key={project.id || index}
-                    className={`work__image work__media--stacked ${index === currentIndex ? 'work__media--active' : ''} ${imageTransition === 'instant' ? 'work__media--instant' : ''}`}
-                    src={project.image}
-                    alt={project.title}
-                  />
-                )
+                <div 
+                  key={project.id || index}
+                  className={`work__media-item ${index === currentIndex ? 'work__media-item--active' : ''}`}
+                >
+                  {project.isVideo ? (
+                    <video
+                      ref={index === currentIndex ? videoRef : null}
+                      className={`work__video work__media--stacked ${index === currentIndex ? 'work__media--active' : ''} ${imageTransition === 'instant' ? 'work__media--instant' : ''}`}
+                      src={`${project.image}#t=0.001`}
+                      preload="auto"
+                      loop
+                      muted
+                      playsInline
+                    />
+                  ) : (
+                    <img
+                      className={`work__image work__media--stacked ${index === currentIndex ? 'work__media--active' : ''} ${imageTransition === 'instant' ? 'work__media--instant' : ''}`}
+                      src={project.image}
+                      alt={project.title}
+                    />
+                  )}
+                  {/* Year Badge - only show on active item */}
+                  {index === currentIndex && (
+                    <span className={`work__badge ${isHovering ? 'work__badge--visible' : ''}`}>
+                      {project.year}
+                    </span>
+                  )}
+                </div>
               ))}
-
-              {/* Badges */}
-              <div className={`work__badges ${isHovering ? 'work__badges--visible' : ''}`}>
-                {currentProject?.categories.map((cat) => (
-                  <span key={cat} className="work__badge">
-                    {cat.toUpperCase()}
-                  </span>
-                ))}
-                <span className="work__badge">{currentProject?.year}</span>
-              </div>
 
               {/* Enlarge button */}
               <button 

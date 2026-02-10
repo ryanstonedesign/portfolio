@@ -7,7 +7,9 @@
   min-height: 0;
   max-height: calc(100vh - 120px);
   max-height: calc(100dvh - 120px);
-  overflow: hidden;
+  overflow: visible;
+  padding-bottom: 40px;
+  margin-bottom: -40px;
 }
 
 /* Image Container */
@@ -47,8 +49,7 @@
   width: min(100%, calc((100vh - 120px) * 36 / 29));
   width: min(100%, calc((100dvh - 120px) * 36 / 29));
   aspect-ratio: 36 / 29;
-  overflow: hidden;
-  background: #fff;
+  overflow: visible;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,18 +61,35 @@
   position: relative;
 }
 
+/* Individual media item wrapper */
+.work__media-item {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.work__media-item--active {
+  position: relative;
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .work__image,
 .work__video {
   display: block;
   max-width: 668px;
   max-height: calc((100dvh - 120px) * 0.8);
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0));
   transition: transform var(--duration-normal) cubic-bezier(0.54, 0.00, 0.24, 1.00),
               filter var(--duration-normal) ease;
 }
 
 .work__media-frame:hover .work__image,
 .work__media-frame:hover .work__video {
-  transform: scale(1.1);
+  transform: scale(1.05);
+  filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.2));
 }
 
 /* Saturated mode - grayscale by default, full color on hover */
@@ -85,28 +103,10 @@
   filter: grayscale(0%);
 }
 
-/* Stacked media - inactive images overlay the active one */
+/* Media inside items */
 .work__media--stacked {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 500ms ease, filter var(--duration-normal) ease;
-}
-
-/* Active image is relative to establish frame size */
-.work__media--stacked.work__media--active {
-  position: relative;
-  width: auto;
-  height: auto;
-  opacity: 1;
-  pointer-events: auto;
-  transition: opacity 500ms ease, 
-              filter var(--duration-normal) ease,
+  display: block;
+  transition: opacity 500ms ease, filter var(--duration-normal) ease,
               transform var(--duration-normal) cubic-bezier(0.54, 0.00, 0.24, 1.00);
 }
 
@@ -115,41 +115,34 @@
   transition: filter var(--duration-normal) ease;
 }
 
-.work__media--stacked.work__media--instant.work__media--active {
+.work__media--stacked.work__media--instant {
   transition: filter var(--duration-normal) ease,
               transform var(--duration-normal) cubic-bezier(0.54, 0.00, 0.24, 1.00);
 }
 
-.work__media-frame:hover .work__media--stacked.work__media--active {
-  transform: scale(1.1);
-}
-
-/* Badges */
-.work__badges {
-  display: none;
-  position: absolute;
-  top: 16px;
-  left: 16px;
-  gap: 6px;
-  z-index: 10;
-}
-
+/* Year Badge */
 .work__badge {
-  padding: 6px 12px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 10;
+  padding: 6px 8px;
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.02em;
-  color: rgba(255, 255, 255, 0);
-  background: transparent;
-  border-radius: 8px;
-  transition: color 300ms ease, background 300ms ease, backdrop-filter 300ms ease;
-}
-
-.work__badges--visible .work__badge {
   color: #fff;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  border-radius: 0px;
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: none;
+}
+
+.work__badge--visible {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 /* Enlarge button */
@@ -238,8 +231,7 @@
 }
 
 .work__image-container--collapsing .work__badge {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.15);
+  opacity: 1;
 }
 
 .work__image-container--collapsing .work__enlarge-button {
@@ -300,10 +292,9 @@
   transform: scale(1);
 }
 
-/* Always show badges in fullscreen */
+/* Always show badge in fullscreen */
 .work__image-container--fullscreen .work__badge {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.15);
+  opacity: 1;
 }
 
 /* Always show enlarge button in fullscreen */
@@ -352,34 +343,55 @@
 
 @media (max-width: 768px) {
   .work {
-    flex: 1;
+    flex: 1 1 0;
     min-height: 0;
     justify-content: center;
+    overflow: visible;
   }
 
   .work__image-container {
     max-width: 100%;
-    flex: 1;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
   }
 
   .work__image-wrapper {
-    flex: 1;
     aspect-ratio: unset;
-    max-height: none;
+    overflow: visible;
   }
 
-  /* Make images/videos responsive on mobile + default to hover state */
+  .work__media-frame {
+    max-height: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .work__media-item {
+    max-height: 100%;
+  }
+
+  .work__media-item--active {
+    max-height: 100%;
+    width: fit-content;
+  }
+
+  /* Make images/videos responsive on mobile - shadow always on, no hover effects */
   .work__image,
   .work__video {
     max-width: 100%;
-    max-height: calc(100dvh - 120px);
-    filter: grayscale(0%);
+    max-height: 60vh;
+    width: auto;
+    height: auto;
+    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.2));
   }
 
-  .work__media--stacked {
-    transform: scale(1.1);
+  .work__media-frame:hover .work__image,
+  .work__media-frame:hover .work__video {
+    transform: none;
+    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.2));
   }
 
   /* Disable transform transition to prevent rescaling animation */
@@ -391,23 +403,17 @@
     transition: filter var(--duration-normal) ease;
   }
 
-  /* Badges always visible on mobile with responsive positioning */
-  .work__badges {
-    top: clamp(8px, 3%, 16px);
-    left: clamp(8px, 3%, 16px);
-  }
-
+  /* Badge always visible on mobile with responsive positioning */
   .work__badge {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    top: 6px;
+    left: 6px;
+    opacity: 1;
   }
 
   /* Enlarge button always visible on mobile with responsive positioning */
   .work__enlarge-button {
-    top: clamp(8px, 3%, 16px);
-    right: clamp(8px, 3%, 16px);
+    top: 6px;
+    right: 6px;
     color: #fff;
     background: rgba(255, 255, 255, 0.15);
     backdrop-filter: blur(12px);

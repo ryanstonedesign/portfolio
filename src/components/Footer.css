@@ -6,6 +6,7 @@
   padding-top: var(--space-sm);
   font-size: var(--font-size-ui);
   text-transform: uppercase;
+  background: transparent;
 }
 
 .footer--with-gradient {
