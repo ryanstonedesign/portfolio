@@ -41,7 +41,14 @@
 .work__canvas-item {
   position: absolute;
   transform: scale(0);
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  border: 0.5px solid rgba(0, 0, 0, 0.15);
+  overflow: hidden;
 }
 
 .work__canvas-item--loaded {
@@ -50,14 +57,22 @@
 
 .work__canvas-media {
   display: block;
-  max-width: 400px;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
   height: auto;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  object-fit: contain;
+  transition: transform 0.4s ease, filter 0.4s ease;
 }
 
-.work__canvas-media:hover {
-  transform: scale(1.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+.work__canvas-item:hover .work__canvas-media {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+/* Video styles */
+video.work__canvas-media {
+  cursor: pointer;
 }
 
 .work__empty {

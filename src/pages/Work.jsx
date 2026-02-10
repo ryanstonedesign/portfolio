@@ -13,53 +13,107 @@ function Work() {
 
   const filteredProjects = getProjectsByCategory(activeCategory)
 
-  // Tile size - the area that contains all images before repeating
-  const TILE_WIDTH = 2400
-  const TILE_HEIGHT = 2000
-
-  // Generate random non-overlapping positions using grid-based placement
-  const imagePositions = useMemo(() => {
-    const cellWidth = 500 // Each cell is 500px wide
-    const cellHeight = 400 // Each cell is 400px tall
-    const padding = 50 // Padding within each cell for randomness
+  // Separate projects into large (brand, ux, dev) and small (photo, art)
+  const { largeProjects, smallProjects } = useMemo(() => {
+    const large = []
+    const small = []
     
-    // Calculate grid dimensions
-    const cols = Math.floor(TILE_WIDTH / cellWidth)
-    const rows = Math.floor(TILE_HEIGHT / cellHeight)
-    
-    // Create array of all available cells
-    const availableCells = []
-    for (let row = 0; row < rows; row++) {
-      for (let col = 0; col < cols; col++) {
-        availableCells.push({ row, col })
-      }
-    }
-    
-    // Shuffle the cells for random distribution (seeded by category for consistency)
-    const seed = activeCategory.split('').reduce((a, c) => a + c.charCodeAt(0), 0)
-    for (let i = availableCells.length - 1; i > 0; i--) {
-      const j = Math.floor(((seed * (i + 1) * 9301 + 49297) % 233280) / 233280 * (i + 1))
-      ;[availableCells[i], availableCells[j]] = [availableCells[j], availableCells[i]]
-    }
-    
-    // Assign each image to a unique cell with some randomness within
-    return filteredProjects.map((_, index) => {
-      const cell = availableCells[index % availableCells.length]
-      const randomSeed = ((seed + index) * 9301 + 49297) % 233280
-      const randomX = (randomSeed / 233280) * Math.max(0, cellWidth - padding * 2 - 400)
-      const randomY = (((randomSeed * 9301 + 49297) % 233280) / 233280) * Math.max(0, cellHeight - padding * 2 - 300)
-      return {
-        x: cell.col * cellWidth + padding + randomX,
-        y: cell.row * cellHeight + padding + randomY,
-        delay: index * 0.05,
+    filteredProjects.forEach(project => {
+      const hasLargeCategory = project.categories.some(c => ['ux', 'dev', 'brand'].includes(c))
+      if (hasLargeCategory) {
+        large.push(project)
+      } else {
+        small.push(project)
       }
     })
-  }, [filteredProjects.length, activeCategory])
+    
+    return { largeProjects: large, smallProjects: small }
+  }, [filteredProjects])
+
+  // Grid configuration
+  const CELL_SIZE = 300
+  const COLS_PER_TILE = 6 // 6 columns = 3 blocks of 2x2
+
+  // Calculate rows needed to fit all items
+  // Each tile row has: 1-2 large blocks + 1-2 small block areas (4 small each)
+  // Pattern per 2-row section: 3 large + 12 small = 15 items
+  const largePerTileRow = 3 // 3 large blocks per 2-row section
+  const smallPerTileRow = 12 // 3 small block areas × 4 = 12 small per 2-row section
+  
+  // Calculate how many 2-row sections we need to show all items at least once
+  const largeSections = Math.ceil(largeProjects.length / largePerTileRow)
+  const smallSections = Math.ceil(smallProjects.length / smallPerTileRow)
+  const sectionsNeeded = Math.max(largeSections, smallSections, 1)
+  
+  const ROWS_PER_TILE = sectionsNeeded * 2
+  const TILE_WIDTH = COLS_PER_TILE * CELL_SIZE
+  const TILE_HEIGHT = ROWS_PER_TILE * CELL_SIZE
+
+  // Generate grid with alternating pattern
+  const gridItems = useMemo(() => {
+    const items = []
+    let largeIndex = 0
+    let smallIndex = 0
+    
+    // Pattern: alternating large (2x2) and small (2x2 grid of 1x1) blocks
+    // Row 0: [Large] [Small×4] [Large]
+    // Row 1: [Small×4] [Large] [Small×4]
+    for (let row = 0; row < ROWS_PER_TILE; row += 2) {
+      const rowOffset = (row / 2) % 2
+      
+      for (let col = 0; col < COLS_PER_TILE; col += 2) {
+        const blockOffset = (col / 2) % 2
+        const isLargeBlock = (rowOffset + blockOffset) % 2 === 0
+        
+        if (isLargeBlock) {
+          // Large block (2x2) - use large project or fallback to small
+          const project = largeProjects.length > 0 
+            ? largeProjects[largeIndex % largeProjects.length]
+            : smallProjects[smallIndex % smallProjects.length]
+          
+          items.push({
+            project,
+            x: col * CELL_SIZE,
+            y: row * CELL_SIZE,
+            size: 'large',
+            width: CELL_SIZE * 2,
+            height: CELL_SIZE * 2,
+            delay: items.length * 0.02,
+          })
+          
+          if (largeProjects.length > 0) largeIndex++
+          else smallIndex++
+        } else {
+          // 2x2 grid of small blocks
+          for (let sr = 0; sr < 2; sr++) {
+            for (let sc = 0; sc < 2; sc++) {
+              const project = smallProjects.length > 0
+                ? smallProjects[smallIndex % smallProjects.length]
+                : largeProjects[largeIndex % largeProjects.length]
+              
+              items.push({
+                project,
+                x: (col + sc) * CELL_SIZE,
+                y: (row + sr) * CELL_SIZE,
+                size: 'small',
+                width: CELL_SIZE,
+                height: CELL_SIZE,
+                delay: items.length * 0.02,
+              })
+              
+              if (smallProjects.length > 0) smallIndex++
+              else largeIndex++
+            }
+          }
+        }
+      }
+    }
+    
+    return items
+  }, [largeProjects, smallProjects, ROWS_PER_TILE])
 
   // Calculate which tile copies need to be rendered based on viewport
   const getVisibleTiles = useCallback(() => {
-    if (!containerRef.current) return [{ tx: 0, ty: 0 }]
-    
     const viewWidth = window.innerWidth
     const viewHeight = window.innerHeight
     
@@ -76,7 +130,7 @@ function Work() {
       }
     }
     return tiles
-  }, [offset])
+  }, [offset, TILE_WIDTH, TILE_HEIGHT])
 
   const visibleTiles = getVisibleTiles()
 
@@ -155,30 +209,34 @@ function Work() {
           }}
         >
           {visibleTiles.map(({ tx, ty }) => (
-            filteredProjects.map((project, index) => (
+            gridItems.map((item, index) => (
               <div
-                key={`${tx}-${ty}-${project.id || index}`}
-                className={`work__canvas-item ${isLoaded ? 'work__canvas-item--loaded' : ''}`}
+                key={`${tx}-${ty}-${index}`}
+                className={`work__canvas-item work__canvas-item--${item.size} ${isLoaded ? 'work__canvas-item--loaded' : ''}`}
                 style={{
-                  left: (imagePositions[index]?.x || 0) + tx * TILE_WIDTH,
-                  top: (imagePositions[index]?.y || 0) + ty * TILE_HEIGHT,
-                  animationDelay: `${imagePositions[index]?.delay || 0}s`,
+                  left: item.x + tx * TILE_WIDTH,
+                  top: item.y + ty * TILE_HEIGHT,
+                  width: item.width,
+                  height: item.height,
+                  animationDelay: `${item.delay}s`,
                 }}
               >
-                {project.isVideo ? (
+                {item.project.isVideo ? (
                   <video
                     className="work__canvas-media"
-                    src={`${project.image}#t=0.001`}
+                    src={`${item.project.image}#t=0.001`}
                     preload="metadata"
                     loop
                     muted
                     playsInline
+                    onMouseEnter={(e) => e.target.play().catch(() => {})}
+                    onMouseLeave={(e) => { e.target.pause(); e.target.currentTime = 0 }}
                   />
                 ) : (
                   <img
                     className="work__canvas-media"
-                    src={project.image}
-                    alt={project.title}
+                    src={item.project.image}
+                    alt={item.project.title}
                     loading="eager"
                   />
                 )}
