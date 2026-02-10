@@ -328,7 +328,7 @@ function Work() {
                     ref={index === currentIndex ? videoRef : null}
                     className={`work__video work__media--stacked ${index === currentIndex ? 'work__media--active' : ''} ${imageTransition === 'instant' ? 'work__media--instant' : ''}`}
                     src={`${project.image}#t=0.001`}
-                    preload="metadata"
+                    preload="auto"
                     loop
                     muted
                     playsInline
