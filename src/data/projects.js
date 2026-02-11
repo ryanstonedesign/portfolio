@@ -4,6 +4,7 @@
 
 // Master order for carousel - edit CAROUSEL_ORDER.md to change this
 const orderedFiles = [
+  'ux_ShopLocations_2026.mov',
   'ux_dev_stufflog_2025.mp4',
   'brand_spclogo_2021.png',
   'art_ship_2014.jpg',
