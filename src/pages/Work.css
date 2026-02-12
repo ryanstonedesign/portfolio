@@ -341,6 +341,9 @@
 .work__image-container[data-shape="rounded"] .work__image,
 .work__image-container[data-shape="rounded"] .work__video {
   border-radius: 24px;
+  /* Fills transparent corners created by border-radius so box-shadow
+     doesn't bleed through on mobile (videos are opaque by default) */
+  background: var(--color-bg);
 }
 
 .work__image-container[data-shape="rounded"] .work__badge {
