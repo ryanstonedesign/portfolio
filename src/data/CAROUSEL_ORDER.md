@@ -40,4 +40,6 @@ Edit this list to change the display order. Category tabs (UX/Dev/Photo/Art/Bran
 33. brand_DesignStandup_2018.jpg
 34. photo_critter_2017.jpg
 35. photo_museum_2017.jpg
+36. ux_QVCiOSapp_2017.mov
+37. ux_ServiceElectric_2016.mov
 

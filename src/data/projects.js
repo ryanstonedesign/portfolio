@@ -39,6 +39,8 @@ const orderedFiles = [
   'brand_DesignStandup_2018.jpg',
   'photo_critter_2017.jpg',
   'photo_museum_2017.jpg',
+  'ux_QVCiOSapp_2017.mov',
+  'ux_ServiceElectric_2016.mov',
 ]
 
 const validTypes = ['ux', 'dev', 'photo', 'art', 'brand']
