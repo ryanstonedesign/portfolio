@@ -3,11 +3,12 @@ import { useFooter } from '../context/FooterContext'
 import { useCategory } from '../context/CategoryContext'
 import { useSettings } from '../context/SettingsContext'
 import { getProjectsByCategory } from '../data/projects'
+import YearIndicator from '../components/YearIndicator'
 import './Work.css'
 
 function Work() {
   const { activeCategory } = useCategory()
-  const { carouselSpeed, imageTransition, imageOpacity } = useSettings()
+  const { carouselSpeed, imageTransition, imageOpacity, yearComponent } = useSettings()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isHovering, setIsHovering] = useState(false)
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)
@@ -389,6 +390,13 @@ function Work() {
           <div className="work__empty">No projects in this category</div>
         )}
       </div>
+
+      {/* Year indicator - right side, visible on hover, desktop only */}
+      <YearIndicator
+        activeYear={currentProject?.year}
+        isVisible={isHovering && !isFullscreen && !isTouchDevice}
+        variant={yearComponent}
+      />
     </div>
   )
 }

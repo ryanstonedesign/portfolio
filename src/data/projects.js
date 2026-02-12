@@ -1,8 +1,8 @@
-// Project data - order defined in CAROUSEL_ORDER.md
+// Project data - sorted by year (newest first), original order within same year
 // Filename structure: [type1]_[type2]..._[name]_[year].[ext]
 // Types match tab names: ux, dev, photo, art, brand
 
-// Master order for carousel - edit CAROUSEL_ORDER.md to change this
+// Media files - sorted by year at export, order here controls sequence within same year
 const orderedFiles = [
   'ux_ShopLocations_2026.mov',
   'ux_dev_stufflog_2025.mp4',
@@ -74,7 +74,8 @@ const parseFilename = (filename) => {
 const R2_PUBLIC_URL = 'https://pub-5ffdb96dde9f461f9964cb58f3746161.r2.dev'
 const getVideoUrl = (filename) => `${R2_PUBLIC_URL}/${filename}`
 
-// Generate projects from ordered files (fixed order, no shuffle)
+// Generate projects from ordered files, sorted by year (newest first)
+// Within the same year, original array order is preserved (stable sort)
 export const projects = orderedFiles.map((filename, index) => {
   const { categories, title, year } = parseFilename(filename)
   const isVideo = filename.endsWith('.mp4') || filename.endsWith('.mov')
@@ -92,7 +93,7 @@ export const projects = orderedFiles.map((filename, index) => {
     image: src,
     isVideo,
   }
-})
+}).sort((a, b) => parseInt(b.year) - parseInt(a.year))
 
 export const categories = ['all', 'ux', 'dev', 'photo', 'art', 'brand']
 

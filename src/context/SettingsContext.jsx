@@ -7,6 +7,7 @@ export function SettingsProvider({ children }) {
   const [imageTransition, setImageTransition] = useState('instant')
   const [imageOpacity, setImageOpacity] = useState('full')
   const [hoverState, setHoverState] = useState('pointer')
+  const [yearComponent, setYearComponent] = useState('ticker')
 
   return (
     <SettingsContext.Provider value={{ 
@@ -17,7 +18,9 @@ export function SettingsProvider({ children }) {
       imageOpacity,
       setImageOpacity,
       hoverState,
-      setHoverState
+      setHoverState,
+      yearComponent,
+      setYearComponent
     }}>
       {children}
     </SettingsContext.Provider>

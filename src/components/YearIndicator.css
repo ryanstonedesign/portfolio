@@ -1,0 +1,131 @@
+/* Year Indicator - right-side vertical year timeline */
+.year-indicator {
+  position: fixed;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  pointer-events: none;
+}
+
+.year-indicator__content {
+  position: relative;
+}
+
+/* Shared slide wrapper - handles enter/exit animation (opacity + translateX) */
+.year-indicator__year-slide {
+  position: absolute;
+  top: 0;
+  right: calc(100% + 12px);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    opacity 200ms ease var(--exit-delay, 0ms),
+    transform 200ms ease var(--exit-delay, 0ms);
+}
+
+.year-indicator--visible .year-indicator__year-slide {
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 200ms ease var(--enter-delay, 0ms),
+    transform 200ms ease var(--enter-delay, 0ms);
+}
+
+/* Fixed variant: floating prefix (first 3 digits) */
+.year-indicator__prefix {
+  height: 22px;
+  line-height: 22px;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #000;
+  white-space: nowrap;
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Ticker variant: rolling digit wheels */
+.year-indicator__ticker {
+  display: flex;
+  height: 22px;
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.year-indicator__ticker-slot {
+  height: 22px;
+  overflow: hidden;
+}
+
+.year-indicator__ticker-wheel {
+  transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.year-indicator__ticker-digit {
+  height: 22px;
+  line-height: 22px;
+  font-size: 1rem;
+  font-weight: 400;
+  color: #000;
+  text-align: center;
+}
+
+/* Year rows */
+.year-indicator__row {
+  display: flex;
+  align-items: center;
+  height: 22px;
+  gap: 12px;
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    opacity 200ms ease var(--exit-delay, 0ms),
+    transform 200ms ease var(--exit-delay, 0ms);
+}
+
+.year-indicator--visible .year-indicator__row {
+  opacity: 1;
+  transform: translateX(0);
+  transition:
+    opacity 200ms ease var(--enter-delay, 0ms),
+    transform 200ms ease var(--enter-delay, 0ms);
+}
+
+/* 4th digit - hidden by default, visible when year is active */
+.year-indicator__digit {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #000;
+  min-width: 10px;
+  text-align: right;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+
+.year-indicator__digit--visible {
+  opacity: 1;
+}
+
+/* Year line - right-aligned, grows to the left */
+.year-indicator__line {
+  height: 1.5px;
+  width: 20px;
+  margin-left: 10px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 1px;
+  transition:
+    width 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    margin-left 300ms cubic-bezier(0.4, 0, 0.2, 1),
+    background-color 300ms ease;
+}
+
+.year-indicator__line--active {
+  width: 30px;
+  margin-left: 0;
+  background: rgba(0, 0, 0, 1);
+}
+
+/* Hide on smaller screens */
+@media (max-width: 1023px) {
+  .year-indicator {
+    display: none;
+  }
+}

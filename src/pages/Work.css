@@ -120,7 +120,13 @@
               transform var(--duration-normal) cubic-bezier(0.54, 0.00, 0.24, 1.00);
 }
 
-/* Year Badge */
+/* Year Badge - hidden on larger screens where year indicator shows */
+@media (min-width: 1024px) {
+  .work__badge {
+    display: none;
+  }
+}
+
 .work__badge {
   position: absolute;
   top: 4px;
