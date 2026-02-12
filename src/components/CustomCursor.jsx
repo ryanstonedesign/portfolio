@@ -18,12 +18,16 @@ function CustomCursor() {
   const [cursorText, setCursorText] = useState('RS')
   const positionRef = useRef({ x: -100, y: -100 })
   const trailPositions = useRef(Array(TRAIL_COUNT).fill({ x: -100, y: -100 }))
-  const { hoverState } = useSettings()
+  const { hoverState, shape } = useSettings()
 
-  // Set data attribute on body for CSS cursor overrides
+  // Set data attributes on body for CSS cursor overrides
   useEffect(() => {
     document.body.dataset.hoverState = hoverState
   }, [hoverState])
+
+  useEffect(() => {
+    document.body.dataset.shape = shape
+  }, [shape])
 
   useEffect(() => {
     const updateCursorState = (x, y, ignoreButton = false, forceLight = false) => {

@@ -337,6 +337,16 @@
   opacity: 0;
 }
 
+/* Rounded shape variant */
+.work__image-container[data-shape="rounded"] .work__image,
+.work__image-container[data-shape="rounded"] .work__video {
+  border-radius: 24px;
+}
+
+.work__image-container[data-shape="rounded"] .work__badge {
+  border-radius: 16px;
+}
+
 .work__empty {
   width: 100%;
   aspect-ratio: 4 / 3;

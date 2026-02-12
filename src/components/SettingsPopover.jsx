@@ -24,6 +24,11 @@ const HOVER_STATE_OPTIONS = [
   { label: 'Emojis', value: 'emojis' },
 ]
 
+const SHAPE_OPTIONS = [
+  { label: 'Square', value: 'square' },
+  { label: 'Rounded (default)', value: 'rounded' },
+]
+
 const YEAR_COMPONENT_OPTIONS = [
   { label: 'Fixed digits', value: 'fixed' },
   { label: 'Ticker (default)', value: 'ticker' },
@@ -32,7 +37,7 @@ const YEAR_COMPONENT_OPTIONS = [
 function SettingsPopover() {
   const [isOpen, setIsOpen] = useState(false)
   const popoverRef = useRef(null)
-  const { carouselSpeed, setCarouselSpeed, imageTransition, setImageTransition, imageOpacity, setImageOpacity, hoverState, setHoverState, yearComponent, setYearComponent } = useSettings()
+  const { carouselSpeed, setCarouselSpeed, imageTransition, setImageTransition, imageOpacity, setImageOpacity, hoverState, setHoverState, yearComponent, setYearComponent, shape, setShape } = useSettings()
 
   // Close popover when clicking outside
   useEffect(() => {
@@ -146,6 +151,24 @@ function SettingsPopover() {
               onChange={(e) => setHoverState(e.target.value)}
             >
               {HOVER_STATE_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="settings-popover__section">
+            <label className="settings-popover__label" htmlFor="shape">
+              Shape
+            </label>
+            <select
+              id="shape"
+              className="settings-popover__select"
+              value={shape}
+              onChange={(e) => setShape(e.target.value)}
+            >
+              {SHAPE_OPTIONS.map((option) => (
                 <option key={option.value} value={option.value}>
                   {option.label}
                 </option>

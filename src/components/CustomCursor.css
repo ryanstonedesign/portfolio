@@ -19,6 +19,10 @@
   text-shadow: none;
 }
 
+body[data-shape="rounded"] .custom-cursor--inverted {
+  border-radius: 6px;
+}
+
 .custom-cursor--large {
   font-size: 24px;
 }
@@ -46,6 +50,10 @@
   background: #fff;
   padding: 2px 4px;
   text-shadow: none;
+}
+
+body[data-shape="rounded"] .cursor-trail--inverted {
+  border-radius: 6px;
 }
 
 .cursor-trail--large {

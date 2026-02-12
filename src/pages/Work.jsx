@@ -8,7 +8,7 @@ import './Work.css'
 
 function Work() {
   const { activeCategory } = useCategory()
-  const { carouselSpeed, imageTransition, imageOpacity, yearComponent } = useSettings()
+  const { carouselSpeed, imageTransition, imageOpacity, yearComponent, shape } = useSettings()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isHovering, setIsHovering] = useState(false)
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)
@@ -309,6 +309,7 @@ function Work() {
         data-is-video={currentProject?.isVideo || false}
         data-video-playing={isVideoPlaying}
         data-is-fullscreen={isFullscreen}
+        data-shape={shape}
       >
         {filteredProjects.length > 0 ? (
           <div 
