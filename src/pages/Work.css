@@ -395,19 +395,23 @@
   }
 
   /* Make images/videos responsive on mobile - shadow always on, no hover effects */
+  /* Use box-shadow instead of filter: drop-shadow to avoid iOS Safari compositing bug
+     where the shadow gets clipped when switching between stacked items */
   .work__image,
   .work__video {
     max-width: 100%;
     max-height: 60vh;
     width: auto;
     height: auto;
-    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.2));
+    filter: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   }
 
   .work__media-frame:hover .work__image,
   .work__media-frame:hover .work__video {
     transform: none;
-    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.2));
+    filter: none;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   }
 
   /* Disable transform transition to prevent rescaling animation */
