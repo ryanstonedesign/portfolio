@@ -124,7 +124,7 @@
 }
 
 /* Hide on smaller screens */
-@media (max-width: 1023px) {
+@media (max-width: 1199px) {
   .year-indicator {
     display: none;
   }

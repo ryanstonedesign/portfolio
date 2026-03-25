@@ -12,6 +12,29 @@ main {
   justify-content: center;
 }
 
+@media (min-width: 1200px) {
+  body:has(.app--home-desktop) {
+    overflow: hidden;
+  }
+
+  .app--home-desktop {
+    height: 100%;
+    max-height: 100dvh;
+    min-height: 0;
+    /* visible so image drop-shadows are not clipped; body overflow prevents page scroll */
+    overflow: visible;
+    overscroll-behavior: none;
+  }
+
+  .app--home-desktop main {
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: visible;
+    padding-top: 40px;
+    padding-bottom: 40px;
+  }
+}
+
 @media (max-width: 768px) {
   .app {
     padding: var(--space-sm) 16px;

@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import { FooterProvider } from '../context/FooterContext'
 import { CategoryProvider } from '../context/CategoryContext'
 import { TransitionProvider } from '../context/TransitionContext'
@@ -9,12 +9,15 @@ import PageTransition from './PageTransition'
 import './Layout.css'
 
 function Layout() {
+  const { pathname } = useLocation()
+  const isHome = pathname === '/'
+
   return (
     <TransitionProvider>
       <FooterProvider>
         <CategoryProvider>
           <PageTransition>
-            <div className="app">
+            <div className={`app ${isHome ? 'app--home-desktop' : ''}`}>
               <CustomCursor />
               <Header />
               <main>

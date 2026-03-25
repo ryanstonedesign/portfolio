@@ -20,6 +20,7 @@ function Work() {
   const intervalRef = useRef(null)
   const videoRef = useRef(null)
   const containerRef = useRef(null)
+  const hitboxRef = useRef(null)
   const scrollAccumulator = useRef(0)
   const scrollCooldown = useRef(false)
   const { setCenterContent } = useFooter()
@@ -165,9 +166,9 @@ function Work() {
     window.dispatchEvent(new CustomEvent('cursorupdate'))
   }, [currentIndex, isVideoPlaying])
 
-  // Handle wheel scroll for carousel navigation
+  // Handle wheel scroll for carousel navigation (only when hovering over image)
   useEffect(() => {
-    const container = containerRef.current
+    const container = hitboxRef.current
     if (!container) return
 
     const handleWheel = (e) => {
@@ -317,11 +318,13 @@ function Work() {
             data-opacity={imageOpacity}
           >
             {/* Media frame - sizes to fit the image, positions badges/button */}
-            <div 
-              className="work__media-frame"
-              onMouseEnter={() => setIsHovering(true)}
-              onMouseLeave={() => setIsHovering(false)}
-            >
+            <div className="work__media-frame">
+              <div
+                ref={hitboxRef}
+                className="work__media-hitbox"
+                onMouseEnter={() => setIsHovering(true)}
+                onMouseLeave={() => setIsHovering(false)}
+              >
               {/* Render all media stacked for preloading, toggle visibility */}
               {filteredProjects.map((project, index) => (
                 <div 
@@ -385,6 +388,7 @@ function Work() {
                   </svg>
                 </div>
               )}
+              </div>
             </div>
           </div>
         ) : (
