@@ -4,6 +4,7 @@
 
 // Media files - sorted by year at export, order here controls sequence within same year
 const orderedFiles = [
+  'ux_dev_stufflog_mar_2026.mov',
   'ux_ShopLocations_2026.mov',
   'ux_dev_stufflog_2025.mp4',
   'brand_spclogo_2021.png',
