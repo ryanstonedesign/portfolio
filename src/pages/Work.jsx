@@ -26,6 +26,7 @@ function Work() {
   const scrollCooldown = useRef(false)
   const { setCenterContent } = useFooter()
 
+  const allProjects = useMemo(() => getProjectsByCategory('all'), [])
   const filteredProjects = useMemo(() => getProjectsByCategory(activeCategory), [activeCategory])
   const currentProject = filteredProjects[currentIndex]
 
@@ -60,7 +61,7 @@ function Work() {
   useEffect(() => {
     let isCancelled = false
 
-    if (filteredProjects.length === 0) {
+    if (allProjects.length === 0) {
       setIsCarouselLoading(false)
       return () => {
         isCancelled = true
@@ -95,7 +96,7 @@ function Work() {
       image.src = project.image
     })
 
-    Promise.all(filteredProjects.map(loadMedia)).then(() => {
+    Promise.all(allProjects.map(loadMedia)).then(() => {
       if (!isCancelled) {
         setIsCarouselLoading(false)
       }
@@ -104,7 +105,7 @@ function Work() {
     return () => {
       isCancelled = true
     }
-  }, [filteredProjects])
+  }, [allProjects])
 
   // Auto-rotate images based on carousel speed setting (disabled on touch devices)
   useEffect(() => {
