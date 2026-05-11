@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useMemo } from 'react'
 import { useFooter } from '../context/FooterContext'
 import { useCategory } from '../context/CategoryContext'
 import { useSettings } from '../context/SettingsContext'
@@ -17,6 +17,7 @@ function Work() {
   const [isCollapsing, setIsCollapsing] = useState(false)
   const [hasBeenFullscreen, setHasBeenFullscreen] = useState(false)
   const [isTouchDevice, setIsTouchDevice] = useState(false)
+  const [isCarouselLoading, setIsCarouselLoading] = useState(true)
   const intervalRef = useRef(null)
   const videoRef = useRef(null)
   const containerRef = useRef(null)
@@ -25,7 +26,7 @@ function Work() {
   const scrollCooldown = useRef(false)
   const { setCenterContent } = useFooter()
 
-  const filteredProjects = getProjectsByCategory(activeCategory)
+  const filteredProjects = useMemo(() => getProjectsByCategory(activeCategory), [activeCategory])
   const currentProject = filteredProjects[currentIndex]
 
   // Detect touch device
@@ -47,9 +48,67 @@ function Work() {
     setCurrentIndex(0)
   }, [activeCategory])
 
+  useEffect(() => {
+    document.body.classList.toggle('work-carousel-loading', isCarouselLoading)
+
+    return () => {
+      document.body.classList.remove('work-carousel-loading')
+    }
+  }, [isCarouselLoading])
+
+  // Preload the active carousel set before removing the centered loading state.
+  useEffect(() => {
+    let isCancelled = false
+
+    if (filteredProjects.length === 0) {
+      setIsCarouselLoading(false)
+      return () => {
+        isCancelled = true
+      }
+    }
+
+    setIsCarouselLoading(true)
+
+    const loadMedia = (project) => new Promise((resolve) => {
+      const timeoutId = window.setTimeout(resolve, 30000)
+
+      const finish = () => {
+        window.clearTimeout(timeoutId)
+        resolve()
+      }
+
+      if (project.isVideo) {
+        const video = document.createElement('video')
+        video.preload = 'auto'
+        video.muted = true
+        video.playsInline = true
+        video.addEventListener('loadeddata', finish, { once: true })
+        video.addEventListener('error', finish, { once: true })
+        video.src = `${project.image}#t=0.001`
+        video.load()
+        return
+      }
+
+      const image = new Image()
+      image.addEventListener('load', finish, { once: true })
+      image.addEventListener('error', finish, { once: true })
+      image.src = project.image
+    })
+
+    Promise.all(filteredProjects.map(loadMedia)).then(() => {
+      if (!isCancelled) {
+        setIsCarouselLoading(false)
+      }
+    })
+
+    return () => {
+      isCancelled = true
+    }
+  }, [filteredProjects])
+
   // Auto-rotate images based on carousel speed setting (disabled on touch devices)
   useEffect(() => {
-    if (isTouchDevice || isHovering || isFullscreen || filteredProjects.length <= 1) {
+    if (isCarouselLoading || isTouchDevice || isHovering || isFullscreen || filteredProjects.length <= 1) {
       return
     }
 
@@ -62,7 +121,7 @@ function Work() {
         clearInterval(intervalRef.current)
       }
     }
-  }, [isTouchDevice, isHovering, isFullscreen, filteredProjects.length, activeCategory, carouselSpeed])
+  }, [isCarouselLoading, isTouchDevice, isHovering, isFullscreen, filteredProjects.length, activeCategory, carouselSpeed])
 
   // Navigation handlers for chevrons
   const goToPrevious = () => {
@@ -83,7 +142,9 @@ function Work() {
 
   // Update footer with counter (and chevrons on touch devices)
   useEffect(() => {
-    if (filteredProjects.length > 0) {
+    if (isCarouselLoading) {
+      setCenterContent(null)
+    } else if (filteredProjects.length > 0) {
       setCenterContent(
         <span className="footer__counter">
           {isTouchDevice && filteredProjects.length > 1 && (
@@ -110,7 +171,7 @@ function Work() {
     }
 
     return () => setCenterContent(null)
-  }, [currentIndex, filteredProjects.length, setCenterContent, isTouchDevice])
+  }, [currentIndex, filteredProjects.length, setCenterContent, isTouchDevice, isCarouselLoading])
 
   // Control video playback based on state
   useEffect(() => {
@@ -302,10 +363,16 @@ function Work() {
 
   return (
     <div className="work">
+      {isCarouselLoading && (
+        <div className="work__loading-overlay" role="status" aria-label="Loading media">
+          <span className="work__loading-spinner" />
+        </div>
+      )}
+
       {/* Image/Video Container */}
       <div 
         ref={containerRef}
-        className={`work__image-container ${isFullscreen ? 'work__image-container--fullscreen' : ''} ${isExpanding ? 'work__image-container--animating' : ''} ${isCollapsing ? 'work__image-container--collapsing' : ''} ${hasBeenFullscreen ? 'work__image-container--no-entrance' : ''}`}
+        className={`work__image-container ${isCarouselLoading ? 'work__image-container--loading' : ''} ${isFullscreen ? 'work__image-container--fullscreen' : ''} ${isExpanding ? 'work__image-container--animating' : ''} ${isCollapsing ? 'work__image-container--collapsing' : ''} ${hasBeenFullscreen ? 'work__image-container--no-entrance' : ''}`}
         onClick={handleContainerClick}
         data-is-video={currentProject?.isVideo || false}
         data-video-playing={isVideoPlaying}
@@ -380,14 +447,6 @@ function Work() {
                 )}
               </button>
 
-              {/* Play button for videos */}
-              {currentProject?.isVideo && (
-                <div className={`work__play-button ${isHovering || isVideoPlaying ? 'work__play-button--hidden' : ''}`}>
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
-              )}
               </div>
             </div>
           </div>

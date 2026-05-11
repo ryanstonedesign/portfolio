@@ -78,6 +78,12 @@
   animation: slide-up 1.2s var(--ease-out) both;
 }
 
+body.work-carousel-loading .header__tab > span {
+  animation: none;
+  opacity: 0;
+  transform: translateY(100%);
+}
+
 .header__tab:hover {
   color: var(--color-text);
 }
