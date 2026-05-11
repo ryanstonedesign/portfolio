@@ -448,6 +448,14 @@ function Work() {
                 )}
               </button>
 
+              {/* Play button for videos */}
+              {currentProject?.isVideo && !isCarouselLoading && (
+                <div className={`work__play-button ${isHovering || isVideoPlaying ? 'work__play-button--hidden' : ''}`}>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              )}
               </div>
             </div>
           </div>

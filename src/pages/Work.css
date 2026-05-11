@@ -446,6 +446,34 @@
   background: rgba(255, 255, 255, 0.15);
 }
 
+/* Play button */
+.work__play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 9999px;
+  z-index: 10;
+  transition: opacity 300ms ease;
+}
+
+.work__play-button svg {
+  margin-left: 2px;
+}
+
+.work__play-button--hidden {
+  opacity: 0;
+}
+
 /* Rounded shape variant */
 .work__image-container[data-shape="rounded"] .work__image,
 .work__image-container[data-shape="rounded"] .work__video {
