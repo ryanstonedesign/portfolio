@@ -6,16 +6,16 @@ import './Private.css'
 
 // Shown at random when the password is wrong
 const WRONG_PASSWORD_PHRASES = [
-  'Alohomora failed. Try another spell.',
-  'The Fat Lady isn’t buying it.',
-  'Ten points from your house.',
-  'Mischief not managed.',
-  'Accio correct password?',
-  'The Sorting Hat has concerns.',
-  'Even Hermione would double-check that.',
-  'The Marauder’s Map shows no such password.',
-  'Expelliarmus! Password rejected.',
-  'Platform 9¾ is still a wall for you.',
+  'Try another spell',
+  'The Fat Lady isn’t buying it',
+  'Ten points from your house',
+  'Mischief not managed',
+  'Accio correct password',
+  'The Sorting Hat has concerns',
+  'Even Hermione would double-check that',
+  'The Marauder’s Map shows no such password',
+  'Expelliarmus! Password rejected',
+  'Platform 9¾ is still a wall for you',
 ]
 
 const pickPhrase = (previous) => {

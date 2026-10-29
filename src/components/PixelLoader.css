@@ -1,0 +1,43 @@
+/* Pixel loader - a slow wave travels the grid in a spiral */
+.pixel-loader {
+  --pixel-size: 8px;
+  --pixel-gap: 4px;
+  --pixel-cycle: 2.4s;
+
+  display: grid;
+  grid-template-columns: repeat(3, var(--pixel-size));
+  gap: var(--pixel-gap);
+}
+
+.pixel-loader__pixel {
+  width: var(--pixel-size);
+  height: var(--pixel-size);
+  border-radius: 1px;
+  background: var(--color-text);
+  opacity: 0.12;
+  animation: pixel-loader-glow var(--pixel-cycle) ease-in-out infinite;
+  /* Each step lights a little after the previous one */
+  animation-delay: calc(var(--step) * var(--pixel-cycle) / 9);
+}
+
+@keyframes pixel-loader-glow {
+  0%,
+  100% {
+    opacity: 0.12;
+    transform: scale(0.85);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  45% {
+    opacity: 0.12;
+    transform: scale(0.85);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pixel-loader {
+    --pixel-cycle: 4.8s;
+  }
+}

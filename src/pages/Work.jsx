@@ -3,6 +3,7 @@ import { useFooter } from '../context/FooterContext'
 import { useSettings } from '../context/SettingsContext'
 import YearIndicator from '../components/YearIndicator'
 import SwipeCarousel from '../components/SwipeCarousel'
+import PixelLoader from '../components/PixelLoader'
 import './Work.css'
 
 function Work({ projects }) {
@@ -97,8 +98,8 @@ function Work({ projects }) {
   return (
     <div className="work">
       {isCarouselLoading && (
-        <div className="work__loading-overlay" role="status" aria-label="Loading media">
-          <span className="work__loading-spinner" />
+        <div className="work__loading-overlay">
+          <PixelLoader label="Loading media" />
         </div>
       )}
 

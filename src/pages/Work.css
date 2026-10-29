@@ -20,15 +20,6 @@
   animation: work-loading-enter 700ms var(--ease-out) both;
 }
 
-.work__loading-spinner {
-  width: 34px;
-  height: 34px;
-  border: 2px solid color-mix(in srgb, var(--color-text) 14%, transparent);
-  border-top-color: var(--color-text);
-  border-radius: 9999px;
-  animation: work-spinner 800ms linear infinite;
-}
-
 @keyframes work-spinner {
   to {
     transform: rotate(360deg);
