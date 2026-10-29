@@ -38,7 +38,7 @@
   line-height: 22px;
   font-size: 1rem;
   font-weight: 400;
-  color: #000;
+  color: var(--color-text);
   white-space: nowrap;
   transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -64,7 +64,7 @@
   line-height: 22px;
   font-size: 1rem;
   font-weight: 400;
-  color: #000;
+  color: var(--color-text);
   text-align: center;
 }
 
@@ -93,7 +93,7 @@
 .year-indicator__digit {
   font-size: 1rem;
   font-weight: 400;
-  color: #000;
+  color: var(--color-text);
   min-width: 10px;
   text-align: right;
   opacity: 0;
@@ -109,7 +109,7 @@
   height: 1.5px;
   width: 20px;
   margin-left: 10px;
-  background: rgba(0, 0, 0, 0.2);
+  background: color-mix(in srgb, var(--color-text) 20%, transparent);
   border-radius: 1px;
   transition:
     width 300ms cubic-bezier(0.4, 0, 0.2, 1),
@@ -120,7 +120,7 @@
 .year-indicator__line--active {
   width: 30px;
   margin-left: 0;
-  background: rgba(0, 0, 0, 1);
+  background: var(--color-text);
 }
 
 /* Hide on smaller screens */

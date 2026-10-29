@@ -5,6 +5,7 @@
 /* Text elements slide down 100% */
 .page-transition--exiting .header__name > span,
 .page-transition--exiting .header__tab > span,
+.page-transition--exiting .header__dropdown-label > span,
 .page-transition--exiting .header__link > span,
 .page-transition--exiting .footer__left > span,
 .page-transition--exiting .footer__center > *,

@@ -1,0 +1,119 @@
+.private {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.private__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  width: min(100%, 320px);
+}
+
+.private__field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  animation: slide-up 1.2s var(--ease-out) 0.15s both;
+}
+
+.private__field--error {
+  animation: private-shake 400ms ease;
+}
+
+.private__input {
+  width: 100%;
+  padding: var(--space-xs) 48px;
+  font-family: inherit;
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  color: var(--color-text);
+  caret-color: var(--color-text);
+  background: transparent;
+  border: none;
+  text-align: center;
+}
+
+/* While empty, start the cursor just before the centered placeholder */
+.private__input:placeholder-shown {
+  text-align: left;
+  padding-left: calc(50% - 2.4em);
+}
+
+.private__input::placeholder {
+  font-size: var(--font-size-ui);
+  letter-spacing: normal;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  opacity: 1;
+}
+
+.private__input:focus,
+.private__input:focus-visible {
+  outline: none;
+}
+
+/* Circle submit button - appears once a character is typed */
+.private__submit {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: var(--color-bg);
+  background: var(--color-text);
+  border-radius: 9999px;
+  opacity: 0;
+  transform: translateY(-50%) scale(0.6);
+  pointer-events: none;
+  transition:
+    opacity var(--duration-normal) var(--ease-out),
+    transform var(--duration-normal) var(--ease-out);
+}
+
+.private__submit--visible {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+  pointer-events: auto;
+}
+
+.private__submit--visible:hover {
+  transform: translateY(-50%) scale(1.08);
+}
+
+.private__submit:disabled {
+  cursor: default;
+}
+
+.private__spinner {
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid color-mix(in srgb, var(--color-bg) 30%, transparent);
+  border-top-color: var(--color-bg);
+  border-radius: 9999px;
+  animation: work-spinner 800ms linear infinite;
+}
+
+.private__message {
+  font-size: var(--font-size-ui);
+  color: var(--color-error);
+  text-transform: uppercase;
+}
+
+.page-transition--exiting .private__form {
+  animation: slide-down-container 1s var(--ease-out) forwards;
+}
+
+@keyframes private-shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}

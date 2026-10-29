@@ -4,7 +4,9 @@
   z-index: 9999;
   font-size: 0.875rem;
   font-weight: 300;
-  color: var(--color-text);
+  color: #000;
+  background: #fff;
+  padding: 2px 4px;
   transform: translate(-50%, -50%);
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -12,19 +14,8 @@
   transition: color 0.15s ease, font-size 0.15s ease, background 0.15s ease, padding 0.15s ease;
 }
 
-.custom-cursor--inverted {
-  color: #000;
-  background: #fff;
-  padding: 2px 4px;
-  text-shadow: none;
-}
-
-body[data-shape="rounded"] .custom-cursor--inverted {
+body[data-shape="rounded"] .custom-cursor {
   border-radius: 6px;
-}
-
-.custom-cursor--large {
-  font-size: 24px;
 }
 
 .custom-cursor--hidden {
@@ -38,26 +29,17 @@ body[data-shape="rounded"] .custom-cursor--inverted {
   z-index: 9998;
   font-size: 0.875rem;
   font-weight: 300;
-  color: var(--color-text);
+  color: #000;
+  background: #fff;
+  padding: 2px 4px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   will-change: left, top, opacity, transform;
   transition: color 0.15s ease, font-size 0.15s ease, background 0.15s ease, padding 0.15s ease;
 }
 
-.cursor-trail--inverted {
-  color: #000;
-  background: #fff;
-  padding: 2px 4px;
-  text-shadow: none;
-}
-
-body[data-shape="rounded"] .cursor-trail--inverted {
+body[data-shape="rounded"] .cursor-trail {
   border-radius: 6px;
-}
-
-.cursor-trail--large {
-  font-size: 24px;
 }
 
 .cursor-trail--hidden {
@@ -65,36 +47,16 @@ body[data-shape="rounded"] .cursor-trail--inverted {
   pointer-events: none;
 }
 
-/* Hide default cursor globally */
-* {
+/* Hide the system cursor only over the work carousel, where the custom cursor shows */
+.work__media-frame,
+.work__media-frame * {
   cursor: none !important;
 }
 
-/* Hide custom cursor only on touch devices (no hover capability) */
+/* Hide custom cursor on touch devices (no hover capability) */
 @media (hover: none) {
   .custom-cursor,
   .cursor-trail {
     display: none;
   }
-  
-  * {
-    cursor: auto !important;
-  }
 }
-
-/* Show pointer cursor for links when hover state is 'pointer' */
-body[data-hover-state="pointer"] .info__link,
-body[data-hover-state="pointer"] .info__link *,
-body[data-hover-state="pointer"] .info__easter-egg,
-body[data-hover-state="pointer"] .info__easter-egg *,
-body[data-hover-state="pointer"] .footer__email-link,
-body[data-hover-state="pointer"] .footer__email-link *,
-body[data-hover-state="pointer"] .header__name,
-body[data-hover-state="pointer"] .header__name *,
-body[data-hover-state="pointer"] .header__link,
-body[data-hover-state="pointer"] .header__link *,
-body[data-hover-state="pointer"] .header__tab,
-body[data-hover-state="pointer"] .header__tab * {
-  cursor: pointer !important;
-}
-

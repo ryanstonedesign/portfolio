@@ -1,13 +1,10 @@
-import { useState, useEffect, useRef, useMemo } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useFooter } from '../context/FooterContext'
-import { useCategory } from '../context/CategoryContext'
 import { useSettings } from '../context/SettingsContext'
-import { getProjectsByCategory } from '../data/projects'
 import YearIndicator from '../components/YearIndicator'
 import './Work.css'
 
-function Work() {
-  const { activeCategory } = useCategory()
+function Work({ projects }) {
   const { carouselSpeed, imageTransition, imageOpacity, yearComponent, shape } = useSettings()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isHovering, setIsHovering] = useState(false)
@@ -26,8 +23,7 @@ function Work() {
   const scrollCooldown = useRef(false)
   const { setCenterContent } = useFooter()
 
-  const allProjects = useMemo(() => getProjectsByCategory('all'), [])
-  const filteredProjects = useMemo(() => getProjectsByCategory(activeCategory), [activeCategory])
+  const filteredProjects = projects
   const currentProject = filteredProjects[currentIndex]
 
   // Detect touch device
@@ -44,10 +40,10 @@ function Work() {
     }
   }, [])
 
-  // Reset index when category changes
+  // Reset index when the project set changes
   useEffect(() => {
     setCurrentIndex(0)
-  }, [activeCategory])
+  }, [projects])
 
   useEffect(() => {
     document.body.classList.toggle('work-carousel-loading', isCarouselLoading)
@@ -61,7 +57,7 @@ function Work() {
   useEffect(() => {
     let isCancelled = false
 
-    if (allProjects.length === 0) {
+    if (projects.length === 0) {
       setIsCarouselLoading(false)
       return () => {
         isCancelled = true
@@ -96,7 +92,7 @@ function Work() {
       image.src = project.image
     })
 
-    Promise.all(allProjects.map(loadMedia)).then(() => {
+    Promise.all(projects.map(loadMedia)).then(() => {
       if (!isCancelled) {
         setIsCarouselLoading(false)
       }
@@ -105,7 +101,7 @@ function Work() {
     return () => {
       isCancelled = true
     }
-  }, [allProjects])
+  }, [projects])
 
   // Auto-rotate images based on carousel speed setting (disabled on touch devices)
   useEffect(() => {
@@ -122,7 +118,7 @@ function Work() {
         clearInterval(intervalRef.current)
       }
     }
-  }, [isCarouselLoading, isTouchDevice, isHovering, isFullscreen, filteredProjects.length, activeCategory, carouselSpeed])
+  }, [isCarouselLoading, isTouchDevice, isHovering, isFullscreen, filteredProjects.length, carouselSpeed])
 
   // Navigation handlers for chevrons
   const goToPrevious = () => {
@@ -191,7 +187,7 @@ function Work() {
     }
   }, [isVideoPlaying])
 
-  // Reset video when switching projects or categories
+  // Reset video when switching projects
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       if (videoRef.current) {
@@ -200,7 +196,7 @@ function Work() {
     }, 50)
     
     return () => clearTimeout(timeoutId)
-  }, [currentIndex, activeCategory])
+  }, [currentIndex, projects])
 
   // Handle video playback state when hover/fullscreen changes
   useEffect(() => {
@@ -221,7 +217,7 @@ function Work() {
     }, 50)
     
     return () => clearTimeout(timeoutId)
-  }, [currentIndex, activeCategory, isHovering, isFullscreen, currentProject?.isVideo])
+  }, [currentIndex, projects, isHovering, isFullscreen, currentProject?.isVideo])
 
   // Update cursor when current project or video state changes
   useEffect(() => {
@@ -460,7 +456,7 @@ function Work() {
             </div>
           </div>
         ) : (
-          <div className="work__empty">No projects in this category</div>
+          <div className="work__empty">No projects yet</div>
         )}
       </div>
 
