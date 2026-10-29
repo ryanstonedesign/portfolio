@@ -122,22 +122,6 @@
 
 @media (max-width: 768px) {
   .footer {
-    flex-wrap: wrap;
     padding-top: 20px;
-  }
-
-  .footer__left {
-    overflow: visible;
-    height: auto;
-  }
-
-  .footer__center {
-    order: -1;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-bottom: 40px;
-    overflow: visible;
-    height: auto;
   }
 }

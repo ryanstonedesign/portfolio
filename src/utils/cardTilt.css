@@ -1,0 +1,49 @@
+/* Floating card - tilt, lift and shimmer on hover (see cardTilt.js) */
+.card-tilt {
+  --tilt-scale: 1;
+  transform:
+    perspective(1000px)
+    rotateX(var(--tilt-x, 0deg))
+    rotateY(var(--tilt-y, 0deg))
+    scale(var(--tilt-scale));
+  transition: transform 600ms var(--ease-out);
+  will-change: transform;
+}
+
+/* Shimmer layer - a soft highlight under the cursor plus a faint diagonal sheen */
+.card-tilt__shine {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: soft-light;
+  background:
+    radial-gradient(
+      circle at var(--shine-x, 50%) var(--shine-y, 50%),
+      rgba(255, 255, 255, 0.55) 0%,
+      rgba(255, 255, 255, 0) 55%
+    ),
+    linear-gradient(
+      115deg,
+      rgba(255, 255, 255, 0) 35%,
+      rgba(255, 255, 255, 0.35) 48%,
+      rgba(255, 255, 255, 0) 60%
+    );
+  background-size: 100% 100%, 300% 300%;
+  background-position: 0 0, var(--shine-x, 50%) var(--shine-y, 50%);
+  transition: opacity 400ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .card-tilt:hover {
+    --tilt-scale: 1.06;
+    /* Short transition keeps tracking smooth between pointer frames */
+    transition: transform 150ms ease-out;
+  }
+
+  .card-tilt:hover .card-tilt__shine {
+    opacity: 1;
+  }
+}

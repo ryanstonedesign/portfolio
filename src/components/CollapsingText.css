@@ -1,0 +1,37 @@
+/* Collapsing text - same slide (100% down, fade, ease-out) as the page transitions.
+   The gap closes (or opens) while the text slides, so neighbors move over in sync. */
+.collapsing-text {
+  --collapsing-duration: 700ms;
+
+  display: inline-block;
+  vertical-align: top;
+  /* Clip only the vertical slide; letters stay whole while the gap closes */
+  overflow-x: visible;
+  overflow-y: clip;
+  white-space: pre;
+  max-width: var(--collapsing-width, none);
+  transition: max-width var(--collapsing-duration) var(--ease-out);
+}
+
+.collapsing-text__inner {
+  display: inline-block;
+  transition:
+    transform var(--collapsing-duration) var(--ease-out),
+    opacity var(--collapsing-duration) var(--ease-out);
+}
+
+.collapsing-text--collapsed {
+  max-width: 0;
+}
+
+.collapsing-text--collapsed .collapsing-text__inner {
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collapsing-text,
+  .collapsing-text__inner {
+    transition: none !important;
+  }
+}

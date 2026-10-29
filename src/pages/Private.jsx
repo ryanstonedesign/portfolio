@@ -4,7 +4,24 @@ import encrypted from '../data/private.enc.json'
 import Work from './Work'
 import './Private.css'
 
-const STORAGE_KEY = 'private-manifest'
+// Shown at random when the password is wrong
+const WRONG_PASSWORD_PHRASES = [
+  'Try another spell',
+  'The Fat Lady isn’t buying it',
+  'Ten points from your house',
+  'Mischief not managed',
+  'Accio correct password',
+  'The Sorting Hat has concerns',
+  'Even Hermione would double-check that',
+  'The Marauder’s Map shows no such password',
+  'Expelliarmus! Password rejected',
+  'Platform 9¾ is still a wall for you',
+]
+
+const pickPhrase = (previous) => {
+  const options = WRONG_PASSWORD_PHRASES.filter((phrase) => phrase !== previous)
+  return options[Math.floor(Math.random() * options.length)]
+}
 
 const fromBase64 = (value) => Uint8Array.from(atob(value), (c) => c.charCodeAt(0))
 
@@ -24,24 +41,13 @@ const decryptManifest = async (password) => {
 
 const toProjects = (manifest) => sortByYear(manifest.map(({ filename, src }, index) => createProject(filename, src, index)))
 
-// Remember the unlock for this browser session only
-const readStoredManifest = () => {
-  try {
-    const stored = sessionStorage.getItem(STORAGE_KEY)
-    return stored ? JSON.parse(stored) : null
-  } catch {
-    return null
-  }
-}
-
 function Private() {
-  const [projects, setProjects] = useState(() => {
-    const manifest = readStoredManifest()
-    return manifest ? toProjects(manifest) : null
-  })
+  // Never remembered: the password is required on every visit
+  const [projects, setProjects] = useState(null)
   const [password, setPassword] = useState('')
   const [isChecking, setIsChecking] = useState(false)
   const [hasError, setHasError] = useState(false)
+  const [errorPhrase, setErrorPhrase] = useState('')
   const inputRef = useRef(null)
 
   // Keep the private page out of search results
@@ -51,6 +57,15 @@ function Private() {
     meta.content = 'noindex, nofollow'
     return () => {
       meta.content = previous
+    }
+  }, [])
+
+  // Clear any unlock saved by an earlier version of this page
+  useEffect(() => {
+    try {
+      sessionStorage.removeItem('private-manifest')
+    } catch {
+      // Storage unavailable; nothing to clear
     }
   }, [])
 
@@ -68,13 +83,9 @@ function Private() {
 
     try {
       const manifest = await decryptManifest(password)
-      try {
-        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(manifest))
-      } catch {
-        // Storage unavailable; unlock still works for this visit
-      }
       setProjects(toProjects(manifest))
     } catch {
+      setErrorPhrase((previous) => pickPhrase(previous))
       setHasError(true)
       setPassword('')
     } finally {
@@ -125,7 +136,7 @@ function Private() {
           </button>
         </div>
         <p className="private__message" aria-live="polite">
-          {hasError ? 'Incorrect password' : ' '}
+          {hasError ? errorPhrase : ' '}
         </p>
       </form>
     </div>
