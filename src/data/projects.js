@@ -77,17 +77,11 @@ const parseFilename = (filename) => {
 const R2_PUBLIC_URL = 'https://pub-5ffdb96dde9f461f9964cb58f3746161.r2.dev'
 const getVideoUrl = (filename) => `${R2_PUBLIC_URL}/${filename}`
 
-// Generate projects from ordered files, sorted by year (newest first)
-// Within the same year, original array order is preserved (stable sort)
-export const projects = orderedFiles.map((filename, index) => {
+// Build a project from a filename and its media URL
+export const createProject = (filename, src, index) => {
   const { categories, title, year } = parseFilename(filename)
   const isVideo = filename.endsWith('.mp4') || filename.endsWith('.mov')
-  
-  // Use Cloudflare R2 for videos, local path for images
-  const src = isVideo 
-    ? getVideoUrl(filename)
-    : `${import.meta.env.BASE_URL}images/${filename}`
-  
+
   return {
     id: index + 1,
     title,
@@ -96,13 +90,19 @@ export const projects = orderedFiles.map((filename, index) => {
     image: src,
     isVideo,
   }
-}).sort((a, b) => parseInt(b.year) - parseInt(a.year))
-
-export const categories = ['all', 'ux', 'dev', 'photo', 'art', 'brand']
-
-// Get projects by category - maintains master order, just filters
-export const getProjectsByCategory = (category) => {
-  if (category === 'all') return projects
-  // Filter projects that include this category, preserving master order
-  return projects.filter(p => p.categories.includes(category))
 }
+
+// Sort by year (newest first); within the same year, original order is preserved (stable sort)
+export const sortByYear = (list) => [...list].sort((a, b) => parseInt(b.year) - parseInt(a.year))
+
+// Generate projects from ordered files
+export const projects = sortByYear(orderedFiles.map((filename, index) => {
+  const isVideo = filename.endsWith('.mp4') || filename.endsWith('.mov')
+
+  // Use Cloudflare R2 for videos, local path for images
+  const src = isVideo
+    ? getVideoUrl(filename)
+    : `${import.meta.env.BASE_URL}images/${filename}`
+
+  return createProject(filename, src, index)
+}))

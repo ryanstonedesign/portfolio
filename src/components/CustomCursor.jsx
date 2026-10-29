@@ -12,19 +12,12 @@ function CustomCursor() {
     Array(TRAIL_COUNT).fill({ x: -100, y: -100, visible: false })
   )
   const [isOverImage, setIsOverImage] = useState(false)
-  const [isOverLink, setIsOverLink] = useState(false)
-  const [isOverEasterEgg, setIsOverEasterEgg] = useState(false)
-  const [isOverPointerElement, setIsOverPointerElement] = useState(false)
-  const [cursorText, setCursorText] = useState('RS')
+  const [cursorText, setCursorText] = useState('')
   const positionRef = useRef({ x: -100, y: -100 })
   const trailPositions = useRef(Array(TRAIL_COUNT).fill({ x: -100, y: -100 }))
-  const { hoverState, shape } = useSettings()
+  const { shape } = useSettings()
 
-  // Set data attributes on body for CSS cursor overrides
-  useEffect(() => {
-    document.body.dataset.hoverState = hoverState
-  }, [hoverState])
-
+  // Set data attribute on body for CSS shape overrides
   useEffect(() => {
     document.body.dataset.shape = shape
   }, [shape])
@@ -35,51 +28,11 @@ function CustomCursor() {
       const mediaFrame = element?.closest('.work__media-frame')
       const container = mediaFrame?.closest('.work__image-container')
       const enlargeButton = ignoreButton ? null : element?.closest('.work__enlarge-button')
-      const infoLink = element?.closest('.info__link')
-      const easterEgg = element?.closest('.info__easter-egg')
-      const emailLink = element?.closest('.footer__email-link')
-      const headerName = element?.closest('.header__name')
-      const headerLink = element?.closest('.header__link')
-      const headerTab = element?.closest('.header__tab')
       const isOver = mediaFrame !== null
       setIsOverImage(forceLight ? false : isOver)
 
-      // Category emoji mapping
-      const categoryEmojis = {
-        all: '🗂️',
-        ux: '📱',
-        dev: '⌨️',
-        photo: '📸',
-        art: '🎨',
-        brand: '🏷️'
-      }
-
-      // Check for emoji cursor states (only when hoverState is 'emojis')
-      const useEmojiHovers = hoverState === 'emojis'
-      setIsOverLink(false)
-      const isOverLinkElement = easterEgg || emailLink || headerName || headerLink || headerTab || (infoLink && !easterEgg)
-      const showLargeEmoji = useEmojiHovers && isOverLinkElement
-      setIsOverEasterEgg(showLargeEmoji)
-      
-      // Hide custom cursor when showing browser pointer
-      setIsOverPointerElement(!useEmojiHovers && isOverLinkElement)
-      
-      if (useEmojiHovers && easterEgg) {
-        setCursorText('🦅')
-      } else if (useEmojiHovers && emailLink) {
-        setCursorText('📧')
-      } else if (useEmojiHovers && headerName) {
-        setCursorText('🏠')
-      } else if (useEmojiHovers && headerLink) {
-        setCursorText('📜')
-      } else if (useEmojiHovers && headerTab) {
-        const category = headerTab.dataset.category
-        setCursorText(categoryEmojis[category] || '🗂️')
-      } else if (useEmojiHovers && infoLink) {
-        setCursorText('↗️')
-      }
       // Check if hovering over enlarge button
-      else if (enlargeButton && container) {
+      if (enlargeButton && container) {
         const isFullscreen = container.dataset.isFullscreen === 'true'
         setCursorText(isFullscreen ? 'Shrink' : 'Enlarge')
       }
@@ -92,8 +45,6 @@ function CustomCursor() {
         } else {
           setCursorText('Scroll')
         }
-      } else {
-        setCursorText('RS')
       }
     }
 
@@ -127,7 +78,7 @@ function CustomCursor() {
       window.removeEventListener('click', handleClick)
       window.removeEventListener('cursorupdate', handleCursorUpdate)
     }
-  }, [hoverState])
+  }, [])
 
   // Animate trails to follow cursor with delay
   useEffect(() => {
@@ -169,20 +120,20 @@ function CustomCursor() {
       {trails.map((trail, index) => (
         <div
           key={index}
-          className={`cursor-trail ${isOverImage ? 'cursor-trail--inverted' : ''} ${isOverLink ? 'cursor-trail--bold' : ''} ${isOverEasterEgg ? 'cursor-trail--large' : ''} ${isOverPointerElement ? 'cursor-trail--hidden' : ''}`}
+          className={`cursor-trail ${isOverImage ? '' : 'cursor-trail--hidden'}`}
           style={{
             left: trail.x,
             top: trail.y,
-            opacity: trail.visible && !isOverPointerElement ? 1 - (index + 1) / (TRAIL_COUNT + 1) : 0,
+            opacity: trail.visible && isOverImage ? 1 - (index + 1) / (TRAIL_COUNT + 1) : 0,
           }}
         >
           {cursorText}
         </div>
       )).reverse()}
       
-      {/* Main cursor */}
+      {/* Main cursor - only shown over the work carousel */}
       <div
-        className={`custom-cursor ${isOverImage ? 'custom-cursor--inverted' : ''} ${isOverLink ? 'custom-cursor--bold' : ''} ${isOverEasterEgg ? 'custom-cursor--large' : ''} ${isOverPointerElement ? 'custom-cursor--hidden' : ''}`}
+        className={`custom-cursor ${isOverImage ? '' : 'custom-cursor--hidden'}`}
         style={{
           left: position.x,
           top: position.y,

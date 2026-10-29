@@ -26,3 +26,6 @@ Thumbs.db
 # Logs
 *.log
 npm-debug.log*
+
+# Private project source list (only the encrypted copy is committed)
+private/
