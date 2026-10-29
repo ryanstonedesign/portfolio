@@ -1,12 +1,11 @@
-/* Pixel loader - pixels float up into place one by one along a spiral until the
-   grid is full, then drift up and away in the same order. Only lit pixels show. */
+/* Pixel loader - a sparse field where pixels float up into view and drift away
+   at their own random pace. Only lit pixels are visible. */
 .pixel-loader {
-  --pixel-size: 8px;
-  --pixel-gap: 4px;
-  --pixel-cycle: 5.4s;
+  --pixel-size: 6px;
+  --pixel-gap: 5px;
 
   display: grid;
-  grid-template-columns: repeat(3, var(--pixel-size));
+  grid-template-columns: repeat(4, var(--pixel-size));
   gap: var(--pixel-gap);
 }
 
@@ -16,42 +15,37 @@
   border-radius: 1px;
   background: var(--color-text);
   opacity: 0;
-  animation: pixel-loader-float var(--pixel-cycle) ease-in-out infinite both;
-  /* Each pixel arrives one step after the previous (9 steps in, 9 out) */
-  animation-delay: calc(var(--step) * var(--pixel-cycle) / 18);
+  animation: pixel-loader-float var(--pixel-cycle) ease-in-out var(--pixel-delay) infinite;
   will-change: transform, opacity;
 }
 
-/* Lit for half the cycle: the last pixel settles just as the first drifts away */
+/* Visible for about a third of each loop, hidden the rest */
 @keyframes pixel-loader-float {
   0% {
     opacity: 0;
-    transform: translateY(8px) scale(0.6);
+    transform: translateY(6px) scale(0.6);
     filter: blur(2px);
   }
-  10% {
+  14% {
     opacity: 1;
     transform: translateY(0) scale(1);
     filter: blur(0);
   }
-  30% {
-    transform: translateY(-1.5px) scale(1);
-  }
-  50% {
+  20% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(-1px) scale(1);
     filter: blur(0);
   }
-  62%,
+  34%,
   100% {
     opacity: 0;
-    transform: translateY(-8px) scale(0.6);
+    transform: translateY(-6px) scale(0.6);
     filter: blur(2px);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pixel-loader {
-    --pixel-cycle: 9s;
+  .pixel-loader__pixel {
+    animation-duration: calc(var(--pixel-cycle) * 2);
   }
 }
