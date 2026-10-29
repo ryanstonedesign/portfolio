@@ -1,0 +1,146 @@
+/* Lightbox - media grows from its card to fill the screen */
+.lightbox {
+  --lightbox-duration: 450ms;
+
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  transition: opacity var(--lightbox-duration) var(--ease-out);
+}
+
+.lightbox--open .lightbox__backdrop {
+  opacity: 1;
+}
+
+.lightbox__stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* Gestures are handled in JS: no browser pan or page zoom here */
+  touch-action: none;
+  cursor: zoom-in;
+}
+
+.lightbox__frame {
+  position: absolute;
+  transform-origin: 0 0;
+  transition:
+    transform var(--lightbox-duration) var(--ease-out),
+    border-radius var(--lightbox-duration) var(--ease-out);
+  overflow: hidden;
+  will-change: transform;
+}
+
+/* Clipping is only needed for the rounded corners while animating */
+.lightbox__frame--zoomed {
+  overflow: visible;
+}
+
+.lightbox__zoom {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+/* Still frame shown behind the video until it plays */
+.lightbox__still {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.lightbox__media {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.lightbox__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 9999px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: opacity 300ms ease;
+}
+
+.lightbox__play svg {
+  margin-left: 2px;
+}
+
+.lightbox__play--hidden {
+  opacity: 0;
+}
+
+/* Same size and blur as the card's year badge */
+.lightbox__close {
+  position: absolute;
+  top: max(16px, calc(env(safe-area-inset-top) + 12px));
+  right: 16px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  transition: transform var(--lightbox-duration) var(--ease-out), background-color var(--duration-fast) ease;
+}
+
+.lightbox--open .lightbox__close {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.lightbox__close:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* Expand and close icons crossfade with a quarter turn */
+.lightbox__icon {
+  grid-area: 1 / 1;
+  display: flex;
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.6);
+  transition:
+    opacity var(--lightbox-duration) var(--ease-out),
+    transform var(--lightbox-duration) var(--ease-out);
+}
+
+.lightbox__icon--visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lightbox {
+    --lightbox-duration: 1ms;
+  }
+}

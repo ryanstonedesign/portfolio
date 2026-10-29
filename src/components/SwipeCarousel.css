@@ -116,6 +116,45 @@
   border-radius: 16px;
 }
 
+/* Expand button - same size and blur as the year badge; opens the lightbox */
+.swipe__expand {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  cursor: pointer;
+  transition: opacity 300ms ease, background-color var(--duration-fast) ease;
+}
+
+.swipe[data-shape="rounded"] .swipe__expand {
+  border-radius: 16px;
+}
+
+/* With a mouse, it only appears while hovering the card */
+@media (hover: hover) and (pointer: fine) {
+  .swipe__expand {
+    opacity: 0;
+  }
+
+  .swipe__card:hover .swipe__expand,
+  .swipe__expand:focus-visible {
+    opacity: 1;
+  }
+
+  .swipe__expand:hover {
+    background: rgba(0, 0, 0, 0.4);
+  }
+}
+
 .swipe__play {
   position: absolute;
   top: 50%;
