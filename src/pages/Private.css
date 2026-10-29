@@ -106,6 +106,7 @@
   font-size: var(--font-size-ui);
   color: var(--color-error);
   text-transform: uppercase;
+  text-align: center;
 }
 
 .page-transition--exiting .private__form {
