@@ -29,8 +29,8 @@ function NameLoader({ label = 'Loading' }) {
     <span className="name-loader" role="status" aria-label={label}>
       <svg className="name-loader__svg" viewBox="0 0 100 100" aria-hidden="true">
         <g className="name-loader__pulse">
-          <NameRing id={`${id}-outer`} word="RYAN" repeat={10} radius={38} className="name-loader__ring name-loader__ring--outer" />
-          <NameRing id={`${id}-inner`} word="STONE" repeat={6} radius={22} className="name-loader__ring name-loader__ring--inner" />
+          <NameRing id={`${id}-outer`} word="RYAN" repeat={8} radius={38} className="name-loader__ring name-loader__ring--outer" />
+          <NameRing id={`${id}-inner`} word="STONE" repeat={4} radius={21} className="name-loader__ring name-loader__ring--inner" />
         </g>
       </svg>
     </span>
