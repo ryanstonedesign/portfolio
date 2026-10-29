@@ -4,7 +4,6 @@ import { FooterProvider } from '../context/FooterContext'
 import { TransitionProvider } from '../context/TransitionContext'
 import Header from './Header'
 import Footer from './Footer'
-import CustomCursor from './CustomCursor'
 import PageTransition from './PageTransition'
 import './Layout.css'
 
@@ -27,7 +26,6 @@ function Layout() {
       <FooterProvider>
         <PageTransition>
           <div className={`app ${isHome ? 'app--home-desktop' : ''}`}>
-            <CustomCursor />
             <Header />
             <main>
               <Outlet />

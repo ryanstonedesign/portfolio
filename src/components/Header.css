@@ -149,7 +149,6 @@ body.work-carousel-loading .header__tab > span {
 .header__dropdown-trigger {
   display: flex;
   align-items: center;
-  gap: 6px;
   font-size: var(--font-size-ui);
   line-height: 1.5;
   text-transform: uppercase;
@@ -163,7 +162,9 @@ body.work-carousel-loading .header__tab > span {
 }
 
 .header__dropdown-label > span {
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 6px;
   animation: slide-up 1.2s var(--ease-out) 0.05s both;
 }
 

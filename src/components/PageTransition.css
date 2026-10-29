@@ -18,11 +18,6 @@
   animation: slide-down 1s var(--ease-out) forwards;
 }
 
-/* Work container slides down 200px to match entrance */
-.page-transition--exiting .work__image-container {
-  animation: slide-down-container 1s var(--ease-out) forwards;
-}
-
 /* Info content slides down */
 .page-transition--exiting .info__row {
   animation: slide-down 0.5s var(--ease-out) forwards !important;

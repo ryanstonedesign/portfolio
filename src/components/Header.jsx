@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { useTransition } from '../context/TransitionContext'
+import { useMediaQuery } from '../utils/useMediaQuery'
+import CollapsingText from './CollapsingText'
 import './Header.css'
 
 const sections = [
@@ -13,6 +15,7 @@ function Header() {
   const isCarouselPage = location.pathname === '/' || location.pathname === '/private'
   const { transitionTo } = useTransition()
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const isCompact = useMediaQuery('(max-width: 768px)')
   const dropdownRef = useRef(null)
   const activeSection = sections.find((section) => section.path === location.pathname)
 
@@ -52,8 +55,11 @@ function Header() {
   return (
     <header className={`header ${isInfoPage ? 'header--with-gradient' : ''}`}>
       <div className="header__left">
-        <a href="/" className="header__name" onClick={(e) => handleNavClick(e, '/')}>
-          <span>Ryan Stone</span>
+        <a href="/" className="header__name" aria-label="Ryan Stone" onClick={(e) => handleNavClick(e, '/')}>
+          {/* Small screens: letters slide down and "S" slides over to read "RS" */}
+          <span>
+            R<CollapsingText collapsed={isCompact}>yan </CollapsingText>S<CollapsingText collapsed={isCompact}>tone</CollapsingText>
+          </span>
         </a>
       </div>
 
@@ -83,12 +89,15 @@ function Header() {
             aria-haspopup="menu"
             aria-expanded={isMenuOpen}
           >
+            {/* Chevron rides inside the animated span so it enters with the label */}
             <span className="header__dropdown-label">
-              <span>{activeSection?.label}</span>
+              <span>
+                {activeSection?.label}
+                <svg className="header__dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </span>
             </span>
-            <svg className="header__dropdown-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
           </button>
           <div className="header__dropdown-menu" role="menu">
             {sections.map((section) => (

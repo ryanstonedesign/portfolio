@@ -1,0 +1,187 @@
+/* Swipe carousel */
+.swipe {
+  /* Media height budget; cards are sized to it so peeks stay consistent */
+  --swipe-media-height: 60dvh;
+  --swipe-item-width: min(76vw, calc(var(--swipe-media-height) * 1.25));
+  --swipe-gap: 12px;
+
+  display: flex;
+  align-items: center;
+  gap: var(--swipe-gap);
+  /* Span the full screen (past the app padding) so neighbors peek off the edges */
+  width: 100vw;
+  align-self: center;
+  flex-shrink: 0;
+  padding-inline: calc((100vw - var(--swipe-item-width)) / 2);
+  /* Room for shadows inside the scroll area, cancelled out so layout is unchanged */
+  padding-block: 80px;
+  margin-block: -80px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  touch-action: pan-x pan-y;
+  animation: slide-up-container 1.2s var(--ease-out) 0.1s both;
+}
+
+.swipe::-webkit-scrollbar {
+  display: none;
+}
+
+.swipe--loading {
+  animation: none;
+  opacity: 0;
+  transform: translateY(200px);
+  pointer-events: none;
+}
+
+.swipe__item {
+  flex: 0 0 var(--swipe-item-width);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  scroll-snap-align: center;
+}
+
+.swipe__media {
+  position: relative;
+  display: flex;
+  max-width: 100%;
+  will-change: transform;
+}
+
+.swipe__image,
+.swipe__video {
+  display: block;
+  max-width: 100%;
+  max-height: var(--swipe-media-height);
+  width: auto;
+  height: auto;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  background: var(--color-bg);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.swipe[data-shape="rounded"] .swipe__image,
+.swipe[data-shape="rounded"] .swipe__video,
+.swipe[data-shape="rounded"] .card-tilt__shine {
+  border-radius: 24px;
+}
+
+/* Inner layer for the hover tilt (the outer layer runs the scroll-focus scale) */
+.swipe__card {
+  position: relative;
+  display: flex;
+  max-width: 100%;
+}
+
+/* Centered videos are clickable to play/pause */
+.swipe__item--active .swipe__card[data-is-video="true"] {
+  cursor: pointer;
+}
+
+/* Hover lift - shadow deepens as the card rises */
+.swipe__image,
+.swipe__video {
+  transition: box-shadow 300ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .swipe__card:hover .swipe__image,
+  .swipe__card:hover .swipe__video {
+    box-shadow: 0 28px 40px rgba(0, 0, 0, 0.28);
+  }
+}
+
+.swipe__badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  padding: 6px 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  pointer-events: none;
+}
+
+.swipe[data-shape="rounded"] .swipe__badge {
+  border-radius: 16px;
+}
+
+.swipe__play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 9999px;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  transition: opacity 300ms ease;
+}
+
+.swipe__play svg {
+  margin-left: 2px;
+}
+
+.swipe__play--hidden {
+  opacity: 0;
+}
+
+/* Neighbors shrink and dim as they leave center, driven by scroll position on the
+   compositor (no JS per frame). Browsers without scroll timelines show them flat. */
+@supports (animation-timeline: view()) {
+  .swipe__media {
+    animation: swipe-focus linear both;
+    animation-timeline: view(inline);
+  }
+
+  @keyframes swipe-focus {
+    0% {
+      transform: scale(0.88);
+      opacity: 0.5;
+    }
+    50% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(0.88);
+      opacity: 0.5;
+    }
+  }
+}
+
+@media (min-width: 769px) {
+  .swipe {
+    /* layout: header + footer + counter + breathing room */
+    --swipe-media-height: calc(100dvh - 260px);
+    --swipe-gap: 32px;
+  }
+}
+
+/* The year indicator shows the year on large screens */
+@media (min-width: 1200px) {
+  .swipe__badge {
+    display: none;
+  }
+}
+
+.page-transition--exiting .swipe {
+  animation: slide-down-container 1s var(--ease-out) forwards;
+}
