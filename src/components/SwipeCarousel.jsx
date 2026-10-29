@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { tiltCard, resetCard } from '../utils/cardTilt'
+import Lightbox, { ExpandIcon } from './Lightbox'
 import './SwipeCarousel.css'
 
 // Horizontal swipe carousel.
@@ -18,6 +19,9 @@ function SwipeCarousel({ projects, currentIndex, onIndexChange, onHoverChange, s
   const indexRef = useRef(null)
   const wheelRef = useRef({ total: 0, lockedUntil: 0, target: 0 })
   const [playingIndex, setPlayingIndex] = useState(null)
+  const [lightbox, setLightbox] = useState(null)
+  const lightboxOpenRef = useRef(false)
+  lightboxOpenRef.current = lightbox !== null
 
   const scrollToIndex = (index, behavior = 'smooth') => {
     const clamped = Math.min(projects.length - 1, Math.max(0, index))
@@ -92,7 +96,7 @@ function SwipeCarousel({ projects, currentIndex, onIndexChange, onHoverChange, s
   // Arrow keys step through projects
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.target.closest?.('input, textarea')) return
+      if (lightboxOpenRef.current || e.target.closest?.('input, textarea')) return
       if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
         e.preventDefault()
         scrollToIndex((indexRef.current ?? 0) + (e.key === 'ArrowRight' ? 1 : -1))
@@ -141,6 +145,14 @@ function SwipeCarousel({ projects, currentIndex, onIndexChange, onHoverChange, s
       return
     }
     playVideo(index, videoRefs.current[index]?.paused)
+  }
+
+  const openLightbox = (e, project, index) => {
+    e.stopPropagation()
+    const card = e.currentTarget.closest('.swipe__card')
+    const sourceEl = card.querySelector('.swipe__image, .swipe__video')
+    playVideo(index, false)
+    setLightbox({ project, sourceEl, buttonEl: e.currentTarget })
   }
 
   // With a mouse, the centered video plays while hovered
@@ -210,11 +222,29 @@ function SwipeCarousel({ projects, currentIndex, onIndexChange, onHoverChange, s
                   </span>
                 )}
                 <span className="card-tilt__shine" />
+                <button
+                  className="swipe__expand"
+                  onClick={(e) => openLightbox(e, project, index)}
+                  aria-label={`View ${project.title} full screen`}
+                >
+                  <ExpandIcon />
+                </button>
               </div>
             </div>
           </div>
         )
       })}
+
+      {lightbox && (
+        <Lightbox
+          key={lightbox.project.id}
+          project={lightbox.project}
+          sourceEl={lightbox.sourceEl}
+          buttonEl={lightbox.buttonEl}
+          radius={shape === 'rounded' ? 24 : 0}
+          onClose={() => setLightbox(null)}
+        />
+      )}
     </div>
   )
 }
