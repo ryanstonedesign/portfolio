@@ -1,8 +1,9 @@
-/* Pixel loader - a slow wave travels the grid in a spiral */
+/* Pixel loader - pixels float up into place one by one along a spiral until the
+   grid is full, then drift up and away in the same order. Only lit pixels show. */
 .pixel-loader {
   --pixel-size: 8px;
   --pixel-gap: 4px;
-  --pixel-cycle: 2.4s;
+  --pixel-cycle: 5.4s;
 
   display: grid;
   grid-template-columns: repeat(3, var(--pixel-size));
@@ -14,30 +15,43 @@
   height: var(--pixel-size);
   border-radius: 1px;
   background: var(--color-text);
-  opacity: 0.12;
-  animation: pixel-loader-glow var(--pixel-cycle) ease-in-out infinite;
-  /* Each step lights a little after the previous one */
-  animation-delay: calc(var(--step) * var(--pixel-cycle) / 9);
+  opacity: 0;
+  animation: pixel-loader-float var(--pixel-cycle) ease-in-out infinite both;
+  /* Each pixel arrives one step after the previous (9 steps in, 9 out) */
+  animation-delay: calc(var(--step) * var(--pixel-cycle) / 18);
+  will-change: transform, opacity;
 }
 
-@keyframes pixel-loader-glow {
-  0%,
-  100% {
-    opacity: 0.12;
-    transform: scale(0.85);
+/* Lit for half the cycle: the last pixel settles just as the first drifts away */
+@keyframes pixel-loader-float {
+  0% {
+    opacity: 0;
+    transform: translateY(8px) scale(0.6);
+    filter: blur(2px);
   }
-  20% {
+  10% {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0) scale(1);
+    filter: blur(0);
   }
-  45% {
-    opacity: 0.12;
-    transform: scale(0.85);
+  30% {
+    transform: translateY(-1.5px) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    filter: blur(0);
+  }
+  62%,
+  100% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.6);
+    filter: blur(2px);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .pixel-loader {
-    --pixel-cycle: 4.8s;
+    --pixel-cycle: 9s;
   }
 }
