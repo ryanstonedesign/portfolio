@@ -200,7 +200,8 @@ function SwipeCarousel({ projects, currentIndex, onIndexChange, onHoverChange, s
                     draggable="false"
                   />
                 )}
-                <span className="swipe__badge">{project.year}</span>
+                {/* Short year, e.g. 2026 → ’26 */}
+                <span className="swipe__badge">’{project.year.slice(-2)}</span>
                 {project.isVideo && (
                   <span className={`swipe__play ${playingIndex === index ? 'swipe__play--hidden' : ''}`}>
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
