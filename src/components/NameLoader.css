@@ -1,51 +1,72 @@
-/* Pixel loader - a sparse field where pixels float up into view and drift away
-   at their own random pace. Only lit pixels are visible. */
-.pixel-loader {
-  --pixel-size: 6px;
-  --pixel-gap: 5px;
-
-  display: grid;
-  grid-template-columns: repeat(4, var(--pixel-size));
-  gap: var(--pixel-gap);
+/* Name loader - RYAN repeated on the outer ring, STONE on the inner, turning in
+   opposite directions while the whole mark slowly pulses */
+.name-loader {
+  display: block;
+  width: 112px;
+  height: 112px;
+  color: var(--color-text);
 }
 
-.pixel-loader__pixel {
-  width: var(--pixel-size);
-  height: var(--pixel-size);
-  border-radius: 1px;
-  background: var(--color-text);
-  opacity: 0;
-  animation: pixel-loader-float var(--pixel-cycle) ease-in-out var(--pixel-delay) infinite;
-  will-change: transform, opacity;
+.name-loader__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
-/* Visible for about a third of each loop, hidden the rest */
-@keyframes pixel-loader-float {
-  0% {
-    opacity: 0;
-    transform: translateY(6px) scale(0.6);
-    filter: blur(2px);
+.name-loader__text {
+  fill: currentColor;
+  font-family: var(--font-body);
+  font-size: 9px;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.name-loader__ring--inner .name-loader__text {
+  font-size: 7px;
+}
+
+/* Rotate and scale around the center of the 100×100 box */
+.name-loader__pulse,
+.name-loader__ring {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+}
+
+.name-loader__pulse {
+  animation: name-loader-pulse 3.6s ease-in-out infinite;
+}
+
+.name-loader__ring--outer {
+  animation: name-loader-spin 24s linear infinite;
+}
+
+.name-loader__ring--inner {
+  animation: name-loader-spin 18s linear infinite reverse;
+}
+
+@keyframes name-loader-spin {
+  to {
+    transform: rotate(360deg);
   }
-  14% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-    filter: blur(0);
-  }
-  20% {
-    opacity: 1;
-    transform: translateY(-1px) scale(1);
-    filter: blur(0);
-  }
-  34%,
+}
+
+@keyframes name-loader-pulse {
+  0%,
   100% {
-    opacity: 0;
-    transform: translateY(-6px) scale(0.6);
-    filter: blur(2px);
+    transform: scale(0.92);
+  }
+  50% {
+    transform: scale(1.04);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pixel-loader__pixel {
-    animation-duration: calc(var(--pixel-cycle) * 2);
+  .name-loader__ring {
+    animation: none;
+  }
+
+  .name-loader__pulse {
+    animation-duration: 7.2s;
   }
 }
