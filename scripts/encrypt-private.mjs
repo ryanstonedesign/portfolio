@@ -2,7 +2,9 @@
 //
 // Every private file is encrypted with its own random AES-256-GCM key and written
 // under a random name, so the repo, the deployed site and any bucket only ever hold
-// unreadable .bin blobs. The list of projects (filenames, blob locations and the
+// unreadable .bin blobs. Files are encrypted in 1 MB chunks so videos of any size
+// can stream and seek: public/private-sw.js fetches and decrypts only the chunks
+// the player asks for. The list of projects (filenames, blob locations and the
 // per-file keys) is then encrypted with a key derived from PRIVATE_PASSWORD and
 // written to src/data/private.enc.json.
 //
@@ -18,7 +20,8 @@
 //                             to show a gray card until the real file exists.
 //                             Optional "blobBaseUrl": "https://pub-xxxx.r2.dev/p" to
 //                             host the encrypted blobs on R2 (needed for files over
-//                             ~95 MB, which GitHub rejects).
+//                             ~95 MB, which GitHub rejects). The bucket needs a CORS
+//                             policy allowing GET from the site.
 //   .env.local                PRIVATE_PASSWORD=<at least 16 characters; a random
 //                             passphrase of 5+ words is ideal>
 //
@@ -27,7 +30,7 @@
 //   - With blobBaseUrl: blobs go to private/upload/; upload them to that location.
 //   Commit public/private-media/ (if used) and src/data/private.enc.json.
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync, statSync } from 'node:fs'
+import { readFileSync, writeFileSync, existsSync, mkdirSync, readdirSync, rmSync, statSync, openSync, readSync, writeSync, closeSync } from 'node:fs'
 import { join, extname, basename } from 'node:path'
 import { webcrypto as crypto } from 'node:crypto'
 
@@ -39,6 +42,10 @@ const UPLOAD_BLOB_DIR = 'private/upload'
 const ITERATIONS = 600000
 const MIN_PASSWORD_LENGTH = 16
 const MAX_REPO_BLOB_BYTES = 95 * 1024 * 1024
+// Must match how public/private-sw.js and src/utils/privateMedia.js read blobs:
+// each chunk is AES-GCM encrypted with IV = 8-byte random prefix + 4-byte chunk index
+const CHUNK_SIZE = 1024 * 1024
+const TAG_SIZE = 16
 
 const MIME_TYPES = {
   '.jpg': 'image/jpeg',
@@ -136,23 +143,39 @@ for (const item of entries) {
   const type = MIME_TYPES[extname(item.filename).toLowerCase()]
   if (!type) fail(`Unsupported file type: ${item.filename}`)
 
-  const fileKey = crypto.getRandomValues(new Uint8Array(32))
-  const iv = crypto.getRandomValues(new Uint8Array(12))
-  const key = await crypto.subtle.importKey('raw', fileKey, 'AES-GCM', false, ['encrypt'])
-  const encrypted = new Uint8Array(await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, readFileSync(sourcePath)))
-
-  if (!blobBaseUrl && encrypted.length > MAX_REPO_BLOB_BYTES) {
+  const size = statSync(sourcePath).size
+  const chunkCount = Math.ceil(size / CHUNK_SIZE)
+  if (!blobBaseUrl && size + chunkCount * TAG_SIZE > MAX_REPO_BLOB_BYTES) {
     fail(`${item.filename} is too large for GitHub. Set "blobBaseUrl" in ${SOURCE} and upload the blobs to R2 instead.`)
   }
 
+  const fileKey = crypto.getRandomValues(new Uint8Array(32))
+  const ivPrefix = crypto.getRandomValues(new Uint8Array(8))
+  const key = await crypto.subtle.importKey('raw', fileKey, 'AES-GCM', false, ['encrypt'])
   const blobName = `${toHex(crypto.getRandomValues(new Uint8Array(16)))}.bin`
-  writeFileSync(join(blobDir, blobName), encrypted)
+
+  // Read and encrypt one chunk at a time so huge videos never sit in memory
+  const input = openSync(sourcePath, 'r')
+  const output = openSync(join(blobDir, blobName), 'w')
+  const buffer = Buffer.alloc(CHUNK_SIZE)
+  for (let index = 0; index < chunkCount; index++) {
+    const bytesRead = readSync(input, buffer, 0, CHUNK_SIZE, index * CHUNK_SIZE)
+    const iv = new Uint8Array(12)
+    iv.set(ivPrefix)
+    new DataView(iv.buffer).setUint32(8, index)
+    const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, buffer.subarray(0, bytesRead))
+    writeSync(output, new Uint8Array(encrypted))
+  }
+  closeSync(input)
+  closeSync(output)
 
   manifest.push({
     filename: item.filename,
     blob: blobBaseUrl ? `${blobBaseUrl.replace(/\/$/, '')}/${blobName}` : `private-media/${blobName}`,
     key: toBase64(fileKey),
-    iv: toBase64(iv),
+    iv: toBase64(ivPrefix),
+    size,
+    chunkSize: CHUNK_SIZE,
     type,
   })
 }

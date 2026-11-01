@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { createProject, sortByYear } from '../data/projects'
 import encrypted from '../data/private.enc.json'
+import { fromBase64, unlockMedia, lockMedia } from '../utils/privateMedia'
 import Work from './Work'
 import './Private.css'
 
@@ -23,8 +24,6 @@ const pickPhrase = (previous) => {
   return options[Math.floor(Math.random() * options.length)]
 }
 
-const fromBase64 = (value) => Uint8Array.from(atob(value), (c) => c.charCodeAt(0))
-
 // Decrypt the private project list; throws when the password is wrong
 const decryptManifest = async (password) => {
   const baseKey = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey'])
@@ -37,30 +36,6 @@ const decryptManifest = async (password) => {
   )
   const data = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: fromBase64(encrypted.iv) }, key, fromBase64(encrypted.data))
   return JSON.parse(new TextDecoder().decode(data))
-}
-
-// Fetch and decrypt one private file into an in-memory URL that exists only in this tab
-const decryptMedia = async ({ blob, key, iv, type }) => {
-  const url = /^https?:/.test(blob) ? blob : `${import.meta.env.BASE_URL}${blob}`
-  const response = await fetch(url, { cache: 'no-store' })
-  if (!response.ok) throw new Error(`Could not load ${blob}`)
-  const fileKey = await crypto.subtle.importKey('raw', fromBase64(key), 'AES-GCM', false, ['decrypt'])
-  const data = await crypto.subtle.decrypt({ name: 'AES-GCM', iv: fromBase64(iv) }, fileKey, await response.arrayBuffer())
-  return URL.createObjectURL(new Blob([data], { type }))
-}
-
-// Resolve every manifest entry to a displayable URL. Only encrypted blobs and inline
-// placeholders are accepted, so a plain public link can never sneak in.
-const resolveMedia = async (manifest) => {
-  const results = await Promise.allSettled(manifest.map(async (item) => {
-    if (item.blob) return { filename: item.filename, src: await decryptMedia(item) }
-    if (item.src?.startsWith('data:')) return { filename: item.filename, src: item.src }
-    throw new Error(`Refusing unencrypted media for ${item.filename}`)
-  }))
-  results.forEach((result) => {
-    if (result.status === 'rejected') console.error(result.reason)
-  })
-  return results.filter((result) => result.status === 'fulfilled').map((result) => result.value)
 }
 
 const toProjects = (media) => sortByYear(media.map(({ filename, src }, index) => createProject(filename, src, index)))
@@ -96,11 +71,7 @@ function Private() {
   // Release decrypted files from memory when leaving the private section
   useEffect(() => {
     if (!projects) return undefined
-    return () => {
-      projects.forEach(({ image }) => {
-        if (image.startsWith('blob:')) URL.revokeObjectURL(image)
-      })
-    }
+    return () => lockMedia(projects.map(({ image }) => image))
   }, [projects])
 
   // Return focus to the field after a wrong password
@@ -128,7 +99,7 @@ function Private() {
 
     // Password was right; the field is no longer needed
     setPassword('')
-    setProjects(toProjects(await resolveMedia(manifest)))
+    setProjects(toProjects(await unlockMedia(manifest)))
     setIsChecking(false)
   }
 
