@@ -116,8 +116,10 @@
   border-radius: 16px;
 }
 
-/* Expand button - same size and blur as the year badge; opens the lightbox */
-.swipe__expand {
+/* Expand button - same size and blur as the year badge; opens the lightbox.
+   The sound toggle (videos with audio) matches it, just to its left. */
+.swipe__expand,
+.swipe__sound {
   position: absolute;
   top: 6px;
   right: 6px;
@@ -135,22 +137,31 @@
   transition: opacity 300ms ease, background-color var(--duration-fast) ease;
 }
 
-.swipe[data-shape="rounded"] .swipe__expand {
+.swipe[data-shape="rounded"] .swipe__expand,
+.swipe[data-shape="rounded"] .swipe__sound {
   border-radius: 16px;
+}
+
+.swipe__sound {
+  right: 42px;
 }
 
 /* With a mouse, it only appears while hovering the card */
 @media (hover: hover) and (pointer: fine) {
-  .swipe__expand {
+  .swipe__expand,
+  .swipe__sound {
     opacity: 0;
   }
 
   .swipe__card:hover .swipe__expand,
-  .swipe__expand:focus-visible {
+  .swipe__card:hover .swipe__sound,
+  .swipe__expand:focus-visible,
+  .swipe__sound:focus-visible {
     opacity: 1;
   }
 
-  .swipe__expand:hover {
+  .swipe__expand:hover,
+  .swipe__sound:hover {
     background: rgba(0, 0, 0, 0.4);
   }
 }

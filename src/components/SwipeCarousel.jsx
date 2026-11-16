@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { tiltCard, resetCard } from '../utils/cardTilt'
-import Lightbox, { ExpandIcon } from './Lightbox'
+import Lightbox, { ExpandIcon, SoundOnIcon, SoundOffIcon, playVideo as playWithSound } from './Lightbox'
 import './SwipeCarousel.css'
 
 // Horizontal swipe carousel.
@@ -20,6 +20,10 @@ function SwipeCarousel({ projects, currentIndex, onIndexChange, onHoverChange, s
   const wheelRef = useRef({ total: 0, lockedUntil: 0, target: 0 })
   const [playingIndex, setPlayingIndex] = useState(null)
   const [lightbox, setLightbox] = useState(null)
+  // One sound setting for every video with audio; starts muted
+  const [soundOn, setSoundOn] = useState(false)
+  const soundOnRef = useRef(soundOn)
+  soundOnRef.current = soundOn
   const lightboxOpenRef = useRef(false)
   lightboxOpenRef.current = lightbox !== null
 
@@ -130,7 +134,7 @@ function SwipeCarousel({ projects, currentIndex, onIndexChange, onHoverChange, s
     const video = videoRefs.current[index]
     if (!video) return
     if (shouldPlay) {
-      video.play().catch(() => {})
+      playWithSound(video, projects[index]?.hasAudio && soundOnRef.current).catch(() => {})
       setPlayingIndex(index)
     } else {
       video.pause()
@@ -145,6 +149,21 @@ function SwipeCarousel({ projects, currentIndex, onIndexChange, onHoverChange, s
       return
     }
     playVideo(index, videoRefs.current[index]?.paused)
+  }
+
+  const toggleSound = (e, index) => {
+    e.stopPropagation()
+    const next = !soundOn
+    soundOnRef.current = next
+    setSoundOn(next)
+    const video = videoRefs.current[index]
+    if (!video) return
+    if (next && video.paused) {
+      // Turning sound on also starts a paused video
+      playVideo(index, true)
+    } else {
+      video.muted = !next
+    }
   }
 
   const openLightbox = (e, project, index) => {
@@ -222,6 +241,16 @@ function SwipeCarousel({ projects, currentIndex, onIndexChange, onHoverChange, s
                   </span>
                 )}
                 <span className="card-tilt__shine" />
+                {project.hasAudio && (
+                  <button
+                    className="swipe__sound"
+                    onClick={(e) => toggleSound(e, index)}
+                    aria-label={soundOn ? `Mute ${project.title}` : `Unmute ${project.title}`}
+                    aria-pressed={soundOn}
+                  >
+                    {soundOn ? <SoundOnIcon /> : <SoundOffIcon />}
+                  </button>
+                )}
                 <button
                   className="swipe__expand"
                   onClick={(e) => openLightbox(e, project, index)}
@@ -242,6 +271,8 @@ function SwipeCarousel({ projects, currentIndex, onIndexChange, onHoverChange, s
           sourceEl={lightbox.sourceEl}
           buttonEl={lightbox.buttonEl}
           radius={shape === 'rounded' ? 24 : 0}
+          soundOn={soundOn}
+          onSoundChange={setSoundOn}
           onClose={() => setLightbox(null)}
         />
       )}

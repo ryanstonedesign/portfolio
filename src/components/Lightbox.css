@@ -123,6 +123,35 @@
   background: rgba(255, 255, 255, 0.25);
 }
 
+/* Sound toggle sits left of close and fades with the lightbox */
+.lightbox__sound {
+  position: absolute;
+  top: max(16px, calc(env(safe-area-inset-top) + 12px));
+  right: 54px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--lightbox-duration) var(--ease-out), background-color var(--duration-fast) ease;
+}
+
+.lightbox__sound--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.lightbox__sound:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
 /* Expand and close icons crossfade with a quarter turn */
 .lightbox__icon {
   grid-area: 1 / 1;

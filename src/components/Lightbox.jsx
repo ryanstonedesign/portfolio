@@ -23,7 +23,33 @@ const CloseIcon = () => (
   </svg>
 )
 
-export { ExpandIcon }
+const SoundOnIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+  </svg>
+)
+
+const SoundOffIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+    <line x1="23" y1="9" x2="17" y2="15"></line>
+    <line x1="17" y1="9" x2="23" y2="15"></line>
+  </svg>
+)
+
+// Plays with sound when asked; if the browser blocks that, falls back to muted
+const playVideo = (video, withSound) => {
+  video.muted = !withSound
+  return video.play().catch((error) => {
+    if (!withSound || error.name !== 'NotAllowedError') throw error
+    video.muted = true
+    return video.play()
+  })
+}
+
+export { ExpandIcon, SoundOnIcon, SoundOffIcon, playVideo }
 
 // Where the media sits when fitted to the screen
 const fitRect = (aspect) => {
@@ -44,7 +70,7 @@ const midpoint = (a, b) => ({ x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 })
 // Full-screen viewer that grows out of the card's media, with pinch, pan and
 // double-tap zoom (trackpad pinch, scroll and double-click on desktop).
 // sourceEl is the card's <img>/<video>; buttonEl is the card's expand button.
-function Lightbox({ project, sourceEl, buttonEl, radius = 0, onClose }) {
+function Lightbox({ project, sourceEl, buttonEl, radius = 0, soundOn = false, onSoundChange, onClose }) {
   const stageRef = useRef(null)
   const frameRef = useRef(null)
   const zoomRef = useRef(null)
@@ -53,6 +79,7 @@ function Lightbox({ project, sourceEl, buttonEl, radius = 0, onClose }) {
   const [isOpen, setIsOpen] = useState(false)
   const [isClosing, setIsClosing] = useState(false)
   const [isPlaying, setIsPlaying] = useState(true)
+  const withSound = project.hasAudio && soundOn
 
   const aspect = project.isVideo
     ? (sourceEl.videoWidth / sourceEl.videoHeight) || sourceEl.clientWidth / sourceEl.clientHeight
@@ -155,8 +182,25 @@ function Lightbox({ project, sourceEl, buttonEl, radius = 0, onClose }) {
     const video = videoRef.current
     if (!video) return
     video.currentTime = sourceEl.currentTime || 0
-    video.play().catch(() => setIsPlaying(false))
+    playVideo(video, withSound).catch(() => setIsPlaying(false))
   }, [])
+
+  // Sound can be switched while the lightbox is open
+  useEffect(() => {
+    const video = videoRef.current
+    if (video) video.muted = !withSound
+  }, [withSound])
+
+  const toggleSound = () => {
+    const next = !soundOn
+    onSoundChange?.(next)
+    const video = videoRef.current
+    // Turning sound on also starts a paused video
+    if (next && video?.paused) {
+      playVideo(video, true).catch(() => {})
+      setIsPlaying(true)
+    }
+  }
 
   const close = () => {
     if (isClosing) return
@@ -240,7 +284,7 @@ function Lightbox({ project, sourceEl, buttonEl, radius = 0, onClose }) {
     const video = videoRef.current
     if (!video) return
     if (video.paused) {
-      video.play().catch(() => {})
+      playVideo(video, withSound).catch(() => {})
       setIsPlaying(true)
     } else {
       video.pause()
@@ -378,6 +422,17 @@ function Lightbox({ project, sourceEl, buttonEl, radius = 0, onClose }) {
           </span>
         )}
       </div>
+
+      {project.hasAudio && (
+        <button
+          className={`lightbox__sound ${isOpen && !isClosing ? 'lightbox__sound--visible' : ''}`}
+          onClick={toggleSound}
+          aria-label={soundOn ? 'Mute' : 'Unmute'}
+          aria-pressed={soundOn}
+        >
+          {soundOn ? <SoundOnIcon /> : <SoundOffIcon />}
+        </button>
+      )}
 
       <button ref={buttonRef} className="lightbox__close" onClick={close} aria-label="Close">
         <span className={`lightbox__icon ${isOpen ? '' : 'lightbox__icon--visible'}`}><ExpandIcon /></span>

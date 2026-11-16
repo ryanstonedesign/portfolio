@@ -45,6 +45,12 @@ const orderedFiles = [
   'ux_ServiceElectric_2016.mov',
 ]
 
+// Videos with an audio track get a sound toggle
+const filesWithAudio = new Set([
+  'ux_dev_stufflog3.0_2026.mp4',
+  'ux_dev_stufflog_2025.mp4',
+])
+
 const validTypes = ['ux', 'dev', 'photo', 'art', 'brand']
 
 // Parse filename to extract categories, title, and year
@@ -90,6 +96,7 @@ export const createProject = (filename, src, index) => {
     categories,
     image: src,
     isVideo,
+    hasAudio: filesWithAudio.has(filename),
   }
 }
 
