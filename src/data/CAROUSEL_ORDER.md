@@ -25,23 +25,28 @@ Edit this list to change the display order. The header filters (Software = `ux`,
 18. art_sunset_2015.jpg
 19. brand_blashsheep_2021.jpg
 20. photo_teahouse_2018.jpg
-21. ux_dutiesResponder_2025.mp4
-22. brand_bcc_2024.jpg
-23. brand_carwash_2021.jpg
-24. photo_odin_2019.jpg
-25. ux_marketsRefactor_2023.jpg
-26. art_candy_2012.jpg
-27. brand_lmt_2024.jpg
-28. photo_longexposure1_2018.jpg
-29. ux_WILDR_2018.mov
-30. art_mountains_2015.jpg
-31. art_selfPortrait_2009.jpg
-32. photo_longexposure2_2021.jpg
-33. art_sisters_2011.jpg
-34. brand_weddingInvites_2017.jpg
-35. photo_capemay_2017.jpg
-36. brand_DesignStandup_2018.jpg
-37. photo_critter_2017.jpg
-38. photo_museum_2017.jpg
-39. ux_QVCiOSapp_2017.mov
-40. ux_ServiceElectric_2016.mov
+21. brand_bcc_2024.jpg
+22. brand_carwash_2021.jpg
+23. photo_odin_2019.jpg
+24. ux_marketsRefactor_2023.jpg
+25. art_candy_2012.jpg
+26. brand_lmt_2024.jpg
+27. photo_longexposure1_2018.jpg
+28. ux_WILDR_2018.mov
+29. art_mountains_2015.jpg
+30. art_selfPortrait_2009.jpg
+31. photo_longexposure2_2021.jpg
+32. art_sisters_2011.jpg
+33. brand_weddingInvites_2017.jpg
+34. photo_capemay_2017.jpg
+35. brand_DesignStandup_2018.jpg
+36. photo_critter_2017.jpg
+37. photo_museum_2017.jpg
+38. ux_QVCiOSapp_2017.mov
+39. ux_ServiceElectric_2016.mov
+
+## Hidden
+
+Kept on Cloudflare but not shown. Uncomment in `src/data/projects.js` to bring back.
+
+- ux_dutiesResponder_2025.mp4

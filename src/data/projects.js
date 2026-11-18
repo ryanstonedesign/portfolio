@@ -24,7 +24,7 @@ const orderedFiles = [
   'art_sunset_2015.jpg',
   'brand_blashsheep_2021.jpg',
   'photo_teahouse_2018.jpg',
-  'ux_dutiesResponder_2025.mp4',
+  // 'ux_dutiesResponder_2025.mp4', // hidden for now; uncomment to show
   'brand_bcc_2024.jpg',
   'brand_carwash_2021.jpg',
   'photo_odin_2019.jpg',
