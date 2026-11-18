@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
+import { useCategory } from '../context/CategoryContext'
 import { useFooter } from '../context/FooterContext'
 import { useSettings } from '../context/SettingsContext'
 import YearIndicator from '../components/YearIndicator'
@@ -6,7 +7,14 @@ import SwipeCarousel from '../components/SwipeCarousel'
 import NameLoader from '../components/NameLoader'
 import './Work.css'
 
-function Work({ projects }) {
+// `allProjects` is every item; the header's category filter picks which ones show.
+// Everything is preloaded once, so switching filters is instant.
+function Work({ projects: allProjects }) {
+  const { activeCategory } = useCategory()
+  const projects = useMemo(
+    () => allProjects.filter((project) => project.categories.includes(activeCategory)),
+    [allProjects, activeCategory],
+  )
   const { yearComponent, shape } = useSettings()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isHovering, setIsHovering] = useState(false)
@@ -15,7 +23,7 @@ function Work({ projects }) {
 
   const currentProject = projects[currentIndex]
 
-  // Reset index when the project set changes
+  // Back to the first item when the filter changes
   useEffect(() => {
     setCurrentIndex(0)
   }, [projects])
@@ -28,11 +36,11 @@ function Work({ projects }) {
     }
   }, [isCarouselLoading])
 
-  // Preload the active carousel set before removing the centered loading state.
+  // Preload every item (all categories) before removing the centered loading state.
   useEffect(() => {
     let isCancelled = false
 
-    if (projects.length === 0) {
+    if (allProjects.length === 0) {
       setIsCarouselLoading(false)
       return () => {
         isCancelled = true
@@ -67,7 +75,7 @@ function Work({ projects }) {
       image.src = project.image
     })
 
-    Promise.all(projects.map(loadMedia)).then(() => {
+    Promise.all(allProjects.map(loadMedia)).then(() => {
       if (!isCancelled) {
         setIsCarouselLoading(false)
       }
@@ -76,7 +84,7 @@ function Work({ projects }) {
     return () => {
       isCancelled = true
     }
-  }, [projects])
+  }, [allProjects])
 
   // Footer counter
   useEffect(() => {

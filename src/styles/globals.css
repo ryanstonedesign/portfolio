@@ -29,17 +29,6 @@
   --duration-normal: 300ms;
 }
 
-/* Dark theme - used by the private section */
-:root[data-theme="dark"] {
-  --color-bg: #000000;
-  --color-bg-alt: #0f0f0f;
-  --color-text: #ffffff;
-  --color-text-muted: #7a7a7a;
-  --color-border: #2a2a2a;
-  --color-error: #ff6b5e;
-  color-scheme: dark;
-}
-
 /* Reset */
 *, *::before, *::after {
   box-sizing: border-box;

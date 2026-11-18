@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
+import { CategoryProvider } from '../context/CategoryContext'
 import { FooterProvider } from '../context/FooterContext'
 import { TransitionProvider } from '../context/TransitionContext'
 import Header from './Header'
@@ -9,31 +9,23 @@ import './Layout.css'
 
 function Layout() {
   const { pathname } = useLocation()
-  const isPrivate = pathname === '/private'
-  const isHome = pathname === '/' || isPrivate
-
-  // Private section uses the dark theme
-  useEffect(() => {
-    if (isPrivate) {
-      document.documentElement.dataset.theme = 'dark'
-    } else {
-      delete document.documentElement.dataset.theme
-    }
-  }, [isPrivate])
+  const isHome = pathname === '/'
 
   return (
     <TransitionProvider>
-      <FooterProvider>
-        <PageTransition>
-          <div className={`app ${isHome ? 'app--home-desktop' : ''}`}>
-            <Header />
-            <main>
-              <Outlet />
-            </main>
-            <Footer />
-          </div>
-        </PageTransition>
-      </FooterProvider>
+      <CategoryProvider>
+        <FooterProvider>
+          <PageTransition>
+            <div className={`app ${isHome ? 'app--home-desktop' : ''}`}>
+              <Header />
+              <main>
+                <Outlet />
+              </main>
+              <Footer />
+            </div>
+          </PageTransition>
+        </FooterProvider>
+      </CategoryProvider>
     </TransitionProvider>
   )
 }

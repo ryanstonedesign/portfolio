@@ -111,7 +111,16 @@ function SwipeCarousel({ projects, currentIndex, onIndexChange, onHoverChange, s
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [projects.length])
 
-  // Jump to the index when it changes from outside (e.g. a new project set)
+  // A new project set (e.g. a filter change) starts back at the first item
+  const projectsRef = useRef(projects)
+  useEffect(() => {
+    if (projectsRef.current === projects) return
+    projectsRef.current = projects
+    indexRef.current = 0
+    trackRef.current?.scrollTo({ left: 0, behavior: 'instant' })
+  }, [projects])
+
+  // Jump to the index when it changes from outside
   useEffect(() => {
     const track = trackRef.current
     if (!track || currentIndex === indexRef.current) return

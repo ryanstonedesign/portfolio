@@ -114,3 +114,14 @@ export const projects = sortByYear(orderedFiles.map((filename, index) => {
 
   return createProject(filename, src, index)
 }))
+
+// Carousel filters, in header order. `id` is the tag used in filenames;
+// "Software" still uses the `ux` tag. The first one is the default.
+export const categories = [
+  { id: 'ux', label: 'Software' },
+  { id: 'brand', label: 'Brand' },
+  { id: 'art', label: 'Art' },
+  { id: 'photo', label: 'Photography' },
+]
+
+export const defaultCategory = categories[0].id
