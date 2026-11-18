@@ -7,7 +7,6 @@ export function SettingsProvider({ children }) {
   const [imageTransition, setImageTransition] = useState('instant')
   const [imageOpacity, setImageOpacity] = useState('full')
   const [hoverState, setHoverState] = useState('pointer')
-  const [yearComponent, setYearComponent] = useState('ticker')
   const [shape, setShape] = useState('rounded')
 
   return (
@@ -20,8 +19,6 @@ export function SettingsProvider({ children }) {
       setImageOpacity,
       hoverState,
       setHoverState,
-      yearComponent,
-      setYearComponent,
       shape,
       setShape
     }}>

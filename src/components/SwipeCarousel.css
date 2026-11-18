@@ -225,13 +225,6 @@
   }
 }
 
-/* The year indicator shows the year on large screens */
-@media (min-width: 1200px) {
-  .swipe__badge {
-    display: none;
-  }
-}
-
 .page-transition--exiting .swipe {
   animation: slide-down-container 1s var(--ease-out) forwards;
 }

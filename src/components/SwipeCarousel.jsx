@@ -9,7 +9,7 @@ import './SwipeCarousel.css'
 const WHEEL_THRESHOLD = 40 // accumulated vertical wheel delta per step
 const WHEEL_LOCK = 300 // ms before the next wheel step
 
-function SwipeCarousel({ projects, currentIndex, onIndexChange, onHoverChange, shape, isLoading }) {
+function SwipeCarousel({ projects, currentIndex, onIndexChange, shape, isLoading }) {
   const trackRef = useRef(null)
   const itemRefs = useRef([])
   const videoRefs = useRef([])
@@ -198,8 +198,6 @@ function SwipeCarousel({ projects, currentIndex, onIndexChange, onHoverChange, s
       ref={trackRef}
       className={`swipe ${isLoading ? 'swipe--loading' : ''}`}
       data-shape={shape}
-      onMouseEnter={() => onHoverChange?.(true)}
-      onMouseLeave={() => onHoverChange?.(false)}
     >
       {projects.map((project, index) => {
         // Keep full buffering near the center only

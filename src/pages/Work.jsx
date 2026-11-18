@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo } from 'react'
 import { useCategory } from '../context/CategoryContext'
 import { useFooter } from '../context/FooterContext'
 import { useSettings } from '../context/SettingsContext'
-import YearIndicator from '../components/YearIndicator'
 import SwipeCarousel from '../components/SwipeCarousel'
 import NameLoader from '../components/NameLoader'
 import './Work.css'
@@ -15,13 +14,10 @@ function Work({ projects: allProjects }) {
     () => allProjects.filter((project) => project.categories.includes(activeCategory)),
     [allProjects, activeCategory],
   )
-  const { yearComponent, shape } = useSettings()
+  const { shape } = useSettings()
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isHovering, setIsHovering] = useState(false)
   const [isCarouselLoading, setIsCarouselLoading] = useState(true)
   const { setCenterContent } = useFooter()
-
-  const currentProject = projects[currentIndex]
 
   // Back to the first item when the filter changes
   useEffect(() => {
@@ -116,20 +112,12 @@ function Work({ projects: allProjects }) {
           projects={projects}
           currentIndex={currentIndex}
           onIndexChange={setCurrentIndex}
-          onHoverChange={setIsHovering}
           shape={shape}
           isLoading={isCarouselLoading}
         />
       ) : (
         <div className="work__empty">No projects yet</div>
       )}
-
-      {/* Year indicator - right side, visible on hover, large screens only */}
-      <YearIndicator
-        activeYear={currentProject?.year}
-        isVisible={isHovering}
-        variant={yearComponent}
-      />
     </div>
   )
 }
